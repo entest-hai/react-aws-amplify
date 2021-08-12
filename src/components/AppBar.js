@@ -1,8 +1,12 @@
-import React, {useState} from "react"
-import { Button, Container, Typography } from "@material-ui/core";
+import React, {useEffect, useState} from "react"
+import {Button, Container, FormControl, FormControlLabel, FormLabel, Typography} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import { KeyboardArrowRight } from "@material-ui/icons";
 import { TextField } from "@material-ui/core";
+import Radio from '@material-ui/core/Radio';
+import {RadioGroup} from "@material-ui/core";
+import {useHistory} from "react-router-dom";
+
 
 const useStyles = makeStyles({
     field: {
@@ -13,14 +17,39 @@ const useStyles = makeStyles({
 })
 
 
+const Notes = () => {
+
+    const [notes, setNotes] = useState([])
+
+    useEffect(() => {
+        fetch('http://localhost:8000/notes')
+            .then(res => res.json())
+            .then(data => setNotes(data))
+    }, [])
+
+    return (
+        <div>
+            {notes.map(note => (
+                <p key={note.id}>
+                    {note.title}
+                </p>
+            ))}
+        </div>
+    )
+}
+
 const Create = () => {
 
     const classes = useStyles()
+    const history = useHistory()
+    const [category, setCategory] = useState('money')
     const [title, setTitle] = useState('')
     const [details, setDetails] = useState('')
     const [titleError, settitleError] = useState(false)
     const [detailsError, setDetailsError] = useState(false)
+
     const handleSubmit = (e) => {
+        e.preventDefault()
         console.log("Handle submit form")
         settitleError(false)
         setDetailsError(false)
@@ -34,10 +63,13 @@ const Create = () => {
         }
 
         if (title && details) {
-            console.log(title, details)
+            fetch('http://localhost:8000/notes', {
+                method: 'POST',
+                headers: {'Content-type': "application/json"},
+                body: JSON.stringify({title, details, category})
+            }).then(() => history.push("/"))
         }
     }
-
 
     return (
        <Container size='sm'>
@@ -57,6 +89,7 @@ const Create = () => {
               color="secondary"
               fullWidth
               required
+              error={titleError}
               >
               </TextField>
               <TextField
@@ -69,21 +102,31 @@ const Create = () => {
               rows={4}
               fullWidth
               required
+              error={detailsError}
               >
-
               </TextField>
+
+               <FormControl className={classes.field}>
+                   <FormLabel> Note Category  </FormLabel>
+                       <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
+                           <FormControlLabel value={"money"} control={<Radio></Radio>} label={"Money"}></FormControlLabel>
+                           <FormControlLabel value={"todos"} control={<Radio></Radio>} label={"Todos"}></FormControlLabel>
+                           <FormControlLabel value={"reminders"} control={<Radio></Radio>} label={"Reminders"}></FormControlLabel>
+                           <FormControlLabel value={"work"} control={<Radio></Radio>} label={"Work"}></FormControlLabel>
+                       </RadioGroup>
+               </FormControl>
+               <Button
+                   type="submit"
+                   color="secondary"
+                   variant="contained"
+                   endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+               >
+                   Submit
+               </Button>
            </form>
-           <Button 
-            onClick={()=>console.log("You click me")}
-            type="submit"
-            color="secondary"
-            variant="contained"
-            endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
-           >
-               Submit
-           </Button>
+
        </Container>
     );
 }
 
-export default Create;
+export {Create, Notes}

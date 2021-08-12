@@ -1,0 +1,33 @@
+{
+  "notes": [
+    {
+      "title": "Hello Hai Tran",
+      "details": "Doing some data analysis",
+      "category": "reminders",
+      "id": 1
+    },
+    {
+      "title": "Complete my ninja training",
+      "details": "Lorem thing going well",
+      "category": "work",
+      "id": 2
+    },
+    {
+      "title": "Order things",
+      "details": "Order me a thing",
+      "id": 3
+    },
+    {
+      "title": "Hello Thing",
+      "details": "Really is",
+      "category": "reminders",
+      "id": 4
+    },
+    {
+      "title": "Cook diner",
+      "details": "Hi there we want to cook a dinner",
+      "category": "money",
+      "id": 5
+    }
+  ]
+}
