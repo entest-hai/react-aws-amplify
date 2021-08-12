@@ -1,21 +1,143 @@
 import React, {useEffect, useState} from "react"
-import {Button, Container, FormControl, FormControlLabel, FormLabel, Typography} from "@material-ui/core";
+import {
+    Button,
+    CardContent,
+    Container, Drawer,
+    FormControl,
+    FormControlLabel,
+    FormLabel, List, ListItem, ListItemIcon, ListItemText,
+    Paper,
+    Typography
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
-import { KeyboardArrowRight } from "@material-ui/icons";
+import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, SubjectOutlined} from "@material-ui/icons";
 import { TextField } from "@material-ui/core";
 import Radio from '@material-ui/core/Radio';
 import {RadioGroup} from "@material-ui/core";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import {CardHeader} from "@material-ui/core";
+import {IconButton} from "@material-ui/core";
+import Grid from '@material-ui/core/Grid';
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
+const drawerWidth = 240
 
 const useStyles = makeStyles({
     field: {
         marginTop: 20,
         marginBottom: 20,
         display: "block"
+    },
+    page: {
+      background: "#f9f9f9",
+      width: "100%"
+    },
+    drawer: {
+        width: drawerWidth
+    },
+    drawerPaper: {
+        width: drawerWidth
+    },
+    root: {
+        display: 'flex'
+    },
+    active: {
+        background: "#f4f4f4"
     }
 })
 
+
+const Layout = ({children}) => {
+    const classes = useStyles()
+    const history = useHistory()
+    const location = useLocation()
+
+    const menuItems = [
+        {
+            text: "My Notes",
+            icon: <SubjectOutlined color={"secondary"}></SubjectOutlined>,
+            path: "/"
+        },
+        {
+            text: "Create note",
+            icon: <AddCircleOutlineOutlined color={"secondary"}>
+
+            </AddCircleOutlineOutlined>,
+            path: "/create"
+        }
+    ];
+
+    return (
+        <div className={classes.root}>
+        {/*    App bar */}
+        {/*    slide drawer */}
+           <Drawer
+           className={classes.drawer}
+           variant={"permanent"}
+           anchor={"left"}
+           classes={{paper: classes.drawerPaper}}
+           >
+               <div>
+                   <Typography variant={"h5"}>
+                       Notes
+                   </Typography>
+               </div>
+               <List>
+                   {menuItems.map((item) => (
+                       <ListItem
+                        button
+                        key={item.text}
+                        onClick={() => history.push(item.path)}
+                        className={location.pathname == item.path ? classes.active : null}
+                       >
+                           <ListItemIcon>
+                               {item.icon}
+                           </ListItemIcon>
+                           <ListItemText primary={item.text}>
+
+                           </ListItemText>
+                       </ListItem>
+                   ))}
+               </List>
+
+           </Drawer>
+
+        {/*    main content */}
+            <div className={classes.page}>
+                {children}
+            </div>
+        </div>
+    )
+}
+
+function NoteCard({note, handleDelete}){
+    return (
+        <div>
+           <Card elevation={3}>
+               <CardHeader
+                action={
+                    <IconButton onClick={() => handleDelete(note.id)}>
+                       <DeleteOutline>
+
+                       </DeleteOutline>
+                    </IconButton>
+                }
+                title={note.title}
+                subheader={note.category}
+               >
+
+               </CardHeader>
+               <CardContent>
+                   <Typography variant={"body2"} color={"textSecondary"}>
+                       {note.details}
+                   </Typography>
+               </CardContent>
+           </Card>
+        </div>
+    )
+}
 
 const Notes = () => {
 
@@ -27,14 +149,27 @@ const Notes = () => {
             .then(data => setNotes(data))
     }, [])
 
+    const handleDelete = async (id) => {
+        await fetch("http://localhost:8000/notes/" + id, {
+            method: "DELETE"
+        })
+
+        const newNotes = notes.filter(note => note.id != id)
+        setNotes(newNotes)
+    }
+
     return (
-        <div>
-            {notes.map(note => (
-                <p key={note.id}>
-                    {note.title}
-                </p>
-            ))}
-        </div>
+        <Container>
+            <Grid container spacing={3}>
+                {
+                    notes.map(note => (
+                        <Grid item key={note.id} xs={12} md={6} lg={4}>
+                            <NoteCard note={note} handleDelete={handleDelete}></NoteCard>
+                        </Grid>
+                    ))
+                }
+            </Grid>
+        </Container>
     )
 }
 
@@ -72,7 +207,7 @@ const Create = () => {
     }
 
     return (
-       <Container size='sm'>
+       <Container maxWidth='lg'>
            <Typography
            variant="h6"
            color="textSecondary"
@@ -129,4 +264,4 @@ const Create = () => {
     );
 }
 
-export {Create, Notes}
+export {Create, Notes, Layout}
