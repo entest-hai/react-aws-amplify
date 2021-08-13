@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react"
 import {
+    AppBar,
     Button,
     CardContent,
     Container, Drawer,
     FormControl,
     FormControlLabel,
     FormLabel, List, ListItem, ListItemIcon, ListItemText,
-    Paper,
-    Typography
+    Paper, Toolbar,
+    Typography, useTheme
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, SubjectOutlined} from "@material-ui/icons";
@@ -21,30 +22,65 @@ import {CardHeader} from "@material-ui/core";
 import {IconButton} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import {Avatar} from "@material-ui/core";
+import {format} from 'date-fns';
+import Masonry from "react-masonry-css";
+import {yellow, green, pink, blue} from "@material-ui/core/colors";
 
 const drawerWidth = 240
 
-const useStyles = makeStyles({
-    field: {
-        marginTop: 20,
-        marginBottom: 20,
-        display: "block"
-    },
-    page: {
-      background: "#f9f9f9",
-      width: "100%"
-    },
-    drawer: {
-        width: drawerWidth
-    },
-    drawerPaper: {
-        width: drawerWidth
-    },
-    root: {
-        display: 'flex'
-    },
-    active: {
-        background: "#f4f4f4"
+const useStyles = makeStyles((theme) => {
+    return {
+        field: {
+            marginTop: 20,
+            marginBottom: 20,
+            display: "block"
+        },
+        title: {
+          padding: theme.spacing(2)
+        },
+        page: {
+            background: "#f9f9f9",
+            width: "100%",
+            padding: theme.spacing(3)
+        },
+        drawer: {
+            width: drawerWidth
+        },
+        drawerPaper: {
+            width: drawerWidth
+        },
+        root: {
+            display: 'flex'
+        },
+        active: {
+            background: "#f4f4f4"
+        },
+        appBar: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
+        date: {
+            flexGrow: 1
+        },
+        toolbar: theme.mixins.toolbar,
+        avatar: {
+            marginLeft: theme.spacing(2)
+        },
+        cardAvartar: {
+            backgroundColor: (note) => {
+                if (note.category == 'work') {
+                    return yellow[700]
+                }
+                if (note.category == ',money') {
+                    return green[500]
+                }
+                if (note.category == 'todos') {
+                    return pink[500]
+                }
+                return blue[500]
+            }
+        }
     }
 })
 
@@ -71,7 +107,25 @@ const Layout = ({children}) => {
 
     return (
         <div className={classes.root}>
-        {/*    App bar */}
+        <AppBar
+            position={"fixed"}
+            className={classes.appBar}
+            elevation={0}
+            color={"primary"}
+        >
+        <Toolbar>
+            <Typography className={classes.date}>
+                Today is the {format(new Date(), 'do MMM Y')}
+            </Typography>
+            <Typography>
+                Hai Tran
+            </Typography>
+            <Avatar className={classes.avatar} src={"/mario-av.png"}>
+
+            </Avatar>
+        </Toolbar>
+
+        </AppBar>
         {/*    slide drawer */}
            <Drawer
            className={classes.drawer}
@@ -80,7 +134,7 @@ const Layout = ({children}) => {
            classes={{paper: classes.drawerPaper}}
            >
                <div>
-                   <Typography variant={"h5"}>
+                   <Typography variant={"h5"} className={classes.title}>
                        Notes
                    </Typography>
                </div>
@@ -106,6 +160,7 @@ const Layout = ({children}) => {
 
         {/*    main content */}
             <div className={classes.page}>
+                <div className={classes.toolbar}></div>
                 {children}
             </div>
         </div>
@@ -113,10 +168,16 @@ const Layout = ({children}) => {
 }
 
 function NoteCard({note, handleDelete}){
+    const classes = useStyles(note)
     return (
         <div>
-           <Card elevation={3}>
+           <Card elevation={1}>
                <CardHeader
+               avatar={
+                   <Avatar className={classes.cardAvartar}>
+                       {note.category[0].toUpperCase()}
+                   </Avatar>
+               }
                 action={
                     <IconButton onClick={() => handleDelete(note.id)}>
                        <DeleteOutline>
@@ -141,6 +202,12 @@ function NoteCard({note, handleDelete}){
 
 const Notes = () => {
 
+    const breakpoints = {
+        default: 3,
+        1100: 2,
+        700: 1
+    };
+
     const [notes, setNotes] = useState([])
 
     useEffect(() => {
@@ -160,15 +227,19 @@ const Notes = () => {
 
     return (
         <Container>
-            <Grid container spacing={3}>
-                {
-                    notes.map(note => (
-                        <Grid item key={note.id} xs={12} md={6} lg={4}>
-                            <NoteCard note={note} handleDelete={handleDelete}></NoteCard>
-                        </Grid>
-                    ))
-                }
-            </Grid>
+            <Masonry
+                breakpointCols={breakpoints}
+                columnClassName={"my-masonry-grid_column"}
+                className={"my-masonry-grid"}>
+                {notes.map(note => (
+                    <div key={note.id}>
+                        <NoteCard note={note} handleDelete={handleDelete}>
+
+                        </NoteCard>
+                    </div>
+                ))}
+
+            </Masonry>
         </Container>
     )
 }
