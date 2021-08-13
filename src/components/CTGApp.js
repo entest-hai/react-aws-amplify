@@ -15,8 +15,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {AppBar, Container, Paper, Toolbar} from "@material-ui/core";
+import {AppBar, Button, Container, Paper, Toolbar} from "@material-ui/core";
 import Masonry from "react-masonry-css";
+import { format } from 'date-fns';
+import { DeleteOutlined } from '@material-ui/icons';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240
 
@@ -48,22 +51,22 @@ const useStyles = makeStyles((theme) => {
             background: "#f4f4f4"
         },
         appBar: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
+            
         },
         date: {
             flexGrow: 1
         },
         toolbar: theme.mixins.toolbar,
         avatar: {
-            marginLeft: theme.spacing(2)
+            marginLeft: theme.spacing(2),
+            backgroundColor: pink[500]
         },
         cardAvartar: {
             backgroundColor: (note) => {
                 if (note.category == 'work') {
                     return yellow[700]
                 }
-                if (note.category == ',money') {
+                if (note.category == 'money') {
                     return green[500]
                 }
                 if (note.category == 'todos') {
@@ -81,16 +84,24 @@ const CTGAppLayout = ({children}) => {
 
     return (
     <div className={classes.root}>
-        <AppBar>
+        <AppBar 
+        className={classes.appBar}
+        color={"primary"}
+        position={"fixed"}>
             <Toolbar>
-
+                <Typography className={classes.date}>
+                    Today is the {format(new Date(), 'do MMM Y')} 
+                </Typography>
+                <Typography>
+                    Hai Tran
+                </Typography>
+                <Avatar className={classes.avatar}>H </Avatar>
             </Toolbar>
         </AppBar>
         <div className={classes.page}>
             <div className={classes.toolbar}></div>
             {children}
         </div>
-
     </div>
     )
 }
@@ -114,12 +125,11 @@ const CTGRecords = () => {
         700: 1
     };
 
-
     const classes = useStyles()
     const [records, setRecords] = useState([])
 
     useEffect(() => {
-        fetch('http://localhost:8000/notes')
+        fetch('http://3.0.40.65:8000/notes')
             .then(res => res.json())
             .then(data => setRecords(data))
     }, [])
@@ -132,12 +142,58 @@ const CTGRecords = () => {
                 className={"my-masonry-grid"}>
                 {records.map(record => (
                     <div key={record.id}>
-                        {record.title}
+                        <CTGRecordNote record={record}></CTGRecordNote>
                     </div>
                 ))}
 
             </Masonry>
         </Container>
+    )
+}
+
+const CTGRecordNote = ({record}) => {
+
+    const classes = useStyles(record)
+    const history = useHistory()
+    const location = useLocation()
+    
+    return (
+        <div>
+            <Card>
+                <CardHeader
+                    avatar={
+                        <Avatar className={classes.cardAvartar}>
+                            {record.category[0].toUpperCase()}
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton onClick={() => {
+
+                        }}>
+                            <DeleteOutlined>
+
+                            </DeleteOutlined>
+                        </IconButton>
+                    }
+                    title={record.title}
+                    subheader={record.category}
+                >
+                </CardHeader>
+                <CardContent>
+                   <Typography>
+                    {record.details}
+                   </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button onClick = {() => {
+                        console.log("show detail ctg record", record);
+                        history.push("/ctg")
+                    }}>
+                        Details 
+                    </Button>
+                </CardActions>
+            </Card>
+        </div>
     )
 }
 
