@@ -15,11 +15,17 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {AppBar, Button, Container, Paper, Toolbar} from "@material-ui/core";
+import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
+    FormControlLabel} from "@material-ui/core";
+import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
 import { DeleteOutlined } from '@material-ui/icons';
 import { useHistory, useLocation } from 'react-router-dom';
+import { TextField } from "@material-ui/core";
+import Radio from '@material-ui/core/Radio';
+import {RadioGroup} from "@material-ui/core";
+
 
 const drawerWidth = 240
 
@@ -51,7 +57,8 @@ const useStyles = makeStyles((theme) => {
             background: "#f4f4f4"
         },
         appBar: {
-            
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
         },
         date: {
             flexGrow: 1
@@ -81,6 +88,22 @@ const useStyles = makeStyles((theme) => {
 
 const CTGAppLayout = ({children}) => {
     const classes = useStyles()
+    const history = useHistory()
+    const location = useLocation()
+
+    const menuItems = [
+        {
+            text: "Patients",
+            icon: <SubjectOutlined color={"secondary"}></SubjectOutlined>,
+            path: "/"
+        },
+        {
+            text: "Create Note",
+            icon: <AddCircleOutlineOutlined color={"secondary"}>
+            </AddCircleOutlineOutlined>,
+            path: "/create"
+        }
+    ];
 
     return (
     <div className={classes.root}>
@@ -98,6 +121,35 @@ const CTGAppLayout = ({children}) => {
                 <Avatar className={classes.avatar}>H </Avatar>
             </Toolbar>
         </AppBar>
+        <Drawer
+           className={classes.drawer}
+           variant={"permanent"}
+           anchor={"left"}
+           classes={{paper: classes.drawerPaper}}
+           >
+               <div>
+                   <Typography variant={"h5"} className={classes.title}>
+                       Notes
+                   </Typography>
+               </div>
+               <List>
+                   {menuItems.map((item) => (
+                       <ListItem
+                        button
+                        key={item.text}
+                        onClick={() => history.push(item.path)}
+                        className={location.pathname == item.path ? classes.active : null}
+                       >
+                           <ListItemIcon>
+                               {item.icon}
+                           </ListItemIcon>
+                           <ListItemText primary={item.text}>
+
+                           </ListItemText>
+                       </ListItem>
+                   ))}
+               </List>
+           </Drawer>
         <div className={classes.page}>
             <div className={classes.toolbar}></div>
             {children}
@@ -197,4 +249,95 @@ const CTGRecordNote = ({record}) => {
     )
 }
 
-export {SimpleCtgCart, CTGRecords, CTGAppLayout}
+const CreateCTGNote = () => {
+
+    const classes = useStyles()
+    const history = useHistory()
+    const [category, setCategory] = useState('money')
+    const [title, setTitle] = useState('')
+    const [details, setDetails] = useState('')
+    const [titleError, settitleError] = useState(false)
+    const [detailsError, setDetailsError] = useState(false)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("Handle submit form")
+        settitleError(false)
+        setDetailsError(false)
+        
+        if (title=='') {
+            settitleError(true)
+        }
+
+        if (details==''){
+            setDetailsError(true)
+        }
+
+        if (title && details) {
+            fetch('http://3.0.40.65:8000/notes', {
+                method: 'POST',
+                headers: {'Content-type': "application/json"},
+                body: JSON.stringify({title, details, category})
+            }).then(() => history.push("/"))
+        }
+    }
+
+    return (
+       <Container maxWidth='lg'>
+           <Typography
+           variant="h6"
+           color="textSecondary"
+           component="h2"
+           gutterBottom
+           >
+               Create a New Note
+           </Typography>
+           <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <TextField className={classes.field}
+              onChange={(e) => setTitle(e.target.value)}
+              label="Note Title"
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              required
+              error={titleError}
+              >
+              </TextField>
+              <TextField
+              className={classes.field}
+              label="Details"
+              onChange={(e) => setDetails(e.target.value)}
+              variant="outlined"
+              color="secondary"
+              multiline
+              rows={4}
+              fullWidth
+              required
+              error={detailsError}
+              >
+              </TextField>
+
+               <FormControl className={classes.field}>
+                   <FormLabel> Note Category  </FormLabel>
+                       <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
+                           <FormControlLabel value={"money"} control={<Radio></Radio>} label={"Money"}></FormControlLabel>
+                           <FormControlLabel value={"todos"} control={<Radio></Radio>} label={"Todos"}></FormControlLabel>
+                           <FormControlLabel value={"reminders"} control={<Radio></Radio>} label={"Reminders"}></FormControlLabel>
+                           <FormControlLabel value={"work"} control={<Radio></Radio>} label={"Work"}></FormControlLabel>
+                       </RadioGroup>
+               </FormControl>
+               <Button
+                   type="submit"
+                   color="secondary"
+                   variant="contained"
+                   endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+               >
+                   Submit
+               </Button>
+           </form>
+
+       </Container>
+    );
+}
+
+export {SimpleCtgCart, CTGRecords, CTGAppLayout, CreateCTGNote}

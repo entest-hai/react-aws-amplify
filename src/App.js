@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {CTGRecords, SimpleCtgCart, CTGAppLayout} from "./components/CTGApp";
+import {CTGRecords, SimpleCtgCart, CTGAppLayout, CreateCTGNote} from "./components/CTGApp";
 import {Create, Notes, Layout} from './components/NoteApp';
 import {createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
@@ -48,6 +48,9 @@ function CTGApp() {
                    </Route>
                    <Route path={"/ctg"}>
                        <SimpleCtgCart></SimpleCtgCart>
+                   </Route>
+                   <Route path={"/create"}>
+                    <CreateCTGNote></CreateCTGNote>
                    </Route>
                </Switch>
            </CTGAppLayout>
