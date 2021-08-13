@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
     FormControlLabel} from "@material-ui/core";
-import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, SubjectOutlined} from "@material-ui/icons";
+import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
 import { DeleteOutlined } from '@material-ui/icons';
@@ -25,12 +25,26 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { TextField } from "@material-ui/core";
 import Radio from '@material-ui/core/Radio';
 import {RadioGroup} from "@material-ui/core";
+import { InputBase } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 
 
 const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => {
     return {
+        search: {
+            padding: "2px 4px",
+            display: 'flex',
+            alignItems: 'center',
+        }, 
+        input: {
+            marginLeft: theme.spacing(1),
+            flex: 1, 
+        }, 
+        iconButton: {
+            padding: 10 
+        },
         field: {
             marginTop: 20,
             marginBottom: 20,
@@ -116,7 +130,7 @@ const CTGAppLayout = ({children}) => {
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    Hai Tran
+                    Dr. Hai Tran
                 </Typography>
                 <Avatar className={classes.avatar}>H </Avatar>
             </Toolbar>
@@ -258,6 +272,12 @@ const CreateCTGNote = () => {
     const [details, setDetails] = useState('')
     const [titleError, settitleError] = useState(false)
     const [detailsError, setDetailsError] = useState(false)
+    const [patientId, setPatientId] = useState('')
+    const [ctgUrl, setCtgUrl] = useState('')
+
+    useEffect(() => {
+        console.log(ctgUrl)
+    }, [ctgUrl])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -290,8 +310,33 @@ const CreateCTGNote = () => {
            component="h2"
            gutterBottom
            >
-               Create a New Note
+            Create a New Note
            </Typography>
+           {
+               ctgUrl.length  > 0 && 
+                <Paper style={{overflow: 'auto'}}>
+                    <img src={ctgUrl}/>
+                </Paper>
+           }
+           <Paper component={"form"} className={classes.search}>
+                <InputBase 
+                    className={classes.input}
+                    placeholder={"Patient Id"}
+                    inputProps={{ 'aria-label': 'search google maps' }}
+                    onChange={(event) => {
+                        setPatientId(event.target.value)
+                    }}
+                >
+                </InputBase>
+                <IconButton 
+                 className={classes.iconButton}
+                 onClick={() => {
+                     setCtgUrl("/images/STG049B_raw_ctg.png")
+                 }}
+                 >
+                    <SearchIcon></SearchIcon>
+                </IconButton>
+           </Paper>
            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
               <TextField className={classes.field}
               onChange={(e) => setTitle(e.target.value)}
@@ -339,5 +384,6 @@ const CreateCTGNote = () => {
        </Container>
     );
 }
+
 
 export {SimpleCtgCart, CTGRecords, CTGAppLayout, CreateCTGNote}
