@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import {SimpleCtgCart, CTGCard } from "./components/CTGCard";
-import {Create, Notes, Layout} from './components/AppBar';
+import {CTGRecords, SimpleCtgCart, CTGAppLayout} from "./components/CTGApp";
+import {Create, Notes, Layout} from './components/NoteApp';
 import {createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
@@ -14,16 +14,9 @@ const theme = createTheme({
         },
         secondary: purple
     },
-    // typography: {
-    //     fontFamily: "Quicksand",
-    //     fontWeightLight: 400,
-    //     fontWeightRegular: 500,
-    //     fontWeightMedium: 600,
-    //     fontWeightBold: 700
-    // }
 })
 
-function App() {
+function NoteApp() {
   return (
     <MuiThemeProvider theme={theme}>
         <Router>
@@ -44,4 +37,23 @@ function App() {
   );
 }
 
-export default App;
+
+function CTGApp() {
+    return (
+       <Router>
+           <CTGAppLayout>
+               <Switch>
+                   <Route exact path={"/"}>
+                       <CTGRecords></CTGRecords>
+                   </Route>
+                   <Route path={"/ctg"}>
+                       <SimpleCtgCart></SimpleCtgCart>
+                   </Route>
+               </Switch>
+           </CTGAppLayout>
+       </Router>
+    )
+}
+
+
+export {CTGApp, NoteApp};
