@@ -130,7 +130,7 @@ const CTGAppLayout = ({children}) => {
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    Dr. Hai Tran
+                    Hai Tran
                 </Typography>
                 <Avatar className={classes.avatar}>H </Avatar>
             </Toolbar>
