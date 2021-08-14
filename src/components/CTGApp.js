@@ -16,7 +16,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
-    FormControlLabel} from "@material-ui/core";
+    FormControlLabel,
+    Divider} from "@material-ui/core";
 import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
@@ -30,6 +31,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { API, totpQrcode } from 'aws-amplify';
 import {listTodos} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
+import { ListItemAvatar } from '@material-ui/core';
 
 const drawerWidth = 240
 
@@ -387,6 +389,34 @@ const CreateCTGNote = () => {
     );
 }
 
+
+const Note = ({todo}) => {
+    const classes = makeStyles({
+        avatar: {
+            backgroundColor: (todo) => {
+                if (todo.name[0].toUpperCase() == "H") {
+                    return blue[500]
+                }
+                return pink[500]
+            }
+        }
+    })(todo)
+
+    return (
+        <div>
+            <ListItem>
+            <ListItemAvatar>
+                <Avatar
+                    className={classes.avatar}
+                >{todo.name[0].toUpperCase()}</Avatar>
+            </ListItemAvatar>
+            <ListItemText>{todo.description}</ListItemText>
+        </ListItem>
+        <Divider variant={"inset"} component={"li"}></Divider>
+        </div>
+    )
+}
+
 const AmplifyApp = () => {
 
     const breakpoints = {
@@ -414,7 +444,6 @@ const AmplifyApp = () => {
         fetchTodos()
     }, [])
 
-
     return (
        <div className={classes.root}>
            <AppBar 
@@ -435,39 +464,27 @@ const AmplifyApp = () => {
             <div 
             className={classes.toolbar}
             ></div>
-            <Button
-            variant={"contained"}
-            color={"primary"}
-            onClick={() => {
-               fetchTodos()
-            }}
-            >
-                Fetch From DB
-            </Button>
+            
 
             <form noValidate autoComplete="off">
               <TextField className={classes.field}
-              onChange={(e) => setName(e.target.value)}
-              label="Name"
-              variant="outlined"
-              color="secondary"
-              fullWidth
-              required
-              
-              >
+                onChange={(e) => setName(e.target.value)}
+                label="Name"
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                required>
               </TextField>
               <TextField
-              className={classes.field}
-              label="Description"
-              onChange={(e) => setDescription(e.target.value)}
-              variant="outlined"
-              color="secondary"
-              multiline
-              rows={4}
-              fullWidth
-              required
-              
-              >
+                className={classes.field}
+                label="Description"
+                onChange={(e) => setDescription(e.target.value)}
+                variant="outlined"
+                color="secondary"
+                multiline
+                rows={4}
+                fullWidth
+                required>
               </TextField>
                <Button
                    color="secondary"
@@ -477,23 +494,13 @@ const AmplifyApp = () => {
                    Submit
                </Button>
            </form>
-            
-            <List
-            >
+            <List>
                {
                    todos.map((todo) => (
-                       <Card key={todo.id}>
-                           <CardContent>
-                               <Typography>
-                                   {todo.description}
-                               </Typography>
-                           </CardContent>
-                       </Card>
+                       <Note todo={todo} key={todo.id}></Note>
                    ))
                }
             </List>
-
-            
         </div>
        </div>
     )
