@@ -29,8 +29,9 @@ import {RadioGroup} from "@material-ui/core";
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { API, totpQrcode } from 'aws-amplify';
-import {listTodos} from './../graphql/queries';
+import {listTodos, listCTGImages} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
+import { createCTGImage as createCTGImageMutation, deleteCTGImage as deleteCTGImageMutation } from './../graphql/mutations';
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 
@@ -137,10 +138,10 @@ const CTGAppLayout = ({children}) => {
     const showLogoutMenu = (
         <Menu 
             anchorEl={logoutMoreAnchorEl}
-            // anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             id={'primary-search-account-menu-mobile'}
             keepMounted
-            // transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
             open={isLogoutMenuOpen}
             onClose={handleLogoutMenuClose}
         >
@@ -230,10 +231,13 @@ const CTGRecords = () => {
     const classes = useStyles()
     const [records, setRecords] = useState([])
 
+    async function fetchCtgRecords() {
+        const apiData = await API.graphql({query: listCTGImages});
+        setRecords(apiData.data.listCTGImages.items);
+    }
+
     useEffect(() => {
-        fetch('http://3.0.40.65:8000/notes')
-            .then(res => res.json())
-            .then(data => setRecords(data))
+        fetchCtgRecords()
     }, [])
 
     return (
@@ -265,7 +269,7 @@ const CTGRecordNote = ({record}) => {
                 <CardHeader
                     avatar={
                         <Avatar className={classes.cardAvartar}>
-                            {record.category[0].toUpperCase()}
+                            {record.username[0].toUpperCase()}
                         </Avatar>
                     }
                     action={
@@ -277,8 +281,8 @@ const CTGRecordNote = ({record}) => {
                             </DeleteOutlined>
                         </IconButton>
                     }
-                    title={record.title}
-                    subheader={record.category}
+                    title={record.username}
+                    subheader={record.username}
                 >
                 </CardHeader>
                 <CardContent>
@@ -315,6 +319,15 @@ const CreateCTGNote = () => {
         console.log(ctgUrl)
     }, [ctgUrl])
 
+    async function writeCtgRecordToDB() {
+        await API.graphql({ query: createCTGImageMutation, variables: { input: {
+            ctgUrl: "s3://biorithm-testing-data/stg/045A_raw.csv",
+            ecgUrl: "s3://biorithm-testing-data/log/STG045A_raw/STG045A_raw_ctg.png",
+            dataset: "stg",
+            username: "Hai Tran",
+            createdTime: 10}}});
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("Handle submit form")
@@ -330,11 +343,7 @@ const CreateCTGNote = () => {
         }
 
         if (title && details) {
-            fetch('http://3.0.40.65:8000/notes', {
-                method: 'POST',
-                headers: {'Content-type': "application/json"},
-                body: JSON.stringify({title, details, category})
-            }).then(() => history.push("/"))
+            writeCtgRecordToDB().then(() => history.push("/"))
         }
     }
 
