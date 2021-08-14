@@ -5,6 +5,7 @@ import {Create, Notes, Layout} from './components/NoteApp';
 import {createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 
 
 const theme = createTheme({
@@ -57,6 +58,21 @@ function CTGApp() {
        </Router>
     )
 }
+
+
+function App() {
+    return (
+      <div className="App">
+        <header>
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1>We now have Auth!</h1>
+        </header>
+        <AmplifySignOut />
+      </div>
+    );
+  }
+  
+export default withAuthenticator(App);
 
 
 export {CTGApp, NoteApp};

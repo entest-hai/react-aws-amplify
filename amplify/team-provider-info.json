@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplify1bc92b54947e4-staging-12453-authRole",
+      "UnauthRoleArn": "arn:aws:iam::717869305038:role/amplify-amplify1bc92b54947e4-staging-12453-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::717869305038:role/amplify-amplify1bc92b54947e4-staging-12453-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-amplify1bc92b54947e4-staging-12453-deployment",
+      "UnauthRoleName": "amplify-amplify1bc92b54947e4-staging-12453-unauthRole",
+      "StackName": "amplify-amplify1bc92b54947e4-staging-12453",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:717869305038:stack/amplify-amplify1bc92b54947e4-staging-12453/6df6b850-fc9e-11eb-99b7-0af8bd9584f4",
+      "AmplifyAppId": "dk0v76qj2m938"
+    },
+    "categories": {
+      "auth": {
+        "babycarewebadf9a4cf": {}
+      }
+    }
+  }
+}
