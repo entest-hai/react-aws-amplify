@@ -13,7 +13,13 @@
     },
     "categories": {
       "auth": {
-        "babycarewebadf9a4cf": {}
+        "flutteramplifyfad84c13": {}
+      },
+      "storage": {
+        "flutteramplifybf33ec81": {
+          "bucketName": "flutteramplify32917a364a1942d5b5203a9c772381ec102628-dev",
+          "region": "ap-southeast-1"
+        }
       }
     }
   }

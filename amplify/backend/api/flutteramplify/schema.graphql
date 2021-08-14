@@ -1,0 +1,56 @@
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type HeartRate @model {
+  id: ID!
+  mHR: [Float]!
+  fHR: [Float]!
+  createdTime: AWSTimestamp!
+}
+
+type User @model {
+  id: ID! 
+  username: String!
+  email: String
+  avatarKey: String
+  description: String
+}
+
+type CTG @model {
+  id: ID!
+  userId: ID!
+  username: String!
+  mHR: [Float]!
+  fHR: [Float]!
+  acelsTime: [Float]
+  acelsDuration: [Float]
+  decelsTime: [Float]
+  decelsDuration: [Float]
+  basvar: Float
+  baseline: [Float]
+  stv: Float
+  ctgUrl: String
+  ecgUrl: String
+  createdTime: AWSTimestamp!
+}
+
+type CTGImage @model 
+  @key(name: "CTGImagesByDataset", fields: ["dataset"], queryField: "CTGImagesByDataset" ) {
+  id: ID! 
+  ctgUrl: String
+  ecgUrl: String
+  dataset: String!
+  userId: ID
+  username: String
+  createdTime: AWSTimestamp!
+}
+
+type SliderValue @model 
+  @key(name: "SliderValueByCreatedTime", fields: ["deviceId","createdTime"], queryField: "SliderValueByCreatedTime") {
+  deviceId: ID!
+  createdTime: AWSTimestamp! 
+  value: Float
+}
