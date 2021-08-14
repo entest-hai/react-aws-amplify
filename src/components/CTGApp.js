@@ -282,7 +282,7 @@ const CTGRecordNote = ({record}) => {
                         </IconButton>
                     }
                     title={record.username}
-                    subheader={record.username}
+                    subheader={record.ctgUrl}
                 >
                 </CardHeader>
                 <CardContent>
@@ -321,10 +321,10 @@ const CreateCTGNote = () => {
 
     async function writeCtgRecordToDB() {
         await API.graphql({ query: createCTGImageMutation, variables: { input: {
-            ctgUrl: "s3://biorithm-testing-data/stg/045A_raw.csv",
+            ctgUrl: details,
             ecgUrl: "s3://biorithm-testing-data/log/STG045A_raw/STG045A_raw_ctg.png",
             dataset: "stg",
-            username: "Hai Tran",
+            username: title,
             createdTime: 10}}});
     }
 
