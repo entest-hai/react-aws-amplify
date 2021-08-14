@@ -27,7 +27,9 @@ import Radio from '@material-ui/core/Radio';
 import {RadioGroup} from "@material-ui/core";
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-
+import { API, totpQrcode } from 'aws-amplify';
+import {listTodos} from './../graphql/queries';
+import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
 
 const drawerWidth = 240
 
@@ -385,5 +387,117 @@ const CreateCTGNote = () => {
     );
 }
 
+const AmplifyApp = () => {
 
-export {SimpleCtgCart, CTGRecords, CTGAppLayout, CreateCTGNote}
+    const breakpoints = {
+        default: 3,
+        1100: 2,
+        700: 1
+    };
+
+    const classes = useStyles()
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [todos, settodos] = useState([])
+
+    async function writeTodo() {
+        await API.graphql({ query: createTodoMutation, variables: { input: {name: name, description: description}} });
+        await fetchTodos()
+    }
+
+    async function fetchTodos() {
+        const apiData = await API.graphql({query: listTodos});
+        settodos(apiData.data.listTodos.items);
+    }
+
+    useEffect(() => {
+        fetchTodos()
+    }, [])
+
+
+    return (
+       <div className={classes.root}>
+           <AppBar 
+           position={"fixed"}
+           color={"primary"}
+           >
+            <Toolbar>
+                <Typography className={classes.date}>
+                    Test Amplify {format(new Date(), 'do MMM Y')} 
+                </Typography>
+                <Typography>
+                    Hai Tran
+                </Typography>
+                <Avatar className={classes.avatar}>H </Avatar>
+            </Toolbar>
+           </AppBar>
+        <div className={classes.page}>
+            <div 
+            className={classes.toolbar}
+            ></div>
+            <Button
+            variant={"contained"}
+            color={"primary"}
+            onClick={() => {
+               fetchTodos()
+            }}
+            >
+                Fetch From DB
+            </Button>
+
+            <form noValidate autoComplete="off">
+              <TextField className={classes.field}
+              onChange={(e) => setName(e.target.value)}
+              label="Name"
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              required
+              
+              >
+              </TextField>
+              <TextField
+              className={classes.field}
+              label="Description"
+              onChange={(e) => setDescription(e.target.value)}
+              variant="outlined"
+              color="secondary"
+              multiline
+              rows={4}
+              fullWidth
+              required
+              
+              >
+              </TextField>
+               <Button
+                   color="secondary"
+                   variant="contained"
+                    onClick={writeTodo}  
+               >
+                   Submit
+               </Button>
+           </form>
+            
+            <List
+            >
+               {
+                   todos.map((todo) => (
+                       <Card key={todo.id}>
+                           <CardContent>
+                               <Typography>
+                                   {todo.description}
+                               </Typography>
+                           </CardContent>
+                       </Card>
+                   ))
+               }
+            </List>
+
+            
+        </div>
+       </div>
+    )
+}
+
+
+export {SimpleCtgCart, CTGRecords, CTGAppLayout, CreateCTGNote, AmplifyApp}

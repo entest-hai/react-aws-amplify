@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {CTGRecords, SimpleCtgCart, CTGAppLayout, CreateCTGNote} from "./components/CTGApp";
+import {CTGRecords, SimpleCtgCart, CTGAppLayout, CreateCTGNote, AmplifyApp} from "./components/CTGApp";
 import {Create, Notes, Layout} from './components/NoteApp';
 import {createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
@@ -59,20 +59,25 @@ function CTGApp() {
     )
 }
 
-
 function App() {
     return (
-      <div className="App">
-        <header>
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>We now have Auth!</h1>
-        </header>
-        <AmplifySignOut />
-      </div>
-    );
-  }
+       <AmplifyApp></AmplifyApp>
+    )
+}
+
+// function App() {
+//     return (
+//       <div className="App">
+//         <header>
+//           <img src={logo} className="App-logo" alt="logo" />
+//           <h1>We now have Auth!</h1>
+//         </header>
+//         <AmplifySignOut />
+//       </div>
+//     );
+//   }
   
-export default withAuthenticator(App);
+// export default withAuthenticator(App);
 
-
+export default App;
 export {CTGApp, NoteApp};
