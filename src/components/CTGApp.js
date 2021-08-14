@@ -32,6 +32,7 @@ import { API, totpQrcode } from 'aws-amplify';
 import {listTodos} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
 import { ListItemAvatar } from '@material-ui/core';
+import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 
 const drawerWidth = 240
 
@@ -451,6 +452,7 @@ const AmplifyApp = () => {
            color={"primary"}
            >
             <Toolbar>
+            <AmplifySignOut></AmplifySignOut>
                 <Typography className={classes.date}>
                     Test Amplify {format(new Date(), 'do MMM Y')} 
                 </Typography>

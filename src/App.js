@@ -59,25 +59,22 @@ function CTGApp() {
     )
 }
 
-function App() {
-    return (
-       <AmplifyApp></AmplifyApp>
-    )
-}
-
 // function App() {
 //     return (
-//       <div className="App">
-//         <header>
-//           <img src={logo} className="App-logo" alt="logo" />
-//           <h1>We now have Auth!</h1>
-//         </header>
-//         <AmplifySignOut />
-//       </div>
-//     );
-//   }
-  
-// export default withAuthenticator(App);
+//        <AmplifyApp></AmplifyApp>
+//     )
+// }
 
-export default App;
+function App() {
+    return (
+      <div className="App">
+        <AmplifyApp></AmplifyApp>
+        {/* <AmplifySignOut /> */}
+      </div>
+    );
+  }
+  
+export default withAuthenticator(App);
+
+// export default App;
 export {CTGApp, NoteApp};
