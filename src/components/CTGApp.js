@@ -17,8 +17,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
     FormControlLabel,
-    Divider} from "@material-ui/core";
-import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
+    Divider, Menu, MenuItem} from "@material-ui/core";
+import {AccountCircle, AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
 import { DeleteOutlined } from '@material-ui/icons';
@@ -109,6 +109,16 @@ const CTGAppLayout = ({children}) => {
     const classes = useStyles()
     const history = useHistory()
     const location = useLocation()
+    const [logoutMoreAnchorEl, setLogoutMoreAnchorEl] = useState(null)
+    const isLogoutMenuOpen = Boolean(logoutMoreAnchorEl)
+
+    const handleLogoutMenuClose = () => {
+        setLogoutMoreAnchorEl(null)
+    }
+
+    const handleLogoutMenuOpen = (event) => {
+        setLogoutMoreAnchorEl(event.currentTarget)
+    }
 
     const menuItems = [
         {
@@ -124,6 +134,23 @@ const CTGAppLayout = ({children}) => {
         }
     ];
 
+    const showLogoutMenu = (
+        <Menu 
+            anchorEl={logoutMoreAnchorEl}
+            // anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            id={'primary-search-account-menu-mobile'}
+            keepMounted
+            // transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            open={isLogoutMenuOpen}
+            onClose={handleLogoutMenuClose}
+        >
+            <MenuItem>
+                <AmplifySignOut>
+                </AmplifySignOut>
+            </MenuItem>
+        </Menu>
+    )
+
     return (
     <div className={classes.root}>
         <AppBar 
@@ -137,7 +164,10 @@ const CTGAppLayout = ({children}) => {
                 <Typography>
                     Hai Tran
                 </Typography>
-                <Avatar className={classes.avatar}>H </Avatar>
+                <Avatar
+                 className={classes.avatar}
+                 onClick={handleLogoutMenuOpen}
+                 >H </Avatar>
             </Toolbar>
         </AppBar>
         <Drawer
@@ -173,6 +203,7 @@ const CTGAppLayout = ({children}) => {
             <div className={classes.toolbar}></div>
             {children}
         </div>
+        {showLogoutMenu}
     </div>
     )
 }
@@ -466,8 +497,7 @@ const AmplifyApp = () => {
             <div 
             className={classes.toolbar}
             ></div>
-            
-
+            <Container>
             <form noValidate autoComplete="off">
               <TextField className={classes.field}
                 onChange={(e) => setName(e.target.value)}
@@ -503,6 +533,7 @@ const AmplifyApp = () => {
                    ))
                }
             </List>
+            </Container>
         </div>
        </div>
     )

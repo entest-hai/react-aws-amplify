@@ -68,7 +68,7 @@ function CTGApp() {
 function App() {
     return (
       <div className="App">
-        <AmplifyApp></AmplifyApp>
+        <CTGApp></CTGApp>
         {/* <AmplifySignOut /> */}
       </div>
     );
