@@ -1,12 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import {CTGRecords, SimpleCtgCart, CTGAppLayout, CreateCTGNote, AmplifyApp} from "./components/CTGApp";
+import {CTGRecords, CTGAppLayout, CreateCTGNote, AmplifyApp} from "./components/CTGApp";
 import {Create, Notes, Layout} from './components/NoteApp';
 import {createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
-
+import { CTGNoteView } from './components/CTGNoteView';
 
 const theme = createTheme({
     palette: {
@@ -48,7 +48,9 @@ function CTGApp() {
                        <CTGRecords></CTGRecords>
                    </Route>
                    <Route path={"/ctg"}>
-                       <SimpleCtgCart></SimpleCtgCart>
+                       <CTGNoteView 
+                            ctgRecord={{username:"patient id",ctgUrl:"doctor comments"}}>
+                        </CTGNoteView>
                    </Route>
                    <Route path={"/create"}>
                     <CreateCTGNote></CreateCTGNote>
@@ -59,22 +61,14 @@ function CTGApp() {
     )
 }
 
-// function App() {
-//     return (
-//        <AmplifyApp></AmplifyApp>
-//     )
-// }
 
 function App() {
     return (
       <div className="App">
-        <CTGApp></CTGApp>
-        {/* <AmplifySignOut /> */}
+       <CTGApp></CTGApp>
       </div>
     );
   }
   
 export default withAuthenticator(App);
-
-// export default App;
-export {CTGApp, NoteApp};
+export {CTGApp, NoteApp, withAuthenticator};

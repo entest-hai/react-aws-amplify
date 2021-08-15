@@ -34,6 +34,9 @@ import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } fr
 import { createCTGImage as createCTGImageMutation, deleteCTGImage as deleteCTGImageMutation } from './../graphql/mutations';
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
+import { CTGNoteView } from './CTGNoteView';
+import Skeleton from '@material-ui/lab/Skeleton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const drawerWidth = 240
 
@@ -163,7 +166,7 @@ const CTGAppLayout = ({children}) => {
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    Hai Tran
+                    Dr. Hai
                 </Typography>
                 <Avatar
                  className={classes.avatar}
@@ -209,16 +212,6 @@ const CTGAppLayout = ({children}) => {
     )
 }
 
-const SimpleCtgCart =() => {
-    const classes = useStyles();
-    return (
-       <Container maxWidth={"lg"}>
-           <Paper style={{overflow: 'auto'}}>
-               <img src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/>
-           </Paper>
-       </Container>
-    )
-}
 
 const CTGRecords = () => {
 
@@ -259,16 +252,25 @@ const CTGRecords = () => {
 
 const CTGRecordNote = ({record}) => {
 
-    const classes = useStyles(record)
     const history = useHistory()
-    const location = useLocation()
+
+    const classes1 = makeStyles({
+        avatar: {
+            backgroundColor: (record) => {
+                if (record.username[0].toUpperCase() == "H") {
+                    return pink[500]
+                }
+                return blue[500]
+            }
+        }
+    })(record)
     
     return (
         <div>
             <Card>
                 <CardHeader
                     avatar={
-                        <Avatar className={classes.cardAvartar}>
+                        <Avatar className={classes1.avatar}>
                             {record.username[0].toUpperCase()}
                         </Avatar>
                     }
@@ -307,13 +309,40 @@ const CreateCTGNote = () => {
 
     const classes = useStyles()
     const history = useHistory()
-    const [category, setCategory] = useState('money')
-    const [title, setTitle] = useState('')
     const [details, setDetails] = useState('')
-    const [titleError, settitleError] = useState(false)
     const [detailsError, setDetailsError] = useState(false)
     const [patientId, setPatientId] = useState('')
+    const [patientIdError, setPatientIdError] = useState(false)
     const [ctgUrl, setCtgUrl] = useState('')
+    const ctgImageHeight = 400
+    const [showImage, setShowImage] = useState(false)
+
+    const classes1 = makeStyles((theme) => {
+        return {
+            // toolbar: theme.mixins.toolbar,
+            searchForm: {
+                display: "flex"
+            },
+            input: {
+                flex: 1,
+            },
+            textField: {
+                flex: 1, 
+                marginTop: 20,
+                marginBottom: 5,
+            },
+            media: {
+                height: ctgImageHeight,
+                overflow: "auto"
+            },
+            saveButton: {
+                float: "left",
+                marginTop: 5,
+                paddingLeft: 20,
+                paddingRight: 20
+            }
+        }
+    })()
 
     useEffect(() => {
         console.log(ctgUrl)
@@ -324,114 +353,99 @@ const CreateCTGNote = () => {
             ctgUrl: details,
             ecgUrl: "s3://biorithm-testing-data/log/STG045A_raw/STG045A_raw_ctg.png",
             dataset: "stg",
-            username: title,
+            username: patientId,
             createdTime: 10}}});
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Handle submit form")
-        settitleError(false)
         setDetailsError(false)
-        
-        if (title=='') {
-            settitleError(true)
-        }
+        setPatientIdError(false)
 
+        console.log(patientId, details)
+        
         if (details==''){
             setDetailsError(true)
         }
 
-        if (title && details) {
+        if (patientId==''){
+            setPatientIdError(true)
+        }
+
+        if (patientId && details) {
             writeCtgRecordToDB().then(() => history.push("/"))
         }
     }
 
     return (
        <Container maxWidth='lg'>
-           <Typography
-           variant="h6"
-           color="textSecondary"
-           component="h2"
-           gutterBottom
-           >
-            Create a New Note
-           </Typography>
-           {
-               ctgUrl.length  > 0 && 
-                <Paper style={{overflow: 'auto'}}>
-                    <img src={ctgUrl}/>
-                </Paper>
-           }
-           <Paper component={"form"} className={classes.search}>
-                <InputBase 
-                    className={classes.input}
-                    placeholder={"Patient Id"}
-                    inputProps={{ 'aria-label': 'search google maps' }}
-                    onChange={(event) => {
-                        setPatientId(event.target.value)
-                    }}
-                >
-                </InputBase>
-                <IconButton 
-                 className={classes.iconButton}
-                 onClick={() => {
-                     setCtgUrl("/images/STG049B_raw_ctg.png")
-                 }}
-                 >
-                    <SearchIcon></SearchIcon>
-                </IconButton>
-           </Paper>
+           <Card>
+                <CardMedia className={classes1.media}>
+                    <Paper style={{overflow:'auto'}} elevation={4}>
+                        {showImage ? <img src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> : 
+                        <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
+                    </Paper>
+                </CardMedia>
+            </Card>
            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-              <TextField className={classes.field}
-              onChange={(e) => setTitle(e.target.value)}
-              label="Note Title"
-              variant="outlined"
-              color="secondary"
-              fullWidth
-              required
-              error={titleError}
-              >
-              </TextField>
-              <TextField
-              className={classes.field}
-              label="Details"
-              onChange={(e) => setDetails(e.target.value)}
-              variant="outlined"
-              color="secondary"
-              multiline
-              rows={4}
-              fullWidth
-              required
-              error={detailsError}
-              >
-              </TextField>
+           <TextField
+                className={classes.field}
+                label={"Patient Id & Click Search"}
+                rows={1}
+                variant={"outlined"}
+                color={"secondary"}
+                fullWidth
+                placeholder={"Hai"}
+                required
+                error={patientIdError}
+                onChange={(event) => {
+                    setPatientId(event.target.value)
 
-               <FormControl className={classes.field}>
-                   <FormLabel> Note Category  </FormLabel>
-                       <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
-                           <FormControlLabel value={"money"} control={<Radio></Radio>} label={"Money"}></FormControlLabel>
-                           <FormControlLabel value={"todos"} control={<Radio></Radio>} label={"Todos"}></FormControlLabel>
-                           <FormControlLabel value={"reminders"} control={<Radio></Radio>} label={"Reminders"}></FormControlLabel>
-                           <FormControlLabel value={"work"} control={<Radio></Radio>} label={"Work"}></FormControlLabel>
-                       </RadioGroup>
-               </FormControl>
+                }}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton 
+                            onClick={() =>{
+                                setShowImage(true)
+                            }}>
+                                <SearchIcon></SearchIcon>
+                            </IconButton>
+                        </InputAdornment>
+                        ),
+                }}>
+            </TextField>
+              <TextField
+                className={classes.field}
+                label="Doctor comments"
+                onChange={(event) => {
+                    setDetails(event.target.value)
+                }}
+                variant="outlined"
+                color="secondary"
+                multiline
+                rows={4}
+                fullWidth
+                required
+                error={detailsError}
+              >
+              </TextField>
                <Button
                    type="submit"
-                   color="secondary"
+                   color="primary"
                    variant="contained"
                    endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
                >
                    Submit
                </Button>
            </form>
-
        </Container>
     );
 }
 
 
 const Note = ({todo}) => {
+
     const classes = makeStyles({
         avatar: {
             backgroundColor: (todo) => {
@@ -497,7 +511,7 @@ const AmplifyApp = () => {
                     Test Amplify {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    Hai Tran
+                    Dr. Hai 
                 </Typography>
                 <Avatar className={classes.avatar}>H </Avatar>
             </Toolbar>
@@ -549,4 +563,4 @@ const AmplifyApp = () => {
 }
 
 
-export {SimpleCtgCart, CTGRecords, CTGAppLayout, CreateCTGNote, AmplifyApp}
+export {CTGRecords, CTGAppLayout, CreateCTGNote, AmplifyApp}
