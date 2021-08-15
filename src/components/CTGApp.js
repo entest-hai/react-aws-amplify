@@ -166,7 +166,7 @@ const CTGAppLayout = ({children}) => {
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    Dr. Hai
+                    Biorithm
                 </Typography>
                 <Avatar
                  className={classes.avatar}
