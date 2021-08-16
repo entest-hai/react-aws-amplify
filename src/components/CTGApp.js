@@ -18,7 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
     FormControlLabel,
     Divider, Menu, MenuItem} from "@material-ui/core";
-import {AccountCircle, AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
+import {AccountCircle, AddCircleOutlineOutlined, CloudUpload, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
 import { DeleteOutlined } from '@material-ui/icons';
@@ -35,6 +35,7 @@ import { createCTGImage as createCTGImageMutation, deleteCTGImage as deleteCTGIm
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './CTGNoteView';
+import { UploadView } from './Upload';
 import Skeleton from '@material-ui/lab/Skeleton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
@@ -135,6 +136,11 @@ const CTGAppLayout = ({children}) => {
             icon: <AddCircleOutlineOutlined color={"secondary"}>
             </AddCircleOutlineOutlined>,
             path: "/create"
+        },
+        {
+            text:"Upload",
+            icon: <CloudUpload color={"secondary"}></CloudUpload>,
+            path: "/upload"
         }
     ];
 

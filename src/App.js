@@ -7,6 +7,7 @@ import {purple} from "@material-ui/core/colors";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './components/CTGNoteView';
+import { UploadView } from './components/Upload';
 
 const theme = createTheme({
     palette: {
@@ -53,7 +54,10 @@ function CTGApp() {
                         </CTGNoteView>
                    </Route>
                    <Route path={"/create"}>
-                    <CreateCTGNote></CreateCTGNote>
+                        <CreateCTGNote></CreateCTGNote>
+                   </Route>
+                   <Route path={"/upload"}>
+                       <UploadView></UploadView>
                    </Route>
                </Switch>
            </CTGAppLayout>

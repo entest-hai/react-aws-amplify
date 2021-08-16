@@ -58,12 +58,6 @@ const CTGNoteView = ({ctgRecord}) => {
 
     return (
         <div>
-            {/* <AppBar>
-                <Toolbar>
-                    <Typography>CTG Note</Typography>
-                </Toolbar>
-            </AppBar>
-            <div className={classes.toolbar}></div> */}
             <Container maxWidth={"lg"}>
                 <Card>
                     <CardMedia className={classes.media}>
