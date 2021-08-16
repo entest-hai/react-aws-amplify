@@ -67,11 +67,12 @@ const UploadView = () => {
     const [ctgS3Url, setCtgS3Url] = useState(null)
 
     const callFHRAPI = async() => {
+        console.log(fhr_api_end_point + fileName)
         fetch(fhr_api_end_point + fileName)
             .then(response => response.json())
             .then(result => {
-                console.log(result.s3Url)
-                getCTGSignedS3Url("STG049B_raw_ctg.png")
+                console.log(result.s3Url.split("/").pop())
+                getCTGSignedS3Url(result.s3Url.split("/").pop())
         })
         .catch(error => console.log('error', error));
     }
