@@ -138,7 +138,7 @@ const CTGAppLayout = ({children}) => {
             path: "/create"
         },
         {
-            text:"Upload",
+            text:"FHR API",
             icon: <CloudUpload color={"secondary"}></CloudUpload>,
             path: "/upload"
         }

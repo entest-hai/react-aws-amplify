@@ -60,37 +60,41 @@ const UploadView = () => {
         }
     })()
     
-    const [showImage, setShowImage] = useState(false)
+    // const [showImage, setShowImage] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null)
     const [fileName, setfileName] = useState(null)
     const [progress, setProgress] = useState(0)
     const [ctgS3Url, setCtgS3Url] = useState(null)
 
     const callFHRAPI = async() => {
-        console.log(fhr_api_end_point + fileName)
-        fetch(fhr_api_end_point + fileName)
+        // check file type before calling api
+        let extension = fileName.split(".").pop()
+        if (extension=="dat" || extension=="csv") {
+            fetch(fhr_api_end_point + fileName)
             .then(response => response.json())
             .then(result => {
-                console.log(result.s3Url.split("/").pop())
                 getCTGSignedS3Url(result.s3Url.split("/").pop())
-        })
-        .catch(error => console.log('error', error));
+            })
+            .catch(error => {
+                console.log('error', error)
+            });
+        }
+        // 
     }
 
     const getCTGSignedS3Url = async(s3Url) => {
         const signedURL = await Storage.get(s3Url, {expires: 60});
-        console.log("fetch image", signedURL)
         setCtgS3Url(signedURL);
-        setShowImage(true)
+        // setShowImage(true)
     }
 
     const handleUpload = async () => {
+        // split file and take max 30 minute 
         const result = await Storage.put(selectedFile[0].name, selectedFile[0], {
             progressCallback(value){
                 setProgress(100.0*value.loaded/value.total)
             }
         }).then(() => {
-            console.log("uploaded")
             setSelectedFile(null)
             callFHRAPI(selectedFile[0].name)
         })
@@ -143,7 +147,7 @@ const UploadView = () => {
                 <Card>
                     <CardMedia className={classes.media}>
                         <Paper style={{overflow:'auto'}} elevation={4}>
-                            {showImage ? <img src={ctgS3Url}/> : 
+                            {ctgS3Url != null ? <img src={ctgS3Url}/> : 
                             <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
                         </Paper>
                     </CardMedia>
