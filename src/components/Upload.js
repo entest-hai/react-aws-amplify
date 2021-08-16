@@ -4,6 +4,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
+import { Storage } from 'aws-amplify';
 
 const UploadView = () => {
 
@@ -24,8 +25,17 @@ const UploadView = () => {
     const [selectedFile, setSelectedFile] = useState(null)
     const [fileName, setfileName] = useState(null)
 
-    const handleUpload = () => {
-       console.log("upload ", selectedFile)
+    const handleUpload = async () => {
+        const result = await Storage.put("HaiTest1002.dat", selectedFile[0]).then(() => {
+            console.log("uploaded")
+        })
+        // const file = selectedFile[0]
+        // const chunkSize = 1048576 
+        // for (let start = 0; start < file.size; start += chunkSize) {
+        //     const chunk = file.slice(start, start + chunkSize)
+        //     const result = await Storage.put(chunk, 'HaiTest1002.dat')
+        //     console.log("upload ", chunk.size, result)
+        //   }
     }
 
     const chooseFileButton = 

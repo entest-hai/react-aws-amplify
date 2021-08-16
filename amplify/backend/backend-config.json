@@ -24,7 +24,7 @@
     }
   },
   "storage": {
-    "flutteramplifybf33ec81": {
+    "flutteramplifyd4cf1fb6": {
       "service": "S3",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",
