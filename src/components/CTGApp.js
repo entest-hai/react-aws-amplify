@@ -32,6 +32,7 @@ import { API, totpQrcode } from 'aws-amplify';
 import {listTodos, listCTGImages} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
 import { createCTGImage as createCTGImageMutation, deleteCTGImage as deleteCTGImageMutation } from './../graphql/mutations';
+import { getCTGImage } from './../graphql/queries';
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './CTGNoteView';
@@ -235,6 +236,14 @@ const CTGRecords = () => {
         setRecords(apiData.data.listCTGImages.items);
     }
 
+    const handleDelete = async (record) => {
+        // TODO: try catch 
+        const deleteResult = await API.graphql({query: deleteCTGImageMutation, variables: {input: {id: record.id}}})
+        // TODO: not query but local delete
+        const updatedRecords = records.filter(x => x.id != record.id)
+        setRecords(updatedRecords)
+    }
+
     useEffect(() => {
         fetchCtgRecords()
     }, [])
@@ -247,7 +256,7 @@ const CTGRecords = () => {
                 className={"my-masonry-grid"}>
                 {records.map(record => (
                     <div key={record.id}>
-                        <CTGRecordNote record={record}></CTGRecordNote>
+                        <CTGRecordNote record={record} handleDelete={handleDelete}></CTGRecordNote>
                     </div>
                 ))}
 
@@ -256,7 +265,7 @@ const CTGRecords = () => {
     )
 }
 
-const CTGRecordNote = ({record}) => {
+const CTGRecordNote = ({record, handleDelete}) => {
 
     const history = useHistory()
 
@@ -282,10 +291,9 @@ const CTGRecordNote = ({record}) => {
                     }
                     action={
                         <IconButton onClick={() => {
-
+                            handleDelete(record)
                         }}>
                             <DeleteOutlined>
-
                             </DeleteOutlined>
                         </IconButton>
                     }
