@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 const CanvasPlotApp = () => {
-
     const scale = 1; 
     const contextRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
@@ -29,9 +28,9 @@ const CanvasPlotApp = () => {
 
     useEffect(() => {
         init()
-        window.addEventListener('resize', function(){
-            init()
-        })
+        return () => {
+          console.log("unmount the canvas");
+        }
     }, [])
 
     const startDrawing = ({ nativeEvent }) => {
@@ -50,7 +49,6 @@ const CanvasPlotApp = () => {
         if (!isDrawing) {
           return;
         }
-        console.log(nativeEvent);
         const { offsetX, offsetY } = nativeEvent;
         contextRef.current.lineTo(offsetX*scale, offsetY*scale);
         contextRef.current.stroke();
@@ -66,8 +64,6 @@ const CanvasPlotApp = () => {
         </canvas>
     );
 }
-
-
 
 
 export {CanvasPlotApp};

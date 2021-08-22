@@ -158,6 +158,10 @@ const TestBasicCanvas = (props) => {
 
     useEffect(() => {
         updateHeartRate();
+        return () => {
+            console.log("unmount the ctg live");
+            clearInterval(interval);
+        }
     },[])
 
     return (
