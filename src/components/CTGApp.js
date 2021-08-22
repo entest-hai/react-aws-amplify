@@ -18,7 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
     FormControlLabel,
     Divider, Menu, MenuItem} from "@material-ui/core";
-import {AccountCircle, AddCircleOutlineOutlined, CloudUpload, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
+import {AccountCircle, AddCircleOutlineOutlined, CloudCircle, CloudUpload, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
 import { DeleteOutlined } from '@material-ui/icons';
@@ -142,6 +142,11 @@ const CTGAppLayout = ({children}) => {
             text:"FHR API",
             icon: <CloudUpload color={"secondary"}></CloudUpload>,
             path: "/upload"
+        },
+        {
+            text: "Live FHR",
+            icon: <CloudCircle color={"secondary"}></CloudCircle>,
+            path: "/livefhr"
         }
     ];
 

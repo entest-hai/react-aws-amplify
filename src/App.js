@@ -61,7 +61,7 @@ function CTGApp() {
                    <Route path={"/upload"}>
                        <UploadView></UploadView>
                    </Route>
-                   <Route path={"/canvas"}>
+                   <Route path={"/livefhr"}>
                         <MultiCTGView></MultiCTGView>
                    </Route>
                </Switch>
