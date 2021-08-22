@@ -329,8 +329,12 @@ const CTGRecords = () => {
         setRecords(updatedRecords)
     }
 
-    useEffect(() => {
-        fetchCtgRecords()
+    useEffect(async () => {
+        let isMounted = true; 
+        await fetchCtgRecords();
+        return () => {
+            isMounted = false; 
+        }
     }, [])
 
     return (
