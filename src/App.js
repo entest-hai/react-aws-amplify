@@ -8,6 +8,8 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './components/CTGNoteView';
 import { UploadView } from './components/Upload';
+// import { Canvas } from './components/canvas/canvas';
+import { MultiCTGView } from './components/canvas/ctg_canvas';
 
 const theme = createTheme({
     palette: {
@@ -59,6 +61,9 @@ function CTGApp() {
                    <Route path={"/upload"}>
                        <UploadView></UploadView>
                    </Route>
+                   <Route path={"/canvas"}>
+                        <MultiCTGView></MultiCTGView>
+                   </Route>
                </Switch>
            </CTGAppLayout>
        </Router>
@@ -69,7 +74,7 @@ function CTGApp() {
 function App() {
     return (
       <div className="App">
-       <CTGApp></CTGApp>
+          <CTGApp></CTGApp>
       </div>
     );
   }
