@@ -132,9 +132,14 @@ const TestBasicCanvas = (props) => {
 
     useEffect(() => {
        // get canvas and contextsc
-        canvas = document.getElementById("canvas");
+        canvas = document.getElementById("ctg_canvas");
         ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth * 2;
+        canvas.height = window.innerHeight *2;
+        canvas.style.width =  `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
         // TODO: scale for device screen size
+        ctx.scale(2,2);
         ctx.translate(0.5, 0.5);
         // create CTG paper
         createCTGPaper(ctx);
@@ -145,7 +150,7 @@ const TestBasicCanvas = (props) => {
     }, [])
 
     useEffect(() => {
-        canvas = document.getElementById("canvas");
+        canvas = document.getElementById("ctg_canvas");
         ctx = canvas.getContext("2d");
         plotHeartRate(ctx);
     }, [mHR, fHR])
@@ -156,7 +161,7 @@ const TestBasicCanvas = (props) => {
     },[])
 
     return (
-        <canvas id="canvas" width={window.innerWidth} height={window.innerHeight}>
+        <canvas id="ctg_canvas">
             Canvas
         </canvas>
     )
@@ -174,7 +179,6 @@ const MultiCTGView = () => {
     return (
        <div className={classes.root}>
                <TestBasicCanvas heartRate={heartRateData} position={{xOffset: 50, yOffset: 50}}></TestBasicCanvas>
-               {/*<TestBasicCanvas heartRate={heartRateData} position={{xOffset: 50, yOffset: 50+20*21+25}}></TestBasicCanvas>*/}
        </div>
     )
 }
