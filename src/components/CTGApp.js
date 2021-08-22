@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -17,8 +17,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
     FormControlLabel,
-    Divider, Menu, MenuItem} from "@material-ui/core";
-import {AccountCircle, AddCircleOutlineOutlined, CloudCircle, CloudUpload, DeleteOutline, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
+    Menu, MenuItem} from "@material-ui/core";
+import {AccountCircle, AddCircleOutlineOutlined, CloudCircle, CloudUpload, DeleteOutline, Edit, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
 import { DeleteOutlined } from '@material-ui/icons';
@@ -39,11 +39,45 @@ import { CTGNoteView } from './CTGNoteView';
 import { UploadView } from './Upload';
 import Skeleton from '@material-ui/lab/Skeleton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Divider from '@material-ui/core/Divider';
 
 const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => {
     return {
+        content: {
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+            marginLeft: -drawerWidth,
+          },
+          contentShift: {
+            transition: theme.transitions.create('margin', {
+              easing: theme.transitions.easing.easeOut,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+            marginLeft: 0,
+          },
+        drawerHeader: {
+            display: 'flex',
+            alignItems: 'center',
+            padding: theme.spacing(0, 0),
+            // necessary for content to be below app bar
+            ...theme.mixins.toolbar,
+            justifyContent: 'flex-end',
+          },
+        menuButton: {
+            marginRight: theme.spacing(2),
+          },
+        hide: {
+            display: 'none',
+          },
         search: {
             padding: "2px 4px",
             display: 'flex',
@@ -62,15 +96,17 @@ const useStyles = makeStyles((theme) => {
             display: "block"
         },
         title: {
-            padding: theme.spacing(2)
+            padding: theme.spacing(0),
+            marginRight: theme.spacing(5)
         },
         page: {
             background: "#f9f9f9",
             width: "100%",
-            padding: theme.spacing(3)
+            padding: theme.spacing(2)
         },
         drawer: {
-            width: drawerWidth
+            width: drawerWidth,
+            flexShrink: 0,
         },
         drawerPaper: {
             width: drawerWidth
@@ -81,9 +117,19 @@ const useStyles = makeStyles((theme) => {
         active: {
             background: "#f4f4f4"
         },
-        appBar: {
+        appBarShift: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
+            transition: theme.transitions.create(['margin', 'width'], {
+              easing: theme.transitions.easing.easeOut,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+          },
+        appBar: {
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+            }),
         },
         date: {
             flexGrow: 1
@@ -112,11 +158,21 @@ const useStyles = makeStyles((theme) => {
 
 
 const CTGAppLayout = ({children}) => {
+    const theme = useTheme()
     const classes = useStyles()
     const history = useHistory()
     const location = useLocation()
     const [logoutMoreAnchorEl, setLogoutMoreAnchorEl] = useState(null)
     const isLogoutMenuOpen = Boolean(logoutMoreAnchorEl)
+    const [open, setOpen] = useState(false)
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    }
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    }
 
     const handleLogoutMenuClose = () => {
         setLogoutMoreAnchorEl(null)
@@ -147,6 +203,11 @@ const CTGAppLayout = ({children}) => {
             text: "Live FHR",
             icon: <CloudCircle color={"secondary"}></CloudCircle>,
             path: "/livefhr"
+        },
+        {
+            text: "Annotate",
+            icon: <Edit color={"secondary"}></Edit>,
+            path: "/edit"
         }
     ];
 
@@ -170,10 +231,21 @@ const CTGAppLayout = ({children}) => {
     return (
     <div className={classes.root}>
         <AppBar 
-        className={classes.appBar}
-        color={"primary"}
-        position={"fixed"}>
+         className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+         color={"primary"}
+         position={"fixed"}>
             <Toolbar>
+                <IconButton
+                 color="inherit"
+                 aria-label="open drawer"
+                 onClick={handleDrawerOpen}
+                 edge={"start"}
+                 className={clsx(classes.menuButton, open && classes.hide)}
+                >
+                    <MenuIcon></MenuIcon>
+                </IconButton>
                 <Typography className={classes.date}>
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
@@ -188,15 +260,21 @@ const CTGAppLayout = ({children}) => {
         </AppBar>
         <Drawer
            className={classes.drawer}
-           variant={"permanent"}
+           variant={"persistent"}
            anchor={"left"}
+           open={open}
            classes={{paper: classes.drawerPaper}}
            >
-               <div>
-                   <Typography variant={"h5"} className={classes.title}>
-                       Notes
+               <div className={classes.drawerHeader}>
+                    <Typography variant={"h5"} className={classes.title}>
+                       Menu
                    </Typography>
+                   <IconButton
+                    onClick={handleDrawerClose}>
+                       {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                   </IconButton>
                </div>
+               <Divider />
                <List>
                    {menuItems.map((item) => (
                        <ListItem
@@ -215,7 +293,9 @@ const CTGAppLayout = ({children}) => {
                    ))}
                </List>
            </Drawer>
-        <div className={classes.page}>
+        <div className={clsx(classes.content, {
+          [classes.contentShift]: open,
+        })}>
             <div className={classes.toolbar}></div>
             {children}
         </div>
