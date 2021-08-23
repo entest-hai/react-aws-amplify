@@ -10,6 +10,7 @@ import { CTGNoteView } from './components/ctg/CTGNoteView';
 import { UploadView } from './components/upload/S3UploadView';
 import { MultiCTGView } from './components/canvas/ctg_canvas';
 import { CanvasPlotApp } from './components/canvas/annotate_canvas';
+import { TestImageViewer } from './tests/TestImageViewer';
 
 const theme = createTheme({
     palette: {
