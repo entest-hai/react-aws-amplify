@@ -1,16 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
 import {CTGRecords, CTGAppLayout, CreateCTGNote, AmplifyApp} from "./components/CTGApp";
-import {Create, Notes, Layout} from './components/NoteApp';
+import {Create, Notes, Layout} from './tests/NoteApp';
 import {createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
-import { CTGNoteView } from './components/CTGNoteView';
-import { UploadView } from './components/Upload';
+import { CTGNoteView } from './components/ctg/CTGNoteView';
+import { UploadView } from './components/upload/S3UploadView';
 import { MultiCTGView } from './components/canvas/ctg_canvas';
-import { CanvasPlotApp } from './components/canvas/canvas';
-import { PersistentDrawerLeft } from './components/drawer/testDrawer';
+import { CanvasPlotApp } from './components/canvas/annotate_canvas';
 
 const theme = createTheme({
     palette: {

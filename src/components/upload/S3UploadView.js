@@ -1,3 +1,12 @@
+//=====================================================================================================================
+// Purpose: Upload data to aws s3 and call FHR API to get imageS3Url and display the image 
+// Author: TRAN MINH HAI 
+// Date: 20 AUG 2021
+//********************************************************************************************************************/
+// Update |  Date             | Author             | Content 
+//********************************************************************************************************************/
+// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
+//=====================================================================================================================
 import { Button, Container, makeStyles, Card, CardMedia, Paper} from '@material-ui/core';
 import {React, useState} from 'react';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -10,8 +19,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import Skeleton from '@material-ui/lab/Skeleton';
-import awsmobile from '../aws-exports';
-import { fhr_api_end_point } from './apiendpoint';
+import awsmobile from '../../aws-exports';
+import { fhr_api_end_point } from '../../config/apiendpoint';
 
 
 const ctgImageHeight = 400

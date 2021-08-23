@@ -1,3 +1,12 @@
+//=====================================================================================================================
+// Purpose: Plot CTG in real time for demo purpose with entire data in local
+// Author: TRAN MINH HAI 
+// Date: 20 AUG 2021
+//********************************************************************************************************************/
+// Update |  Date             | Author             | Content 
+//********************************************************************************************************************/
+// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
+//=====================================================================================================================
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "./data";
 import {makeStyles} from "@material-ui/core/styles";

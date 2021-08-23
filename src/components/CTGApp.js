@@ -1,3 +1,12 @@
+//=====================================================================================================================
+// Purpose: CTG App most outer with AppBar, Drawer and menu, Amplify Auth, and route. 
+// Author: TRAN MINH HAI 
+// Date: 20 AUG 2021
+//********************************************************************************************************************/
+// Update |  Date             | Author             | Content 
+//********************************************************************************************************************/
+// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
+//=====================================================================================================================
 import React, {useEffect, useState} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -35,8 +44,8 @@ import { createCTGImage as createCTGImageMutation, deleteCTGImage as deleteCTGIm
 import { getCTGImage } from './../graphql/queries';
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
-import { CTGNoteView } from './CTGNoteView';
-import { UploadView } from './Upload';
+import { CTGNoteView } from './ctg/CTGNoteView';
+import { UploadView } from './upload/S3UploadView';
 import Skeleton from '@material-ui/lab/Skeleton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuIcon from '@material-ui/icons/Menu';
