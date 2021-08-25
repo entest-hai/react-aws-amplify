@@ -12,6 +12,7 @@ import { CTGLiveView } from './components/canvas/ctgCanvas';
 import { CanvasPlotApp } from './components/canvas/ctgAnnotateCanvas';
 import { TestImageViewer } from './tests/TestImageViewer';
 import { PersistentDrawerLeft } from './tests/TestDrawer';
+import { TestCtgAnnotateCanvas } from './components/canvas/testCtgAnnotateCanvas';
 
 const theme = createTheme({
     palette: {
@@ -67,7 +68,7 @@ function CTGApp() {
                         <CTGLiveView></CTGLiveView>
                    </Route>
                    <Route path={"/edit"}>
-                       <CanvasPlotApp></CanvasPlotApp>
+                       <TestCtgAnnotateCanvas></TestCtgAnnotateCanvas>
                    </Route>
                </Switch>
            </CTGAppLayout>
@@ -78,9 +79,7 @@ function CTGApp() {
 
 function App() {
     return (
-      <div className="App">
          <CTGApp></CTGApp>
-      </div>
     );
   }
   
