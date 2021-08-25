@@ -46,7 +46,7 @@ const TestCtgAnnotateCanvas = () => {
           ctgCanvas: {
               position: 'absolute',
               top:50,
-              left: 50,
+              left: 0,
               zIndex: 0,
           },
           image: {
@@ -83,6 +83,7 @@ const TestCtgAnnotateCanvas = () => {
         // get context 
         const context = canvas.getContext("2d");
         context.scale(2,2);
+        // 
         context.lineCap = "round";
         context.strokeStyle = "black";
         context.lineWidth = 2; 
