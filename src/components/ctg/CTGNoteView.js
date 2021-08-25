@@ -190,22 +190,3 @@ const CTGNoteView = ({ctgRecord}) => {
 }
 
 export {CTGNoteView}
-
-
-
-{/* <IconButton
-    onClick={zoomInHandle}
->
-    <ZoomIn></ZoomIn>
-</IconButton>
-<IconButton
-    onClick={zoomOutHandle}
->
-    <ZoomOutRounded></ZoomOutRounded>
-</IconButton>
-<Button 
-    // variant={"contained"}
-    onClick={defaultHandle}
->
-    Default
-</Button> */}

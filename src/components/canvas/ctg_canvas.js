@@ -10,10 +10,13 @@
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "./data";
 import {makeStyles} from "@material-ui/core/styles";
+import { Card, CardMedia, Container, Paper } from "@material-ui/core";
 
-const TestBasicCanvas = (props) => {
+const ctgImageHeight = 550
 
-    //
+const FHRLiveCanvas = (props) => {
+
+    // canvas and context 
     var canvas;
     var ctx;
 
@@ -26,18 +29,15 @@ const TestBasicCanvas = (props) => {
     const heartRateStep = 10;
     const timeStep = 30;
 
-    //
+    // counter 
     var counter = 0;
-
     // heart rate data state
     const mHRIn = props.heartRate.mHR;
     const fHRIn = props.heartRate.fHR;
     const [mHR, setmHR] = useState([]);
     const [fHR, setfHR] = useState([]);
-    var mBuffer = [];
-    var fBuffer = [];
 
-    //
+    // interval of counter 
     let interval = useRef();
 
     // function to create CTG paper
@@ -150,12 +150,7 @@ const TestBasicCanvas = (props) => {
         // TODO: scale for device screen size
         ctx.scale(2,2);
         ctx.translate(0.5, 0.5);
-        // create CTG paper
         createCTGPaper(ctx);
-        // plot heart rate
-        // plotHeartRate();
-        // update chart with new heart rate
-        // updateHeartRate()
     }, [])
 
     useEffect(() => {
@@ -180,60 +175,34 @@ const TestBasicCanvas = (props) => {
     )
 }
 
-const MultiCTGView = () => {
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            flexGrow: 1,
-            overflow: "auto"
+const CTGLiveView = () => {
 
+    const classes = makeStyles(() => {
+        return {
+            root: {
+                flexGrow: 1,
+                overflow: "auto"
+    
+            },
+            media: {
+                height: ctgImageHeight,
+                overflow: "auto"
+            }    
         }
-    }));
-    const classes = useStyles();
+    })()
+
     return (
-       <div className={classes.root}>
-               <TestBasicCanvas heartRate={heartRateData} position={{xOffset: 50, yOffset: 50}}></TestBasicCanvas>
-       </div>
+       <Container maxWidth={"lg"}>
+            <Card>
+            <CardMedia className={classes.media}>
+                <Paper style={{overflow:'auto'}} elevation={4}>
+                    <FHRLiveCanvas heartRate={heartRateData} position={{xOffset: 50, yOffset: 50}}></FHRLiveCanvas>
+                </Paper>
+            </CardMedia>
+        </Card>
+       </Container>
     )
 }
 
-
-const TestScrollCanvas = () => {
-    const [mHR, setmHR] = useState([]);
-    const [counter, setcounter] = useState(0);
-    var mycounter = 0;
-
-    let interval = useRef();
-    const updateData = () => {
-         interval = setInterval(() => {
-            console.log("counter ", mycounter);
-            mycounter = mycounter + 1;
-            setcounter(mycounter);
-            setmHR([1,2,3]);
-
-            if (mycounter > 10){
-            console.log("clear timer");
-            clearInterval(interval);
-            }
-        }, 1000)
-
-
-    }
-    // var myupdate = updateData();
-
-    useEffect(() => {
-        updateData();
-    }, []);
-
-    return(
-        <h1>
-            Scroll Canvas {mHR} and counter {counter}
-        </h1>
-    )
-}
-
-export {
-    MultiCTGView,
-    TestBasicCanvas,
-    TestScrollCanvas
-};
+export {CTGLiveView};
 

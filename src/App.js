@@ -8,9 +8,10 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './components/ctg/CTGNoteView';
 import { UploadView } from './components/upload/S3UploadView';
-import { MultiCTGView } from './components/canvas/ctg_canvas';
+import { CTGLiveView } from './components/canvas/ctg_canvas';
 import { CanvasPlotApp } from './components/canvas/annotate_canvas';
 import { TestImageViewer } from './tests/TestImageViewer';
+import { PersistentDrawerLeft } from './tests/TestDrawer';
 
 const theme = createTheme({
     palette: {
@@ -63,7 +64,7 @@ function CTGApp() {
                        <UploadView></UploadView>
                    </Route>
                    <Route path={"/livefhr"}>
-                        <MultiCTGView></MultiCTGView>
+                        <CTGLiveView></CTGLiveView>
                    </Route>
                    <Route path={"/edit"}>
                        <CanvasPlotApp></CanvasPlotApp>
