@@ -8,8 +8,8 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './components/ctg/CTGNoteView';
 import { UploadView } from './components/upload/S3UploadView';
-import { CTGLiveView } from './components/canvas/ctg_canvas';
-import { CanvasPlotApp } from './components/canvas/annotate_canvas';
+import { CTGLiveView } from './components/canvas/ctgCanvas';
+import { CanvasPlotApp } from './components/canvas/ctgAnnotateCanvas';
 import { TestImageViewer } from './tests/TestImageViewer';
 import { PersistentDrawerLeft } from './tests/TestDrawer';
 

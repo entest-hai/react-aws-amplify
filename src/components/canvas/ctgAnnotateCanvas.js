@@ -9,11 +9,29 @@
 //=====================================================================================================================
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import {makeStyles} from "@material-ui/core/styles";
+import { Card, CardMedia, Container, Paper } from "@material-ui/core";
+
+const ctgAnnotateCanvasHeight = 600;
 
 const CanvasPlotApp = () => {
     const scale = 1; 
     const contextRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
+
+    const classes = makeStyles(() => {
+      return {
+          root: {
+              flexGrow: 1,
+              overflow: "auto"
+  
+          },
+          media: {
+              height: ctgAnnotateCanvasHeight,
+              overflow: "auto"
+          }    
+      }
+  })()
 
     const init = () => {
         // get canvas 
@@ -31,7 +49,7 @@ const CanvasPlotApp = () => {
         context.scale(2,2);
         context.lineCap = "round";
         context.strokeStyle = "black";
-        context.lineWidth = 5; 
+        context.lineWidth = 2; 
         contextRef.current = context;
     }
 
@@ -65,12 +83,20 @@ const CanvasPlotApp = () => {
     
 
     return (
-        <canvas
-            id={"test_canvas"}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={finishDrawing}>
-        </canvas>
+      <Container maxWidth={"lg"}>
+            <Card>
+            <CardMedia className={classes.media}>
+                <Paper style={{overflow:'auto'}} elevation={4}>
+                <canvas
+                  id={"test_canvas"}
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={finishDrawing}>
+                </canvas>
+                </Paper>
+            </CardMedia>
+        </Card>
+       </Container>
     );
 }
 
