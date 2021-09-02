@@ -6,7 +6,7 @@
 // Update |  Date             | Author             | Content 
 //********************************************************************************************************************/
 // 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
-// 002.   |  31 AUG 2021.     | TRAN MINH HAI      | - Call FHR API and create a CTGRecord in DynamoDB 
+// 002.   |  31 AUG 2021.     | TRAN MINH HAI      | - Call FHR API and create a CTGRecord in DynamoDB comments 
 //=====================================================================================================================
 
 import { Button, Container, makeStyles, Card, CardMedia, Paper} from '@material-ui/core';
