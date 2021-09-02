@@ -6,7 +6,9 @@
 // Update |  Date             | Author             | Content 
 //********************************************************************************************************************/
 // 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
+// 002.   |  31 AUG 2021.     | TRAN MINH HAI      | - Call FHR API and create a CTGRecord in DynamoDB 
 //=====================================================================================================================
+
 import { Button, Container, makeStyles, Card, CardMedia, Paper} from '@material-ui/core';
 import {React, useState} from 'react';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -106,6 +108,8 @@ const UploadView = () => {
         }).then(() => {
             setSelectedFile(null)
             callFHRAPI(selectedFile[0].name)
+            // TODO then write CTGRecord to DynamoDB 
+            // or lambda write CTGRecord to DynamoDB 
         })
     }
 
