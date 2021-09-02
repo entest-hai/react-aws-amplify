@@ -13,6 +13,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import { Card, CardMedia, Container, Paper } from "@material-ui/core";
 
 const ctgImageHeight = 550
+const windowinnerWidth = 1920
+const windowinnerHeight = 1080
 
 const FHRLiveCanvas = (props) => {
 
@@ -143,10 +145,10 @@ const FHRLiveCanvas = (props) => {
        // get canvas and contextsc
         canvas = document.getElementById("ctg_canvas");
         ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth * 2;
-        canvas.height = window.innerHeight *2;
-        canvas.style.width =  `${window.innerWidth}px`;
-        canvas.style.height = `${window.innerHeight}px`;
+        canvas.width = windowinnerWidth * 2;
+        canvas.height = windowinnerHeight *2;
+        canvas.style.width =  `${windowinnerWidth}px`;
+        canvas.style.height = `${windowinnerHeight}px`;
         // TODO: scale for device screen size
         ctx.scale(2,2);
         ctx.translate(0.5, 0.5);
