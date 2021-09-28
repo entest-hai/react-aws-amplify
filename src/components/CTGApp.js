@@ -53,6 +53,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
 import {useScript} from "./epic/useScript";
+import {MyChartHome} from "./epic/MyChartHome";
 
 const drawerWidth = 240
 

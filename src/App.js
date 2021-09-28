@@ -26,7 +26,7 @@ import { TestImageViewer } from './tests/TestImageViewer';
 import { PersistentDrawerLeft } from './tests/TestDrawer';
 import { TestCtgAnnotateCanvas } from './components/canvas/testCtgAnnotateCanvas';
 import {MyChartAuth} from "./components/epic/MyChartAuth";
-
+import {MyChartHome} from "./components/epic/MyChartHome";
 
 const theme = createTheme({
     palette: {
@@ -65,7 +65,8 @@ function CTGApp() {
            <CTGAppLayout>
                <Switch>
                    <Route exact path={"/"}>
-                       <CTGRecords></CTGRecords>
+                       <MyChartHome></MyChartHome>
+                       {/*<CTGRecords></CTGRecords>*/}
                    </Route>
                    <Route path={"/ctg"}>
                        <CTGNoteView 
