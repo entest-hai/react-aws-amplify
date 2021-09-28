@@ -13,6 +13,8 @@ import { CanvasPlotApp } from './components/canvas/ctgAnnotateCanvas';
 import { TestImageViewer } from './tests/TestImageViewer';
 import { PersistentDrawerLeft } from './tests/TestDrawer';
 import { TestCtgAnnotateCanvas } from './components/canvas/testCtgAnnotateCanvas';
+import {MyChartAuth} from "./components/epic/MyChartAuth";
+
 
 const theme = createTheme({
     palette: {
@@ -69,6 +71,9 @@ function CTGApp() {
                    </Route>
                    <Route path={"/edit"}>
                        <TestCtgAnnotateCanvas></TestCtgAnnotateCanvas>
+                   </Route>
+                   <Route path={"/mychart"}>
+                       <MyChartAuth></MyChartAuth>
                    </Route>
                </Switch>
            </CTGAppLayout>
