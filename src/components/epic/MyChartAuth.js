@@ -1,4 +1,18 @@
-//==============================================================================
+//=====================================================================================================================
+// Purpose: Do OAUTH2 with EPIC MyChart
+// Author: TRAN MINH HAI
+// Date: 28 SEP 2021
+//********************************************************************************************************************/
+// Update |  Date             | Author             | Content
+//********************************************************************************************************************/
+// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header
+// 28 SEP 2021 add MyChartAuth to do oauth2 with EPIC MyChart
+// need to load fhir-script.js and it will get username, pass from screen
+// it also get the return token or code from redirected url.
+//=====================================================================================================================
+// 28 SEP 2021 add MyChartAuth to do oauth2 with EPIC MyChart
+// need to load fhir-script.js and it will get username, pass from screen
+// it also get the return token or code from redirected url.
 // 28 SEP 2021 Tran Minh Hai do OAUTH with EPIC patient facing app
 // <!-- launch.html -->
 // <!-- use nonProductionID: -->
