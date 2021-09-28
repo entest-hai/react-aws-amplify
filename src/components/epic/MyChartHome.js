@@ -7,7 +7,7 @@ const MyChartHome = () => {
     useScript('fhir-client.js')
     const [response, setResponse] = useState("")
     const [dateTime, setDateTime] = useState(null)
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState(null)
 
     var myApp = {}
     var loincs = [encodeURIComponent("http://loinc.org|4548-4")]
@@ -23,8 +23,10 @@ const MyChartHome = () => {
         })
         var response = await obs.json()
         console.log(response)
+        console.log(response.entry[0].resource.effectiveDateTime)
+        console.log(response.entry[0].resource.valueQuantity.value)
         setDateTime(response.entry[0].resource.effectiveDateTime)
-        setValue(response.entry[0].resource.valueQuantity)
+        setValue(response.entry[0].resource.valueQuantity.value)
     }
 
     return (
@@ -43,7 +45,7 @@ const MyChartHome = () => {
             >Fetch FHIR EPIC</Button>
             <Paper style={{marginTop: '20px'}}>
                 <Typography>RESPONSE: </Typography>
-                {dateTime && <Typography>Your HgAlC was tested on {dateTime} and your HgAlC was {value}</Typography>}
+                {dateTime && value && <Typography>Your HgAlC was tested on {dateTime} and your HgAlC was {value}</Typography>}
             </Paper>
         </div>
     )
