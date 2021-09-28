@@ -52,6 +52,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
+import {useScript} from "./epic/useScript";
 
 const drawerWidth = 240
 
@@ -315,6 +316,8 @@ const CTGAppLayout = ({children}) => {
 
 
 const CTGRecords = () => {
+
+    useScript('fhir-client.js')
 
     const breakpoints = {
         default: 3,
