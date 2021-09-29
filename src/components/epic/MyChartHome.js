@@ -110,7 +110,7 @@ const MyChartHome = () => {
             </Paper>
             <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto'}}>
                 <Typography variant={'h6'}>Observations</Typography>
-                {observation && <Typography>observations</Typography>}
+                {observation && <Typography>observation</Typography>}
             </Paper>
             <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto'}}>
                 <Typography variant={'h6'}>Medication</Typography>
