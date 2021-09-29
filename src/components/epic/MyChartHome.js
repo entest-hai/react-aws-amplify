@@ -50,7 +50,7 @@ const MyChartHome = () => {
     }
 
     async function fetchObservationsClient(client) {
-        client.request("/Observation?patient=" + client.patient.id, {
+        client.request("/Observation?patient=" + client.patient.id + "&limit=50&code=" + loincs.join(","), {
             resolveReferences: ["observationReference"],
             graph: true
         })
@@ -121,26 +121,6 @@ const MyChartHome = () => {
 }
 
 export {MyChartHome};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
