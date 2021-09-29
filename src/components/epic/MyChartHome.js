@@ -1,13 +1,12 @@
 import React, {useState} from "react";
-import {Button, Typography} from "@material-ui/core";
+import {Box, Button, Typography} from "@material-ui/core";
 import {useScript} from "./useScript";
 import {Paper} from "@material-ui/core";
 
 const MyChartHome = () => {
     useScript('fhir-client.js')
-    const [response, setResponse] = useState("")
-    const [dateTime, setDateTime] = useState(null)
-    const [value, setValue] = useState(null)
+    const [observation, setObservation] = useState(null)
+    const [medication, setMedication] = useState(null)
     const [patientInfor, setPatientInfor] = useState(null)
 
     var myApp = {}
@@ -26,7 +25,56 @@ const MyChartHome = () => {
         )
     }
 
-    async function fetchThings() {
+    async function fetchMedication(client) {
+        client.request("/MedicationRequest?patient=" + client.patient.id, {
+            resolveReferences: ["medicationReference"],
+            graph: true
+        })
+            // Reject if no MedicationRequests are found
+            .then(function (data) {
+                if (!data.entry || !data.entry.length) {
+                    throw new Error("No medications found for the selected patient");
+                }
+                return data.entry;
+            })
+            // Render the current patient's medications (or any error)
+            .then(
+                function (meds) {
+                    setMedication(JSON.stringify(meds,null,4))
+                },
+                function (error) {
+                    setMedication("ERROR fetch medication")
+                    console.log(error.stack)
+                }
+            );
+    }
+
+    async function fetchObservationsClient(client) {
+        client.request("/Observation?patient=" + client.patient.id, {
+            resolveReferences: ["observationReference"],
+            graph: true
+        })
+            // Reject if no MedicationRequests are found
+            .then(function (data) {
+                if (!data.entry || !data.entry.length) {
+                    throw new Error("No medications found for the selected patient");
+                }
+                return data.entry;
+            })
+            // Render the current patient's medications (or any error)
+            .then(
+                function (obs) {
+                    setObservation(JSON.stringify(obs, null, 4))
+                },
+                function (error) {
+                    setObservation("ERROR fetch observations")
+                    console.log(error.stack)
+                }
+            );
+    }
+
+
+    async function fetchObservations() {
         var obs = await fetch(myApp.smart.state.serverUrl + "/Observation?patient=" + myApp.smart.patient.id + "&limit=50&code=" + loincs.join(","), {
             headers: {
                 "Accept": "application/json+fhir",
@@ -36,11 +84,8 @@ const MyChartHome = () => {
             return data
         })
         var response = await obs.json()
+        setObservation(JSON.stringify(response))
         console.log(response)
-        console.log(response.entry[0].resource.effectiveDateTime)
-        console.log(response.entry[0].resource.valueQuantity.value)
-        setDateTime(response.entry[0].resource.effectiveDateTime)
-        setValue(response.entry[0].resource.valueQuantity.value)
     }
 
     return (
@@ -51,18 +96,25 @@ const MyChartHome = () => {
                     window.FHIR.oauth2.ready()
                         .then(function (client) {
                             myApp.smart = client
-                            fetchThings()
+                            fetchObservationsClient(client)
                             fetPatientInfor(client)
+                            fetchMedication(client)
                         })
                 }}
-                color={"secondary"}
+                color={"primary"}
                 variant={"contained"}
-            >Fetch FHIR EPIC</Button>
-            <Paper style={{marginTop: '20px'}}>
-                <Typography>RESPONSE: </Typography>
-                {dateTime && value &&
-                <Typography>Your HgAlC was tested on {dateTime} and your HgAlC was {value}</Typography>}
+            >Click to Fetch Patient Information</Button>
+            <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto'}}>
+                <Typography variant={'h6'}>Current Patient</Typography>
                 {patientInfor && <Typography>{patientInfor}</Typography>}
+            </Paper>
+            <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto'}}>
+                <Typography variant={'h6'}>Observations</Typography>
+                {observation && <Typography>observations</Typography>}
+            </Paper>
+            <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto'}}>
+                <Typography variant={'h6'}>Medication</Typography>
+                {medication && <Typography>{medication}</Typography>}
             </Paper>
         </div>
     )
