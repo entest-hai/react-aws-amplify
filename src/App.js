@@ -27,6 +27,7 @@ import { PersistentDrawerLeft } from './tests/TestDrawer';
 import { TestCtgAnnotateCanvas } from './components/canvas/testCtgAnnotateCanvas';
 import {MyChartAuth} from "./components/epic/MyChartAuth";
 import {MyChartHome} from "./components/epic/MyChartHome";
+import {OpenFhirServer} from "./components/epic/OpenFhirServer";
 
 const theme = createTheme({
     palette: {
@@ -65,6 +66,7 @@ function CTGApp() {
            <CTGAppLayout>
                <Switch>
                    <Route exact path={"/"}>
+                       {/*<OpenFhirServer></OpenFhirServer>*/}
                        <MyChartHome></MyChartHome>
                        {/*<CTGRecords></CTGRecords>*/}
                    </Route>
@@ -87,6 +89,9 @@ function CTGApp() {
                    </Route>
                    <Route path={"/mychart"}>
                        <MyChartAuth></MyChartAuth>
+                   </Route>
+                   <Route path={"/openfhir"}>
+                       <OpenFhirServer></OpenFhirServer>
                    </Route>
                </Switch>
            </CTGAppLayout>
