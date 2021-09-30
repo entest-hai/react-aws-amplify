@@ -1,3 +1,12 @@
+//=====================================================================================================================
+// Purpose: Perform FHIR OAUTH2 with EPIC system
+// Author: TRAN MINH HAI
+// Date: 30 SEP 2021
+//********************************************************************************************************************/
+// Update |  Date             | Author             | Content
+//********************************************************************************************************************/
+// 001.   |  30 SEP 2021.     | TRAN MINH HAI      | - Refactor and add header
+//=====================================================================================================================
 import React, {useState} from "react";
 import {Box, Button, Typography} from "@material-ui/core";
 import {useScript} from "./useScript";
@@ -10,10 +19,9 @@ const MyChartHome = () => {
     const [medication, setMedication] = useState(null)
     const [patientInfor, setPatientInfor] = useState(null)
 
-    // var myApp = {}
-    // var loincs = [encodeURIComponent("http://loinc.org|4548-4")]
 
-    async function fetPatientInfor(client) {
+
+    async function fetPatientInfor() {
 
         window.FHIR.oauth2.ready()
             .then(function (client) {
@@ -81,21 +89,6 @@ const MyChartHome = () => {
             );
     }
 
-
-    // async function fetchObservations() {
-    //     var obs = await fetch(myApp.smart.state.serverUrl + "/Observation?patient=" + myApp.smart.patient.id + "&limit=50&code=" + loincs.join(","), {
-    //         headers: {
-    //             "Accept": "application/json+fhir",
-    //             "Authorization": "Bearer " + myApp.smart.state.tokenResponse.access_token
-    //         }
-    //     }).then(function (data) {
-    //         return data
-    //     })
-    //     var response = await obs.json()
-    //     setObservation(JSON.stringify(response))
-    //     console.log(response)
-    // }
-
     return (
         <div>
             <Button
@@ -137,10 +130,25 @@ const MyChartHome = () => {
 export {MyChartHome};
 
 
-
-
-
-
+//======================================================================================================================
+// 30 SEP 2021
+// Old fetchObservations function not using the Client SMART object
+// var myApp = {}
+// var loincs = [encodeURIComponent("http://loinc.org|4548-4")]
+// async function fetchObservations() {
+//     var obs = await fetch(myApp.smart.state.serverUrl + "/Observation?patient=" + myApp.smart.patient.id + "&limit=50&code=" + loincs.join(","), {
+//         headers: {
+//             "Accept": "application/json+fhir",
+//             "Authorization": "Bearer " + myApp.smart.state.tokenResponse.access_token
+//         }
+//     }).then(function (data) {
+//         return data
+//     })
+//     var response = await obs.json()
+//     setObservation(JSON.stringify(response))
+//     console.log(response)
+// }
+//======================================================================================================================
 
 
 

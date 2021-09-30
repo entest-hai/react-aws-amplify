@@ -9,6 +9,8 @@
 // 28 SEP 2021 add MyChartAuth to do oauth2 with EPIC MyChart
 // need to load fhir-script.js and it will get username, pass from screen
 // it also get the return token or code from redirected url.
+//********************************************************************************************************************/
+// 001.   |  30 SEP 2021.     | TRAN MINH HAI      | - test open FHIR server
 //=====================================================================================================================
 import logo from './logo.svg';
 import './App.css';
