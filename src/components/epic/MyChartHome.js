@@ -93,7 +93,7 @@ const MyChartHome = () => {
         <div>
             <Button
                 onClick={() => {
-
+                    fetPatientInfor()
                 }}
                 color={"primary"}
                 variant={"contained"}
