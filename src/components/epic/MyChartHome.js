@@ -20,25 +20,26 @@ const MyChartHome = () => {
     const [patientInfor, setPatientInfor] = useState(null)
 
 
-
     async function fetPatientInfor() {
 
         window.FHIR.oauth2.ready()
             .then(function (client) {
                 // myApp.smart = client
                 setClient(client)
+
+                client.patient.read().then(
+                    function (pt) {
+                        setPatientInfor(JSON.stringify(pt, null, 4))
+                        console.log(JSON.stringify(pt, null, 4))
+                    },
+                    function (error) {
+                        setPatientInfor("ERROR fetch patient infor")
+                        console.log(error.stack)
+                    }
+                )
             })
 
-        client.patient.read().then(
-            function (pt) {
-                setPatientInfor(JSON.stringify(pt, null, 4))
-                console.log(JSON.stringify(pt, null, 4))
-            },
-            function (error) {
-                setPatientInfor("ERROR fetch patient infor")
-                console.log(error.stack)
-            }
-        )
+
     }
 
     async function fetchMedication() {
@@ -56,7 +57,7 @@ const MyChartHome = () => {
             // Render the current patient's medications (or any error)
             .then(
                 function (meds) {
-                    setMedication(JSON.stringify(meds,null,4))
+                    setMedication(JSON.stringify(meds, null, 4))
                 },
                 function (error) {
                     setMedication("ERROR fetch medication")
@@ -98,10 +99,11 @@ const MyChartHome = () => {
                 color={"primary"}
                 variant={"contained"}
             >Fetch Patient Information</Button>
-            <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto', marginBottom:'20px'}}>
+            <Paper elevation={5}
+                   style={{width: '100%', height: '300px', marginTop: '25px', overflow: 'auto', marginBottom: '20px'}}>
                 {patientInfor && <Typography>{patientInfor}</Typography>}
             </Paper>
-             <Button
+            <Button
                 onClick={() => {
                     fetchObservations()
                 }}
@@ -109,10 +111,11 @@ const MyChartHome = () => {
                 variant={"contained"}
                 style={{width: '250px'}}
             >Fetch Observation</Button>
-            <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto', marginBottom:'20px'}}>
+            <Paper elevation={5}
+                   style={{width: '100%', height: '300px', marginTop: '25px', overflow: 'auto', marginBottom: '20px'}}>
                 {observation && <Typography>{observation}</Typography>}
             </Paper>
-             <Button
+            <Button
                 onClick={() => {
                     fetchMedication()
                 }}
@@ -120,7 +123,8 @@ const MyChartHome = () => {
                 variant={"contained"}
                 style={{width: '250px'}}
             >Fetch Medication</Button>
-            <Paper elevation={5} style={{width: '100%', height: '300px', marginTop: '25px',overflow:'auto', marginBottom:'20px'}}>
+            <Paper elevation={5}
+                   style={{width: '100%', height: '300px', marginTop: '25px', overflow: 'auto', marginBottom: '20px'}}>
                 {medication && <Typography>{medication}</Typography>}
             </Paper>
         </div>
