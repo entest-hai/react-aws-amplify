@@ -381,10 +381,13 @@ const CTGRecords = ({match}) => {
     const [records, setRecords] = useState([])
 
     async function fetchCtgRecords() {
-        await fetchUserAttribute()
+        let user = await Auth.currentAuthenticatedUser();
+        setUserID(user.attributes.sub)
+        setUserName(user.attributes.username)
+        setUserEmail(user.attributes.email)
         let filter = {
             doctorID: {
-                eq: String(userID)
+                eq: String(user.attributes.sub)
             }
         }
         const apiData = await API.graphql({query: listCtgsByDoctorID, variables: {filter: filter}});
