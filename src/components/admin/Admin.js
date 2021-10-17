@@ -83,6 +83,19 @@ const AdminPage = () => {
                 create={CtgCreate}
             ></Resource>,
             <Resource
+                name={"cognitoUsers"}
+                options={{label: "Cognito User"}}
+                list={CognitoUserList}
+                show={CognitoUserShow}
+            >
+            </Resource>,
+            <Resource
+                name={"cognitoGroups"}
+                options={{label: "Cognito Groups"}}
+                list={CognitoGroupList}
+            >
+            </Resource>,
+            <Resource
                 name={"HeartRates"}
                 list={HeartRateList}>
             </Resource>,
