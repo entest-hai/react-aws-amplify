@@ -30,6 +30,7 @@ import { TestCtgAnnotateCanvas } from './components/canvas/testCtgAnnotateCanvas
 import {MyChartAuth} from "./components/epic/MyChartAuth";
 import {MyChartHome} from "./components/epic/MyChartHome";
 import {OpenFhirServer} from "./components/epic/OpenFhirServer";
+import {AdminPage} from "./components/admin/Admin";
 
 const theme = createTheme({
     palette: {
@@ -67,10 +68,13 @@ function CTGApp() {
        <Router>
            <CTGAppLayout>
                <Switch>
+                   <Route exact path={"/admin"}>
+                       <AdminPage></AdminPage>
+                   </Route>
                    <Route exact path={"/"}>
                        {/*<OpenFhirServer></OpenFhirServer>*/}
-                       <MyChartHome></MyChartHome>
-                       {/*<CTGRecords></CTGRecords>*/}
+                       {/*<MyChartHome></MyChartHome>*/}
+                       <CTGRecords></CTGRecords>
                    </Route>
                    <Route path={"/ctg"}>
                        <CTGNoteView 
@@ -102,6 +106,10 @@ function CTGApp() {
 }
 
 
+function AdminApp() {
+    return (<AdminPage></AdminPage>);
+}
+
 function App() {
     return (
          <CTGApp></CTGApp>
@@ -109,4 +117,4 @@ function App() {
   }
   
 export default withAuthenticator(App);
-export {CTGApp, NoteApp, withAuthenticator};
+export {AdminApp, CTGApp, NoteApp, withAuthenticator};

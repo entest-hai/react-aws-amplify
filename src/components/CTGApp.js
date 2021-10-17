@@ -38,10 +38,10 @@ import {RadioGroup} from "@material-ui/core";
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { API, totpQrcode } from 'aws-amplify';
-import {listTodos, listCTGImages} from './../graphql/queries';
+import {listTodos, listCtgImages} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
-import { createCTGImage as createCTGImageMutation, deleteCTGImage as deleteCTGImageMutation } from './../graphql/mutations';
-import { getCTGImage } from './../graphql/queries';
+import { createCtgImage as createCTGImageMutation, deleteCtgImage as deleteCTGImageMutation } from './../graphql/mutations';
+import { getCtgImage} from './../graphql/queries';
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './ctg/CTGNoteView';
@@ -330,8 +330,8 @@ const CTGRecords = () => {
     const [records, setRecords] = useState([])
 
     async function fetchCtgRecords() {
-        const apiData = await API.graphql({query: listCTGImages});
-        setRecords(apiData.data.listCTGImages.items);
+        const apiData = await API.graphql({query: listCtgImages});
+        setRecords(apiData.data.listCtgImages.items);
     }
 
     const handleDelete = async (record) => {

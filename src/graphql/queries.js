@@ -94,62 +94,9 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const getCTG = /* GraphQL */ `
-  query GetCTG($id: ID!) {
-    getCTG(id: $id) {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listCTGs = /* GraphQL */ `
-  query ListCTGs(
-    $filter: ModelCTGFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCTGs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        userId
-        username
-        mHR
-        fHR
-        acelsTime
-        acelsDuration
-        decelsTime
-        decelsDuration
-        basvar
-        baseline
-        stv
-        ctgUrl
-        ecgUrl
-        createdTime
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getCTGImage = /* GraphQL */ `
-  query GetCTGImage($id: ID!) {
-    getCTGImage(id: $id) {
+export const getCtgImage = /* GraphQL */ `
+  query GetCtgImage($id: ID!) {
+    getCtgImage(id: $id) {
       id
       ctgUrl
       ecgUrl
@@ -162,13 +109,13 @@ export const getCTGImage = /* GraphQL */ `
     }
   }
 `;
-export const listCTGImages = /* GraphQL */ `
-  query ListCTGImages(
-    $filter: ModelCTGImageFilterInput
+export const listCtgImages = /* GraphQL */ `
+  query ListCtgImages(
+    $filter: ModelCtgImageFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listCTGImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCtgImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         ctgUrl
@@ -215,15 +162,156 @@ export const listSliderValues = /* GraphQL */ `
     }
   }
 `;
-export const cTGImagesByDataset = /* GraphQL */ `
-  query CTGImagesByDataset(
-    $dataset: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelCTGImageFilterInput
+export const getCtg = /* GraphQL */ `
+  query GetCtg($id: ID!) {
+    getCtg(id: $id) {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCtgs = /* GraphQL */ `
+  query ListCtgs(
+    $filter: ModelCtgFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    CTGImagesByDataset(
+    listCtgs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPatient = /* GraphQL */ `
+  query GetPatient($id: ID!) {
+    getPatient(id: $id) {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPatients = /* GraphQL */ `
+  query ListPatients(
+    $filter: ModelPatientFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPatients(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        phone
+        address
+        doctorID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDoctor = /* GraphQL */ `
+  query GetDoctor($id: ID!) {
+    getDoctor(id: $id) {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listDoctors = /* GraphQL */ `
+  query ListDoctors(
+    $filter: ModelDoctorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDoctors(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        phone
+        address
+        department
+        hospitalID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getHospital = /* GraphQL */ `
+  query GetHospital($id: ID!) {
+    getHospital(id: $id) {
+      id
+      name
+      phone
+      address
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listHospitals = /* GraphQL */ `
+  query ListHospitals(
+    $filter: ModelHospitalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listHospitals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        phone
+        address
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const ctgImagesByDataset = /* GraphQL */ `
+  query CtgImagesByDataset(
+    $dataset: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelCtgImageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CtgImagesByDataset(
       dataset: $dataset
       sortDirection: $sortDirection
       filter: $filter

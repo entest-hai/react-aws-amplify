@@ -109,78 +109,9 @@ export const onDeleteUser = /* GraphQL */ `
     }
   }
 `;
-export const onCreateCTG = /* GraphQL */ `
-  subscription OnCreateCTG {
-    onCreateCTG {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateCTG = /* GraphQL */ `
-  subscription OnUpdateCTG {
-    onUpdateCTG {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteCTG = /* GraphQL */ `
-  subscription OnDeleteCTG {
-    onDeleteCTG {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateCTGImage = /* GraphQL */ `
-  subscription OnCreateCTGImage {
-    onCreateCTGImage {
+export const onCreateCtgImage = /* GraphQL */ `
+  subscription OnCreateCtgImage {
+    onCreateCtgImage {
       id
       ctgUrl
       ecgUrl
@@ -193,9 +124,9 @@ export const onCreateCTGImage = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateCTGImage = /* GraphQL */ `
-  subscription OnUpdateCTGImage {
-    onUpdateCTGImage {
+export const onUpdateCtgImage = /* GraphQL */ `
+  subscription OnUpdateCtgImage {
+    onUpdateCtgImage {
       id
       ctgUrl
       ecgUrl
@@ -208,9 +139,9 @@ export const onUpdateCTGImage = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteCTGImage = /* GraphQL */ `
-  subscription OnDeleteCTGImage {
-    onDeleteCTGImage {
+export const onDeleteCtgImage = /* GraphQL */ `
+  subscription OnDeleteCtgImage {
+    onDeleteCtgImage {
       id
       ctgUrl
       ecgUrl
@@ -254,6 +185,180 @@ export const onDeleteSliderValue = /* GraphQL */ `
       deviceId
       createdTime
       value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCtg = /* GraphQL */ `
+  subscription OnCreateCtg {
+    onCreateCtg {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCtg = /* GraphQL */ `
+  subscription OnUpdateCtg {
+    onUpdateCtg {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCtg = /* GraphQL */ `
+  subscription OnDeleteCtg {
+    onDeleteCtg {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePatient = /* GraphQL */ `
+  subscription OnCreatePatient {
+    onCreatePatient {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePatient = /* GraphQL */ `
+  subscription OnUpdatePatient {
+    onUpdatePatient {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePatient = /* GraphQL */ `
+  subscription OnDeletePatient {
+    onDeletePatient {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateDoctor = /* GraphQL */ `
+  subscription OnCreateDoctor {
+    onCreateDoctor {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateDoctor = /* GraphQL */ `
+  subscription OnUpdateDoctor {
+    onUpdateDoctor {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteDoctor = /* GraphQL */ `
+  subscription OnDeleteDoctor {
+    onDeleteDoctor {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateHospital = /* GraphQL */ `
+  subscription OnCreateHospital {
+    onCreateHospital {
+      id
+      name
+      phone
+      address
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateHospital = /* GraphQL */ `
+  subscription OnUpdateHospital {
+    onUpdateHospital {
+      id
+      name
+      phone
+      address
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteHospital = /* GraphQL */ `
+  subscription OnDeleteHospital {
+    onDeleteHospital {
+      id
+      name
+      phone
+      address
       createdAt
       updatedAt
     }

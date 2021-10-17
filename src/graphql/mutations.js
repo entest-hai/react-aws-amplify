@@ -136,90 +136,12 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
-export const createCTG = /* GraphQL */ `
-  mutation CreateCTG(
-    $input: CreateCTGInput!
-    $condition: ModelCTGConditionInput
+export const createCtgImage = /* GraphQL */ `
+  mutation CreateCtgImage(
+    $input: CreateCtgImageInput!
+    $condition: ModelCtgImageConditionInput
   ) {
-    createCTG(input: $input, condition: $condition) {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateCTG = /* GraphQL */ `
-  mutation UpdateCTG(
-    $input: UpdateCTGInput!
-    $condition: ModelCTGConditionInput
-  ) {
-    updateCTG(input: $input, condition: $condition) {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteCTG = /* GraphQL */ `
-  mutation DeleteCTG(
-    $input: DeleteCTGInput!
-    $condition: ModelCTGConditionInput
-  ) {
-    deleteCTG(input: $input, condition: $condition) {
-      id
-      userId
-      username
-      mHR
-      fHR
-      acelsTime
-      acelsDuration
-      decelsTime
-      decelsDuration
-      basvar
-      baseline
-      stv
-      ctgUrl
-      ecgUrl
-      createdTime
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createCTGImage = /* GraphQL */ `
-  mutation CreateCTGImage(
-    $input: CreateCTGImageInput!
-    $condition: ModelCTGImageConditionInput
-  ) {
-    createCTGImage(input: $input, condition: $condition) {
+    createCtgImage(input: $input, condition: $condition) {
       id
       ctgUrl
       ecgUrl
@@ -232,12 +154,12 @@ export const createCTGImage = /* GraphQL */ `
     }
   }
 `;
-export const updateCTGImage = /* GraphQL */ `
-  mutation UpdateCTGImage(
-    $input: UpdateCTGImageInput!
-    $condition: ModelCTGImageConditionInput
+export const updateCtgImage = /* GraphQL */ `
+  mutation UpdateCtgImage(
+    $input: UpdateCtgImageInput!
+    $condition: ModelCtgImageConditionInput
   ) {
-    updateCTGImage(input: $input, condition: $condition) {
+    updateCtgImage(input: $input, condition: $condition) {
       id
       ctgUrl
       ecgUrl
@@ -250,12 +172,12 @@ export const updateCTGImage = /* GraphQL */ `
     }
   }
 `;
-export const deleteCTGImage = /* GraphQL */ `
-  mutation DeleteCTGImage(
-    $input: DeleteCTGImageInput!
-    $condition: ModelCTGImageConditionInput
+export const deleteCtgImage = /* GraphQL */ `
+  mutation DeleteCtgImage(
+    $input: DeleteCtgImageInput!
+    $condition: ModelCtgImageConditionInput
   ) {
-    deleteCTGImage(input: $input, condition: $condition) {
+    deleteCtgImage(input: $input, condition: $condition) {
       id
       ctgUrl
       ecgUrl
@@ -308,6 +230,216 @@ export const deleteSliderValue = /* GraphQL */ `
       deviceId
       createdTime
       value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createCtg = /* GraphQL */ `
+  mutation CreateCtg(
+    $input: CreateCtgInput!
+    $condition: ModelCtgConditionInput
+  ) {
+    createCtg(input: $input, condition: $condition) {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateCtg = /* GraphQL */ `
+  mutation UpdateCtg(
+    $input: UpdateCtgInput!
+    $condition: ModelCtgConditionInput
+  ) {
+    updateCtg(input: $input, condition: $condition) {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteCtg = /* GraphQL */ `
+  mutation DeleteCtg(
+    $input: DeleteCtgInput!
+    $condition: ModelCtgConditionInput
+  ) {
+    deleteCtg(input: $input, condition: $condition) {
+      id
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPatient = /* GraphQL */ `
+  mutation CreatePatient(
+    $input: CreatePatientInput!
+    $condition: ModelPatientConditionInput
+  ) {
+    createPatient(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePatient = /* GraphQL */ `
+  mutation UpdatePatient(
+    $input: UpdatePatientInput!
+    $condition: ModelPatientConditionInput
+  ) {
+    updatePatient(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePatient = /* GraphQL */ `
+  mutation DeletePatient(
+    $input: DeletePatientInput!
+    $condition: ModelPatientConditionInput
+  ) {
+    deletePatient(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      doctorID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createDoctor = /* GraphQL */ `
+  mutation CreateDoctor(
+    $input: CreateDoctorInput!
+    $condition: ModelDoctorConditionInput
+  ) {
+    createDoctor(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateDoctor = /* GraphQL */ `
+  mutation UpdateDoctor(
+    $input: UpdateDoctorInput!
+    $condition: ModelDoctorConditionInput
+  ) {
+    updateDoctor(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteDoctor = /* GraphQL */ `
+  mutation DeleteDoctor(
+    $input: DeleteDoctorInput!
+    $condition: ModelDoctorConditionInput
+  ) {
+    deleteDoctor(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      department
+      hospitalID
+      Patients {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createHospital = /* GraphQL */ `
+  mutation CreateHospital(
+    $input: CreateHospitalInput!
+    $condition: ModelHospitalConditionInput
+  ) {
+    createHospital(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateHospital = /* GraphQL */ `
+  mutation UpdateHospital(
+    $input: UpdateHospitalInput!
+    $condition: ModelHospitalConditionInput
+  ) {
+    updateHospital(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteHospital = /* GraphQL */ `
+  mutation DeleteHospital(
+    $input: DeleteHospitalInput!
+    $condition: ModelHospitalConditionInput
+  ) {
+    deleteHospital(input: $input, condition: $condition) {
+      id
+      name
+      phone
+      address
       createdAt
       updatedAt
     }

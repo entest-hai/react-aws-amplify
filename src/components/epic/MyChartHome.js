@@ -36,7 +36,7 @@ const MyChartHome = () => {
                         setPatientInfor("ERROR fetch patient infor")
                         console.log(error.stack)
                     }
-                )
+                ) 
             })
 
 
