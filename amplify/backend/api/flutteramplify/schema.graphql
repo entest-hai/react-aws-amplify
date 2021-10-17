@@ -19,26 +19,8 @@ type User @model {
   description: String
 }
 
-type CTG @model {
-  id: ID!
-  userId: ID!
-  username: String!
-  mHR: [Float]!
-  fHR: [Float]!
-  acelsTime: [Float]
-  acelsDuration: [Float]
-  decelsTime: [Float]
-  decelsDuration: [Float]
-  basvar: Float
-  baseline: [Float]
-  stv: Float
-  ctgUrl: String
-  ecgUrl: String
-  createdTime: AWSTimestamp!
-}
-
-type CTGImage @model 
-  @key(name: "CTGImagesByDataset", fields: ["dataset"], queryField: "CTGImagesByDataset" ) {
+type CtgImage @model 
+  @key(name: "CtgImagesByDataset", fields: ["dataset"], queryField: "CtgImagesByDataset" ) {
   id: ID! 
   ctgUrl: String
   ecgUrl: String
@@ -48,9 +30,51 @@ type CTGImage @model
   createdTime: AWSTimestamp!
 }
 
+
 type SliderValue @model 
   @key(name: "SliderValueByCreatedTime", fields: ["deviceId","createdTime"], queryField: "SliderValueByCreatedTime") {
   deviceId: ID!
   createdTime: AWSTimestamp! 
   value: Float
 }
+
+
+type Ctg @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "byDoctor", fields: ["doctorID"]) @key(name: "byPatient", fields: ["patientID"]) {
+  id: ID! 
+  ctgUrl: String
+  ecgUrl: String
+  comment: String 
+  patientID: ID 
+  doctorID: ID
+  hospitalID: ID 
+  createdTime: AWSTimestamp!
+}
+
+
+type Patient @model @auth(rules: [{allow: public}]) @key(name: "byDoctor", fields: ["doctorID"]) {
+  id: ID!
+  name: String
+  phone: String
+  address: String
+  doctorID: ID
+}
+
+type Doctor @model @auth(rules: [{allow: public}]) @key(name: "byHospital", fields: ["hospitalID"]) {
+  id: ID!
+  name: String
+  phone: String
+  address: String
+  department: String
+  hospitalID: ID
+  Patients: [Patient] @connection(keyName: "byDoctor", fields: ["id"])
+}
+
+type Hospital @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  phone: String
+  address: String
+}
+
+
+

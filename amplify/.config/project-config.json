@@ -2,7 +2,7 @@
   "providers": [
     "awscloudformation"
   ],
-  "projectName": "flutteramplify",
+  "projectName": "reactawsamplify",
   "version": "3.0",
   "frontend": "javascript",
   "javascript": {
