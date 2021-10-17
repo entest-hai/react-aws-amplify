@@ -5,7 +5,9 @@
 //********************************************************************************************************************/
 // Update |  Date             | Author             | Content 
 //********************************************************************************************************************/
-// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
+// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header
+//********************************************************************************************************************/
+// 002.   |  18 OCT 2021.     | TRAN MINH HAI      | - Query patient given doctor id
 //=====================================================================================================================
 import React, {useEffect, useState} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -37,8 +39,8 @@ import Radio from '@material-ui/core/Radio';
 import {RadioGroup} from "@material-ui/core";
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { API, totpQrcode } from 'aws-amplify';
-import {listTodos, listCtgImages, listCtgs} from './../graphql/queries';
+import {API, Auth, totpQrcode} from 'aws-amplify';
+import {listTodos, listCtgImages, listCtgs, getUser, getDoctor} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
 import { createCtg as createCTGImageMutation, deleteCtg as deleteCTGImageMutation } from './../graphql/mutations';
 import { getCtgImage} from './../graphql/queries';
@@ -56,6 +58,30 @@ import {useScript} from "./epic/useScript";
 import {MyChartHome} from "./epic/MyChartHome";
 
 const drawerWidth = 240
+
+const listCtgsByDoctorID = `
+  query ListCtgsByDoctorID(
+    $filter: ModelCtgFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCtgs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -176,6 +202,19 @@ const CTGAppLayout = ({children}) => {
     const [logoutMoreAnchorEl, setLogoutMoreAnchorEl] = useState(null)
     const isLogoutMenuOpen = Boolean(logoutMoreAnchorEl)
     const [open, setOpen] = useState(false)
+    const [userName, setUserName] = useState("Biorithm")
+    const [userID, setUserID] = useState(null)
+    const [doctorName, setDoctorName] = useState("Biorithm")
+    const [hospitalName, setHospitalName] = useState(null)
+
+    useEffect(async () => {
+        let user = await Auth.currentAuthenticatedUser();
+        setUserName(user.username);
+        setUserID(user.attributes.sub);
+        const apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
+        console.log(apiData.data.getDoctor.name)
+        setDoctorName(apiData.data.getDoctor.name)
+    })
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -261,12 +300,12 @@ const CTGAppLayout = ({children}) => {
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    Biorithm
+                    {doctorName}
                 </Typography>
                 <Avatar
                  className={classes.avatar}
                  onClick={handleLogoutMenuOpen}
-                 >H </Avatar>
+                 >{ doctorName[4].toUpperCase() == "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase() } </Avatar>
             </Toolbar>
         </AppBar>
         <Drawer
@@ -316,7 +355,19 @@ const CTGAppLayout = ({children}) => {
 }
 
 
-const CTGRecords = () => {
+const CTGRecords = ({match}) => {
+
+    const [userID, setUserID] = useState(null)
+    const [userName, setUserName] = useState(null)
+    const [userEmail, setUserEmail] = useState(null)
+
+    async function fetchUserAttribute() {
+        let user = await Auth.currentAuthenticatedUser();
+        setUserID(user.attributes.sub)
+        setUserName(user.attributes.username)
+        setUserEmail(user.attributes.email)
+        console.log(userID)
+    }
 
     useScript('fhir-client.js')
 
@@ -330,8 +381,15 @@ const CTGRecords = () => {
     const [records, setRecords] = useState([])
 
     async function fetchCtgRecords() {
-        const apiData = await API.graphql({query: listCtgs});
+        await fetchUserAttribute()
+        let filter = {
+            doctorID: {
+                eq: String(userID)
+            }
+        }
+        const apiData = await API.graphql({query: listCtgsByDoctorID, variables: {filter: filter}});
         setRecords(apiData.data.listCtgs.items);
+        console.log(apiData.data.listCtgs.items);
     }
 
     const handleDelete = async (record) => {
@@ -343,7 +401,7 @@ const CTGRecords = () => {
     }
 
     useEffect(async () => {
-        let isMounted = true; 
+        let isMounted = true;
         await fetchCtgRecords();
         return () => {
             isMounted = false; 

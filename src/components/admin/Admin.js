@@ -13,6 +13,9 @@
 // 4. Update Hospital, Doctor, Patient, Ctg model, relation, and correct their names
 // 5. Update CtgRecords view and CtgRecordNote view which write to Ctg table
 // 6. Add more test user group, doctor user group and patient user group from Amplify CLI
+// 7. AdminSub: 380e5cfa-9607-4796-8f78-4ed6c701acd0, email: htranminhhai20@gmail.com, username: admin
+// 8. username: biorithm, sub: 0089ab02-ee04-48b1-bc4e-5e8f06397077, email: hai@bio-rithm.com
+// 9. username: hai, sub: 0f150cec-842f-43a0-9f89-ab06625e832a, email: hai@bio-rithm.com
 //=====================================================================================================================
 import React, {useEffect, useState} from "react";
 import {LoginPage} from "./LoginPage";
@@ -21,6 +24,8 @@ import { Admin, } from "react-admin";
 import { Resource } from "react-admin";
 import * as mutations from "./../../graphql/mutations";
 import * as queries from "./../../graphql/queries";
+import { Auth } from 'aws-amplify';
+
 import {
     buildAuthProvider,
     buildDataProvider,
@@ -62,15 +67,6 @@ const dataProvider = buildDataProvider({
 })
 
 const AdminPage = () => {
-    console.log(awsExports);
-    useEffect(async () => {
-        console.log("query users");
-        const userData = await API.graphql({
-        query: listHeartRates
-      });
-      console.log(userData);
-    })
-
     return (
     <Admin
       authProvider={authProvider}

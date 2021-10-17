@@ -31,6 +31,8 @@ import {MyChartAuth} from "./components/epic/MyChartAuth";
 import {MyChartHome} from "./components/epic/MyChartHome";
 import {OpenFhirServer} from "./components/epic/OpenFhirServer";
 import {AdminPage} from "./components/admin/Admin";
+import {useEffect, useState} from "react";
+import {Auth} from "aws-amplify";
 
 const theme = createTheme({
     palette: {
@@ -64,6 +66,22 @@ function NoteApp() {
 
 
 function CTGApp() {
+
+    const [userID, setUserID] = useState(null)
+    const [userName, setUserName] = useState(null)
+    const [userEmail, setUserEmail] = useState(null)
+
+    useEffect(async () => {
+        let user = await Auth.currentAuthenticatedUser();
+        console.log(user.username);
+        console.log(user.attributes.sub);
+        console.log(user.attributes.email);
+        setUserID(user.attributes.sub)
+        setUserName(user.attributes.username)
+        setUserEmail(user.attributes.email)
+    })
+
+
     return (
        <Router>
            <CTGAppLayout>
@@ -71,10 +89,10 @@ function CTGApp() {
                    <Route exact path={"/admin"}>
                        <AdminPage></AdminPage>
                    </Route>
-                   <Route exact path={"/"}>
+                   <Route exact path={"/"} component={CTGRecords}>
                        {/*<OpenFhirServer></OpenFhirServer>*/}
                        {/*<MyChartHome></MyChartHome>*/}
-                       <CTGRecords></CTGRecords>
+                       {/*<CTGRecords></CTGRecords>*/}
                    </Route>
                    <Route path={"/ctg"}>
                        <CTGNoteView 
