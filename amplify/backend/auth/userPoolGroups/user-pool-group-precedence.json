@@ -2,5 +2,17 @@
     {
         "groupName": "Admin",
         "precedence": 1
+    },
+    {
+        "groupName": "TestUser",
+        "precedence": 2
+    },
+    {
+        "groupName": "DoctorUser",
+        "precedence": 3
+    },
+    {
+        "groupName": "PatientUser",
+        "precedence": 4
     }
 ]
