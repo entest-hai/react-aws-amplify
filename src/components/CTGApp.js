@@ -38,9 +38,9 @@ import {RadioGroup} from "@material-ui/core";
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { API, totpQrcode } from 'aws-amplify';
-import {listTodos, listCtgImages} from './../graphql/queries';
+import {listTodos, listCtgImages, listCtgs} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
-import { createCtgImage as createCTGImageMutation, deleteCtgImage as deleteCTGImageMutation } from './../graphql/mutations';
+import { createCtg as createCTGImageMutation, deleteCtg as deleteCTGImageMutation } from './../graphql/mutations';
 import { getCtgImage} from './../graphql/queries';
 import { ListItemAvatar } from '@material-ui/core';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
@@ -330,8 +330,8 @@ const CTGRecords = () => {
     const [records, setRecords] = useState([])
 
     async function fetchCtgRecords() {
-        const apiData = await API.graphql({query: listCtgImages});
-        setRecords(apiData.data.listCtgImages.items);
+        const apiData = await API.graphql({query: listCtgs});
+        setRecords(apiData.data.listCtgs.items);
     }
 
     const handleDelete = async (record) => {
@@ -374,7 +374,7 @@ const CTGRecordNote = ({record, handleDelete}) => {
     const classes1 = makeStyles({
         avatar: {
             backgroundColor: (record) => {
-                if (record.username[0].toUpperCase() == "H") {
+                if (record.id[0].toUpperCase() == "H") {
                     return pink[500]
                 }
                 return blue[500]
@@ -388,7 +388,7 @@ const CTGRecordNote = ({record, handleDelete}) => {
                 <CardHeader
                     avatar={
                         <Avatar className={classes1.avatar}>
-                            {record.username[0].toUpperCase()}
+                            {record.id[0].toUpperCase()}
                         </Avatar>
                     }
                     action={
@@ -399,7 +399,7 @@ const CTGRecordNote = ({record, handleDelete}) => {
                             </DeleteOutlined>
                         </IconButton>
                     }
-                    title={record.username}
+                    title={record.id}
                     subheader={record.ctgUrl}
                 >
                 </CardHeader>
@@ -468,8 +468,6 @@ const CreateCTGNote = () => {
         await API.graphql({ query: createCTGImageMutation, variables: { input: {
             ctgUrl: details,
             ecgUrl: "s3://biorithm-testing-data/log/STG045A_raw/STG045A_raw_ctg.png",
-            dataset: "stg",
-            username: patientId,
             createdTime: 10}}});
     }
 
