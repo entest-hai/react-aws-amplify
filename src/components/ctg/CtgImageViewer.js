@@ -1,5 +1,6 @@
 // 19 OCT 2021 TRAN MINH HAI
 // CtgImageViewer
+// TODO: handle image size > screen size when loading the image
 import {
   AutocompleteInput,
   Create,
@@ -33,8 +34,10 @@ import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
 const CtgImageViewer = () => {
     const scale = 1.1
     const ctgImageHeight = 500
+
     const classes = makeStyles({
         container: {
+            maxWidth:window.screen.width-350,
             backgroundColor: "grey",
             padding: 0,
         }
@@ -43,12 +46,16 @@ const CtgImageViewer = () => {
     const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
     const [showImage, setShowImage] = useState(true)
 
-    const getImageSize  = () => {
-        setImage(document.getElementById("image123"))
+    const getImageSize  = async () => {
+        let ctgImage = document.getElementById("image123")
+        await setImage(ctgImage)
+        console.log(ctgImage.width, ctgImage.height)
+        console.log(window.screen.width)
+        // scale image if screen width < image width
+        // setImageStyle({height: 'auto', width: '100%'})
    }
 
     const zoomInHandle = () => {
-        console.log("zoom in image", image.height, image.width)
         setImageStyle({height: scale * image.height, width: 'auto'})
     }
 
@@ -61,28 +68,28 @@ const CtgImageViewer = () => {
     }
 
     return (
-         <Container maxWidth={'xl'} className={classes.container}>
-            <Card>
-            <CardMedia>
-                <Paper style={{overflow:'auto'}} elevation={0}>
-                    {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"} style={imageStyle}/> :
-                    <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                </Paper>
-            </CardMedia>
-            <CardActions>
-                <IconButton
-                    onClick={zoomInHandle}>
-                    <ZoomIn></ZoomIn>
-                </IconButton>
-                <IconButton
-                    onClick={zoomOutHandle}>
-                    <ZoomOutRounded></ZoomOutRounded>
-                </IconButton>
-                <Button
-                    onClick={defaultHandle}>
-                    Default
-                </Button>
-            </CardActions>
+         <Container className={classes.container}>
+            <Card elevation={0}>
+                <CardMedia>
+                    <Paper style={{overflow:'auto'}} elevation={0}>
+                        {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"} style={imageStyle}/> :
+                        <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
+                    </Paper>
+                </CardMedia>
+                <CardActions>
+                    <IconButton
+                        onClick={zoomInHandle}>
+                        <ZoomIn></ZoomIn>
+                    </IconButton>
+                    <IconButton
+                        onClick={zoomOutHandle}>
+                        <ZoomOutRounded></ZoomOutRounded>
+                    </IconButton>
+                    <Button
+                        onClick={defaultHandle}>
+                        Default
+                    </Button>
+                </CardActions>
         </Card>
         </Container>
     )
