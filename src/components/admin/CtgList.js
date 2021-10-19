@@ -27,6 +27,7 @@ import Card from "@material-ui/core/Card";
 import {makeStyles} from "@material-ui/core/styles";
 import CardActions from "@material-ui/core/CardActions";
 import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
+import {CtgImageViewer} from "../ctg/CtgImageViewer";
 
 const CtgList = (props) => {
     // console.log(props)
@@ -58,14 +59,17 @@ const CtgList = (props) => {
 
 const CtgShow = (props) => {
     const scale = 1.1
+    const ctgImageHeight = 500
     const [image, setimage] = useState(null)
     const [width, setWidth] = useState(null)
     const [height, setHeight] = useState(null)
-
-    const ctgImageHeight = 400
     const [showImage, setShowImage] = useState(true)
     const classes = makeStyles((theme) => {
         return {
+            container: {
+            padding: 0,
+            height: ctgImageHeight
+        },
             media: {
                 height: ctgImageHeight,
                 overflow: "auto"
@@ -122,31 +126,7 @@ const CtgShow = (props) => {
                 <TextField source={"ctgUrl"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                <Container maxWidth={"lg"} >
-                    <Card>
-                    <CardMedia className={classes.media}>
-                        <Paper style={{overflow:'auto'}} elevation={4}>
-                            {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> :
-                            <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                        </Paper>
-                    </CardMedia>
-                    <CardActions>
-                        <IconButton
-                            onClick={zoomInHandle}>
-                            <ZoomIn></ZoomIn>
-                        </IconButton>
-                        <IconButton
-                            onClick={zoomOutHandle}>
-                            <ZoomOutRounded></ZoomOutRounded>
-                        </IconButton>
-                        <Button
-                            // variant={"contained"}
-                            onClick={defaultHandle}>
-                            Default
-                        </Button>
-                    </CardActions>
-                </Card>
-                </Container>
+                <CtgImageViewer></CtgImageViewer>
             </SimpleShowLayout>
         </Show>
     )

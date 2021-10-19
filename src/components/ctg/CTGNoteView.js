@@ -35,7 +35,6 @@ const CTGNoteView = ({ctgRecord}) => {
     const [image, setimage] = useState(null)
     const [width, setWidth] = useState(null)
     const [height, setHeight] = useState(null)
-
     const ctgImageHeight = 400
     const [showImage, setShowImage] = useState(true)
 

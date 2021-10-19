@@ -33,6 +33,7 @@ import {OpenFhirServer} from "./components/epic/OpenFhirServer";
 import {AdminPage} from "./components/admin/Admin";
 import {useEffect, useState} from "react";
 import {Auth} from "aws-amplify";
+import {CtgImageViewer} from "./components/ctg/CtgImageViewer";
 
 const theme = createTheme({
     palette: {
@@ -89,7 +90,7 @@ function CTGApp() {
                    <Route exact path={"/admin"}>
                        <AdminPage></AdminPage>
                    </Route>
-                   <Route exact path={"/"} component={CTGRecords}>
+                   <Route exact path={"/"} component={CtgImageViewer}>
                        {/*<OpenFhirServer></OpenFhirServer>*/}
                        {/*<MyChartHome></MyChartHome>*/}
                        {/*<CTGRecords></CTGRecords>*/}

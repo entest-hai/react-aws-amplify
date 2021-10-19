@@ -212,8 +212,11 @@ const CTGAppLayout = ({children}) => {
         setUserName(user.username);
         setUserID(user.attributes.sub);
         const apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
-        console.log(apiData.data.getDoctor.name)
-        setDoctorName(apiData.data.getDoctor.name)
+        try {
+            setDoctorName(apiData.data.getDoctor.name)
+        } catch (error){
+            setDoctorName("Admin")
+        }
     })
 
     const handleDrawerOpen = () => {
