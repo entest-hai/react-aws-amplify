@@ -314,12 +314,12 @@ const CTGAppLayout = ({children}) => {
                     Today is the {format(new Date(), 'do MMM Y')} 
                 </Typography>
                 <Typography>
-                    {doctorName}
+                    {doctorName ? doctorName : userName}
                 </Typography>
                 <Avatar
                  className={classes.avatar}
                  onClick={handleLogoutMenuOpen}
-                 >{ doctorName[4].toUpperCase() == "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase() } </Avatar>
+                 >{ doctorName ? (doctorName[4].toUpperCase() == "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase()) :  (userName[4].toUpperCase() == "." ? userName[6].toUpperCase() : userName[4].toUpperCase())} </Avatar>
             </Toolbar>
         </AppBar>
         <Drawer
