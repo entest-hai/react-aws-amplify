@@ -11,6 +11,12 @@
 // it also get the return token or code from redirected url.
 //********************************************************************************************************************/
 // 001.   |  30 SEP 2021.     | TRAN MINH HAI      | - test open FHIR server
+//********************************************************************************************************************/
+// 002.   |  21 OCT 2021.     | TRAN MINH HAI      | -
+// Add UserSessionService shared between components
+// TODO: separate admin and users resources path
+//********************************************************************************************************************/
+// 001.   |  30 SEP 2021.     | TRAN MINH HAI      | - test open FHIR server
 //=====================================================================================================================
 import logo from './logo.svg';
 import './App.css';
@@ -35,6 +41,8 @@ import {useEffect, useState} from "react";
 import {Auth} from "aws-amplify";
 import {CtgImageViewer} from "./components/ctg/CtgImageViewer";
 import {CtgCreateNote} from "./components/ctg/CtgCreateNote";
+import {ProtectedRouteTest} from "./components/test/ProtectedRouteTest";
+import {ProtectedComponent} from "./components/test/ProtectedComponent";
 
 const theme = createTheme({
     palette: {
@@ -88,9 +96,10 @@ function CTGApp() {
        <Router>
            {/*<CTGAppLayout>*/}
                <Switch>
-                   <Route path={"/admin"}>
-                        <AdminPage></AdminPage>
-                    </Route>
+                    <ProtectedRouteTest path={"/admin"} component={ProtectedComponent} requiredRole={"admin"}></ProtectedRouteTest>
+                   {/*<Route path={"/admin"}>*/}
+                   {/*     <AdminPage></AdminPage>*/}
+                   {/* </Route>*/}
                    {/*<Route exact path={"/admin"}>*/}
                    {/*    <AdminPage></AdminPage>*/}
                    {/*</Route>*/}
