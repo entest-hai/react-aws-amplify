@@ -90,10 +90,10 @@ function CTGApp() {
                    <Route exact path={"/admin"}>
                        <AdminPage></AdminPage>
                    </Route>
-                   <Route exact path={"/"} component={CtgImageViewer}>
+                   <Route exact path={"/"}>
                        {/*<OpenFhirServer></OpenFhirServer>*/}
                        {/*<MyChartHome></MyChartHome>*/}
-                       {/*<CTGRecords></CTGRecords>*/}
+                       <CTGRecords></CTGRecords>
                    </Route>
                    <Route path={"/ctg"}>
                        <CTGNoteView 

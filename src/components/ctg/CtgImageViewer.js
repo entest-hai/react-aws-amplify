@@ -51,8 +51,6 @@ const CtgImageViewer = () => {
         await setImage(ctgImage)
         console.log(ctgImage.width, ctgImage.height)
         console.log(window.screen.width)
-        // scale image if screen width < image width
-        // setImageStyle({height: 'auto', width: '100%'})
    }
 
     const zoomInHandle = () => {

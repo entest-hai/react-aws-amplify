@@ -29,19 +29,22 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { CloudCircle, ZoomIn, ZoomOut, ZoomOutRounded, ZoomOutSharp } from '@material-ui/icons';
 import CardActions from '@material-ui/core/CardActions';
+import {CtgImageViewer} from "./CtgImageViewer";
 
 const CTGNoteView = ({ctgRecord}) => {
     const scale = 1.1 
     const [image, setimage] = useState(null)
     const [width, setWidth] = useState(null)
     const [height, setHeight] = useState(null)
-    const ctgImageHeight = 400
+    const ctgImageHeight = 600
     const [showImage, setShowImage] = useState(true)
 
     const classes = makeStyles((theme) => {
         return {
             // toolbar: theme.mixins.toolbar,
             searchForm: {
+                maxWidth:window.screen.width-350,
+                padding: 0,
                 display: "flex"
             },
             input: {
@@ -67,7 +70,12 @@ const CTGNoteView = ({ctgRecord}) => {
                 marginTop: 12,
                 paddingLeft:20,
                 color: 'error'
-            }
+            },
+            container: {
+            maxWidth:window.screen.width-350,
+            backgroundColor: "grey",
+            padding: 0,
+        }
         }
     })()
 
@@ -104,34 +112,9 @@ const CTGNoteView = ({ctgRecord}) => {
 
     return (
         <div>
-            <Container maxWidth={"lg"}>
-                <Card>
-                    <CardMedia className={classes.media}>
-                        <Paper style={{overflow:'auto'}} elevation={4}>
-                            {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> : 
-                            <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                        </Paper>
-                    </CardMedia>
-                    <CardActions>
-                        <IconButton
-                            onClick={zoomInHandle}>
-                            <ZoomIn></ZoomIn>
-                        </IconButton>
-                        <IconButton
-                            onClick={zoomOutHandle}>
-                            <ZoomOutRounded></ZoomOutRounded>
-                        </IconButton>
-                        <Button 
-                            // variant={"contained"}
-                            onClick={defaultHandle}>
-                            Default
-                        </Button>
-                    </CardActions>
-                </Card>
-            </Container>
-            
-            <Container className={classes.searchForm} maxWidth={"lg"}>
-            <TextField
+            <CtgImageViewer></CtgImageViewer>
+            <Container className={classes.searchForm}>
+             <TextField
                     disabled
                     rows={1}
                     variant={"outlined"}
@@ -144,7 +127,7 @@ const CTGNoteView = ({ctgRecord}) => {
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
-                              <IconButton 
+                              <IconButton
                                 onClick={() =>{
                                     setShowImage(true)
                                 }}>
@@ -156,7 +139,7 @@ const CTGNoteView = ({ctgRecord}) => {
                 >
                 </TextField>
             </Container>
-            <Container className={classes.searchForm} maxWidth={"lg"}> 
+            <Container className={classes.searchForm}>
                 <TextField
                     disabled
                     multiline
@@ -168,23 +151,99 @@ const CTGNoteView = ({ctgRecord}) => {
                 >
                 </TextField>
             </Container>
-            <Container>
+            <Container className={classes.searchForm}>
                 <Button
                     disabled={true}
                     className={classes.saveButton}
                     type="submit"
                     color="primary"
                     variant="contained">
-                    Save 
+                    Save
                 </Button>
             </Container>
-            <Typography
-                className={classes.permissionText}
-                color="secondary"
-            >
-                Only admin is allowed to edit this information
-            </Typography>
         </div>
+        // <div>
+        //     <Container maxWidth={"xl"}>
+        //         <Card>
+        //             <CardMedia className={classes.media}>
+        //                 <Paper style={{overflow:'auto'}} elevation={4}>
+        //                     {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> :
+        //                     <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
+        //                 </Paper>
+        //             </CardMedia>
+        //             <CardActions>
+        //                 <IconButton
+        //                     onClick={zoomInHandle}>
+        //                     <ZoomIn></ZoomIn>
+        //                 </IconButton>
+        //                 <IconButton
+        //                     onClick={zoomOutHandle}>
+        //                     <ZoomOutRounded></ZoomOutRounded>
+        //                 </IconButton>
+        //                 <Button
+        //                     // variant={"contained"}
+        //                     onClick={defaultHandle}>
+        //                     Default
+        //                 </Button>
+        //             </CardActions>
+        //         </Card>
+        //     </Container>
+        //
+        //     <Container className={classes.searchForm} maxWidth={"xl"}>
+        //     <TextField
+        //             disabled
+        //             rows={1}
+        //             variant={"outlined"}
+        //             color={"primary"}
+        //             className={classes.textField}
+        //             placeholder={ctgRecord.username ?? "patient name"}
+        //             onChange={(event) => {
+        //                 console.log(event.target.value)
+        //             }}
+        //             InputProps={{
+        //                 endAdornment: (
+        //                     <InputAdornment position="end">
+        //                       <IconButton
+        //                         onClick={() =>{
+        //                             setShowImage(true)
+        //                         }}>
+        //                           <SearchIcon></SearchIcon>
+        //                       </IconButton>
+        //                     </InputAdornment>
+        //                   ),
+        //             }}
+        //         >
+        //         </TextField>
+        //     </Container>
+        //     <Container className={classes.searchForm} maxWidth={"xl"}>
+        //         <TextField
+        //             disabled
+        //             multiline
+        //             rows={7}
+        //             variant={"outlined"}
+        //             color={"primary"}
+        //             className={classes.textField}
+        //             placeholder={ctgRecord.ctgUrl ?? "comments from doctor"}
+        //         >
+        //         </TextField>
+        //     </Container>
+        //     <Container>
+        //         <Button
+        //             disabled={true}
+        //             className={classes.saveButton}
+        //             type="submit"
+        //             color="primary"
+        //             variant="contained">
+        //             Save
+        //         </Button>
+        //     </Container>
+        //     <Typography
+        //         className={classes.permissionText}
+        //         color="secondary"
+        //     >
+        //         Only admin is allowed to edit this information
+        //     </Typography>
+        // </div>
     )
 }
 
