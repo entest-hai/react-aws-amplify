@@ -5,7 +5,7 @@ import {AdminPage} from "../admin/Admin";
 
 const ProtectedRouteTest = ({path,component,render,requiredRole,...rest}) => {
 
-    const [adminAuthenticated, setAdminAuthenticated] = useState(false)
+    const [adminAuthenticated, setAdminAuthenticated] = useState(null)
 
     useEffect(async () => {
         await UserSessionService.getUserSession()
@@ -17,7 +17,10 @@ const ProtectedRouteTest = ({path,component,render,requiredRole,...rest}) => {
             path={path}
             {...rest}
             render={props => {
-                if (adminAuthenticated){
+                if(adminAuthenticated == null){
+
+                }
+                else if (adminAuthenticated){
                     return (<AdminPage></AdminPage>)
                 } else {
                     return (<h1>Error this route is not allowed to users</h1>)
