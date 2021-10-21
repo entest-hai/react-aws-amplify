@@ -86,18 +86,22 @@ function CTGApp() {
 
     return (
        <Router>
-           <CTGAppLayout>
+           {/*<CTGAppLayout>*/}
                <Switch>
-                   <Route exact path={"/admin"}>
-                       <AdminPage></AdminPage>
-                   </Route>
-                   <Route exact path={"/"}>
+                   <Route path={"/admin"}>
+                        <AdminPage></AdminPage>
+                    </Route>
+                   {/*<Route exact path={"/admin"}>*/}
+                   {/*    <AdminPage></AdminPage>*/}
+                   {/*</Route>*/}
+                   <CTGAppLayout>
+                       <Route exact path={"/"}>
                        {/*<OpenFhirServer></OpenFhirServer>*/}
                        {/*<MyChartHome></MyChartHome>*/}
                        <CTGRecords></CTGRecords>
                    </Route>
                    <Route path={"/ctg"}>
-                       <CTGNoteView 
+                       <CTGNoteView
                             ctgRecord={{username:"patient id",ctgUrl:"doctor comments"}}>
                         </CTGNoteView>
                    </Route>
@@ -119,8 +123,9 @@ function CTGApp() {
                    <Route path={"/openfhir"}>
                        <OpenFhirServer></OpenFhirServer>
                    </Route>
+                   </CTGAppLayout>
                </Switch>
-           </CTGAppLayout>
+           {/*</CTGAppLayout>*/}
        </Router>
     )
 }

@@ -1,3 +1,6 @@
+// 21 OCT 2021 TRAN MINH HAI
+// use UserSessionService test
+
 import {useHistory} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
@@ -12,6 +15,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import {KeyboardArrowRight} from "@material-ui/icons";
+import {UserSessionService} from "../../services/UserSessionService";
 
 const CtgCreateNote = () => {
 
@@ -62,28 +66,29 @@ const CtgCreateNote = () => {
     // TODO: search patient ID and clean things here
     // since doctorID and hostpitalID given from authenticated session
     async function writeCtgRecordToDB() {
-        var doctorID = null
-        var hospitalID = null
-        try {
-            let user = await Auth.currentAuthenticatedUser();
-            doctorID = String(user.attributes.sub)
-            console.log(doctorID)
-            try {
-                let doctor = await API.graphql({query: getDoctor, variables:{id: user.attributes.sub}})
-                hospitalID = String(doctor.data.getDoctor.hospitalID);
-                console.log(hospitalID)
-            } catch (e) {
-
-            }
-        } catch (e){
-        }
+        await UserSessionService.getUserSession()
+        // var doctorID = null
+        // var hospitalID = null
+        // try {
+        //     let user = await Auth.currentAuthenticatedUser();
+        //     doctorID = String(user.attributes.sub)
+        //     console.log(doctorID)
+        //     try {
+        //         let doctor = await API.graphql({query: getDoctor, variables:{id: user.attributes.sub}})
+        //         hospitalID = String(doctor.data.getDoctor.hospitalID);
+        //         console.log(hospitalID)
+        //     } catch (e) {
+        //
+        //     }
+        // } catch (e){
+        // }
 
         await API.graphql({ query: createCTGImageMutation, variables: { input: {
             ctgUrl: details,
             ecgUrl: "s3://biorithm-testing-data/log/STG045A_raw/STG045A_raw_ctg.png",
-            doctorID: doctorID,
+            doctorID: UserSessionService.user.doctorID,
             patientID: 'e183c626-dd86-4834-9b4a-5e136a09cce7',
-            hospitalID: hospitalID,
+            hospitalID: UserSessionService.user.hospitalID,
             createdTime: 10}}});
     }
 

@@ -57,6 +57,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
 import {useScript} from "./epic/useScript";
 import {MyChartHome} from "./epic/MyChartHome";
+import {UserSessionService} from "../services/UserSessionService";
 
 const drawerWidth = 240
 
@@ -209,15 +210,24 @@ const CTGAppLayout = ({children}) => {
     const [hospitalName, setHospitalName] = useState(null)
 
     useEffect(async () => {
-        let user = await Auth.currentAuthenticatedUser();
-        setUserName(user.username);
-        setUserID(user.attributes.sub);
-        const apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
-        try {
-            setDoctorName(apiData.data.getDoctor.name)
-        } catch (error){
-            setDoctorName("Admin")
-        }
+        await UserSessionService.getUserSession()
+        // console.log(UserSessionService.user)
+        setUserName(UserSessionService.user.userName)
+        setDoctorName(UserSessionService.user.doctorName)
+        // if (UserSessionService.user.userName = "admin"){
+        //     setDoctorName('Admin')
+        // } else{
+        //     setDoctorName(UserSessionService.user.doctorName)
+        // }
+        // let user = await Auth.currentAuthenticatedUser();
+        // setUserName(user.username);
+        // setUserID(user.attributes.sub);
+        // const apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
+        // try {
+        //     setDoctorName(apiData.data.getDoctor.name)
+        // } catch (error){
+        //     setDoctorName("Admin")
+        // }
     })
 
     const handleDrawerOpen = () => {
@@ -361,17 +371,17 @@ const CTGAppLayout = ({children}) => {
 
 const CTGRecords = ({match}) => {
 
-    const [userID, setUserID] = useState(null)
-    const [userName, setUserName] = useState(null)
-    const [userEmail, setUserEmail] = useState(null)
-
-    async function fetchUserAttribute() {
-        let user = await Auth.currentAuthenticatedUser();
-        setUserID(user.attributes.sub)
-        setUserName(user.attributes.username)
-        setUserEmail(user.attributes.email)
-        console.log(userID)
-    }
+    // const [userID, setUserID] = useState(null)
+    // const [userName, setUserName] = useState(null)
+    // const [userEmail, setUserEmail] = useState(null)
+    //
+    // async function fetchUserAttribute() {
+    //     let user = await Auth.currentAuthenticatedUser();
+    //     setUserID(user.attributes.sub)
+    //     setUserName(user.attributes.username)
+    //     setUserEmail(user.attributes.email)
+    //     console.log(userID)
+    // }
 
     useScript('fhir-client.js')
 
@@ -385,13 +395,15 @@ const CTGRecords = ({match}) => {
     const [records, setRecords] = useState([])
 
     async function fetchCtgRecords() {
-        let user = await Auth.currentAuthenticatedUser();
-        setUserID(user.attributes.sub)
-        setUserName(user.attributes.username)
-        setUserEmail(user.attributes.email)
+        // let user = await Auth.currentAuthenticatedUser();
+        // setUserID(user.attributes.sub)
+        // setUserName(user.attributes.username)
+        // setUserEmail(user.attributes.email)
+        await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
-                eq: String(user.attributes.sub)
+                eq: UserSessionService.user.doctorID
+                // eq: String(user.attributes.sub)
             }
         }
         const apiData = await API.graphql({query: listCtgsByDoctorID, variables: {filter: filter}});
