@@ -34,6 +34,7 @@ import {AdminPage} from "./components/admin/Admin";
 import {useEffect, useState} from "react";
 import {Auth} from "aws-amplify";
 import {CtgImageViewer} from "./components/ctg/CtgImageViewer";
+import {CtgCreateNote} from "./components/ctg/CtgCreateNote";
 
 const theme = createTheme({
     palette: {
@@ -101,7 +102,7 @@ function CTGApp() {
                         </CTGNoteView>
                    </Route>
                    <Route path={"/create"}>
-                        <CreateCTGNote></CreateCTGNote>
+                        <CtgCreateNote></CtgCreateNote>
                    </Route>
                    <Route path={"/upload"}>
                        <UploadView></UploadView>
