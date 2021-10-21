@@ -408,7 +408,7 @@ const CTGRecords = ({match}) => {
         }
         const apiData = await API.graphql({query: listCtgsByDoctorID, variables: {filter: filter}});
         setRecords(apiData.data.listCtgs.items);
-        console.log(apiData.data.listCtgs.items);
+        // console.log(apiData.data.listCtgs.items);
     }
 
     const handleDelete = async (record) => {
@@ -487,7 +487,7 @@ const CTGRecordNote = ({record, handleDelete}) => {
                 </CardContent>
                 <CardActions>
                     <Button onClick = {() => {
-                        console.log("show detail ctg record", record);
+                        // console.log("show detail ctg record", record);
                         history.push("/ctg")
                     }}>
                         Details 
@@ -538,7 +538,7 @@ const CreateCTGNote = () => {
     })()
 
     useEffect(() => {
-        console.log(ctgUrl)
+        // console.log(ctgUrl)
     }, [ctgUrl])
 
     async function writeCtgRecordToDB() {
@@ -553,7 +553,7 @@ const CreateCTGNote = () => {
         setDetailsError(false)
         setPatientIdError(false)
 
-        console.log(patientId, details)
+        // console.log(patientId, details)
         
         if (details==''){
             setDetailsError(true)

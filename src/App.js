@@ -69,19 +69,19 @@ function NoteApp() {
 
 function CTGApp() {
 
-    const [userID, setUserID] = useState(null)
-    const [userName, setUserName] = useState(null)
-    const [userEmail, setUserEmail] = useState(null)
-
-    useEffect(async () => {
-        let user = await Auth.currentAuthenticatedUser();
-        console.log(user.username);
-        console.log(user.attributes.sub);
-        console.log(user.attributes.email);
-        setUserID(user.attributes.sub)
-        setUserName(user.attributes.username)
-        setUserEmail(user.attributes.email)
-    })
+    // const [userID, setUserID] = useState(null)
+    // const [userName, setUserName] = useState(null)
+    // const [userEmail, setUserEmail] = useState(null)
+    //
+    // useEffect(async () => {
+    //     let user = await Auth.currentAuthenticatedUser();
+    //     console.log(user.username);
+    //     console.log(user.attributes.sub);
+    //     console.log(user.attributes.email);
+    //     setUserID(user.attributes.sub)
+    //     setUserName(user.attributes.username)
+    //     setUserEmail(user.attributes.email)
+    // })
 
 
     return (
