@@ -196,7 +196,7 @@ const useStyles = makeStyles((theme) => {
 })
 
 
-const CTGAppLayout = ({children}) => {
+const CTGAppLayout = ({children, setAuthenticated}) => {
     const theme = useTheme()
     const classes = useStyles()
     const history = useHistory()
@@ -210,10 +210,10 @@ const CTGAppLayout = ({children}) => {
     const [hospitalName, setHospitalName] = useState(null)
 
     useEffect(async () => {
-        await UserSessionService.getUserSession()
+        // await UserSessionService.getUserSession()
         // console.log(UserSessionService.user)
-        setUserName(UserSessionService.user.userName)
-        setDoctorName(UserSessionService.user.doctorName)
+        setUserName(sessionStorage.getItem('username'))
+        setDoctorName(sessionStorage.getItem('doctorName'))
         // if (UserSessionService.user.userName = "admin"){
         //     setDoctorName('Admin')
         // } else{
@@ -286,8 +286,18 @@ const CTGAppLayout = ({children}) => {
             onClose={handleLogoutMenuClose}
         >
             <MenuItem>
-                <AmplifySignOut>
-                </AmplifySignOut>
+                <Button
+                    color={"secondary"}
+                    variant={"contained"}
+                    style={{paddingLeft:40,paddingRight:40,paddingTop:10,paddingBottom:10}}
+                    onClick={() => {
+                        sessionStorage.clear()
+                        setAuthenticated(null)
+                    }}
+                >
+                    sign out
+                </Button>
+                {/*<AmplifySignOut></AmplifySignOut>*/}
             </MenuItem>
         </Menu>
     )
@@ -402,7 +412,8 @@ const CTGRecords = ({match}) => {
         await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
-                eq: UserSessionService.user.doctorID
+                eq: sessionStorage.getItem('doctorID')
+                // eq: UserSessionService.user.doctorID
                 // eq: String(user.attributes.sub)
             }
         }

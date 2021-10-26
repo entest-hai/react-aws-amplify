@@ -17,14 +17,18 @@
 // TODO: separate admin and users resources path
 //********************************************************************************************************************/
 // 001.   |  30 SEP 2021.     | TRAN MINH HAI      | - test open FHIR server
+//********************************************************************************************************************/
+// 002.   |  26 OCT 2021.     | TRAN MINH HAI      | - Authentication flow
+// - Use sessionStorage.getItem nd sessionStorage.setItem
+// - Use singleton pattern UserProfile.set and UserProfile.get
 //=====================================================================================================================
 import logo from './logo.svg';
 import './App.css';
 import {CTGRecords, CTGAppLayout, CreateCTGNote, AmplifyApp} from "./components/CTGApp";
 import {Create, Notes, Layout} from './tests/NoteApp';
-import {createTheme, MuiThemeProvider} from "@material-ui/core";
+import {Button, createTheme, MuiThemeProvider} from "@material-ui/core";
 import {purple} from "@material-ui/core/colors";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, BrowserRouter} from "react-router-dom";
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './components/ctg/CTGNoteView';
 import { UploadView } from './components/upload/S3UploadView';
@@ -43,6 +47,9 @@ import {CtgImageViewer} from "./components/ctg/CtgImageViewer";
 import {CtgCreateNote} from "./components/ctg/CtgCreateNote";
 import {ProtectedRouteTest} from "./components/test/ProtectedRouteTest";
 import {ProtectedComponent} from "./components/test/ProtectedComponent";
+import {LoginHomePage, LoginProfilePage, UserLoginPage} from "./authentication/UserLoginPage";
+import {LoginPage} from "./components/admin/LoginPage";
+import {UserProfile} from "./services/UserSessionService";
 
 const theme = createTheme({
     palette: {
@@ -76,43 +83,28 @@ function NoteApp() {
 
 
 function CTGApp() {
-
-    // const [userID, setUserID] = useState(null)
-    // const [userName, setUserName] = useState(null)
-    // const [userEmail, setUserEmail] = useState(null)
-    //
-    // useEffect(async () => {
-    //     let user = await Auth.currentAuthenticatedUser();
-    //     console.log(user.username);
-    //     console.log(user.attributes.sub);
-    //     console.log(user.attributes.email);
-    //     setUserID(user.attributes.sub)
-    //     setUserName(user.attributes.username)
-    //     setUserEmail(user.attributes.email)
-    // })
-
-
-    return (
-       <Router>
-           {/*<CTGAppLayout>*/}
-               <Switch>
-                    <ProtectedRouteTest path={"/admin"} component={ProtectedComponent} requiredRole={"admin"}></ProtectedRouteTest>
-                   {/*<Route path={"/admin"}>*/}
-                   {/*     <AdminPage></AdminPage>*/}
-                   {/* </Route>*/}
-                   {/*<Route exact path={"/admin"}>*/}
-                   {/*    <AdminPage></AdminPage>*/}
-                   {/*</Route>*/}
-                   <CTGAppLayout>
-                       <Route exact path={"/"}>
-                       {/*<OpenFhirServer></OpenFhirServer>*/}
-                       {/*<MyChartHome></MyChartHome>*/}
+    const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
+      if (!authenticated){
+          return (
+              <UserLoginPage setAuthenticated={setAuthenticated}></UserLoginPage>
+          )
+      }
+      else if (sessionStorage.getItem('username')=='admin'){
+          return (
+              <AdminPage setAuthenticated={setAuthenticated}></AdminPage>
+          )
+      }
+      return (
+           <Router>
+           <Switch>
+               <CTGAppLayout setAuthenticated={setAuthenticated}>
+                   <Route exact path={"/"}>
                        <CTGRecords></CTGRecords>
                    </Route>
                    <Route path={"/ctg"}>
                        <CTGNoteView
                             ctgRecord={{username:"patient id",ctgUrl:"doctor comments"}}>
-                        </CTGNoteView>
+                       </CTGNoteView>
                    </Route>
                    <Route path={"/create"}>
                         <CtgCreateNote></CtgCreateNote>
@@ -132,16 +124,42 @@ function CTGApp() {
                    <Route path={"/openfhir"}>
                        <OpenFhirServer></OpenFhirServer>
                    </Route>
-                   </CTGAppLayout>
-               </Switch>
-           {/*</CTGAppLayout>*/}
+               </CTGAppLayout>
+           </Switch>
        </Router>
-    )
+      )
 }
 
 
 function AdminApp() {
-    return (<AdminPage></AdminPage>);
+    const [token, setToken] = useState(sessionStorage.getItem('cognitoUserID'))
+    if (!token) {
+        return <UserLoginPage setToken={setToken} ></UserLoginPage>
+    }
+
+    return (
+       <div>
+           <h1>Application</h1>
+           <Button
+            onClick={() => {
+                sessionStorage.clear('cognitoUserID')
+                setToken(null)
+            }}
+           >
+               Log out
+           </Button>
+           <BrowserRouter>
+           <Switch>
+               <Route path={"/home"}>
+                   <LoginHomePage></LoginHomePage>
+               </Route>
+               <Route path={"/user"}>
+                   <LoginProfilePage></LoginProfilePage>
+               </Route>
+           </Switch>
+       </BrowserRouter>
+       </div>
+    )
 }
 
 function App() {
@@ -150,5 +168,5 @@ function App() {
     );
   }
   
-export default withAuthenticator(App);
+export default (App);
 export {AdminApp, CTGApp, NoteApp, withAuthenticator};

@@ -18,7 +18,7 @@
 // 9. username: hai, sub: 0f150cec-842f-43a0-9f89-ab06625e832a, email: hai@bio-rithm.com
 //=====================================================================================================================
 import React, {useEffect, useState} from "react";
-import {LoginPage} from "./LoginPage";
+// import {LoginPage} from "./LoginPage";
 import {Dashboard} from "./Dashboard";
 import { Admin, } from "react-admin";
 import { Resource } from "react-admin";
@@ -50,6 +50,7 @@ import {
     CognitoUserEditCustom,
     CognitoUserListCustom
 } from "./CognitoUserList";
+import {Button} from "@material-ui/core";
 Amplify.configure(awsExports);
 
 const authProvider = buildAuthProvider({
@@ -66,12 +67,39 @@ const dataProvider = buildDataProvider({
     enableAdminQueries: true,
 })
 
-const AdminPage = () => {
+
+
+const AdminPage = ({setAuthenticated}) => {
+
+    const MyLogoutButton = () => {
+    return (
+        <Button
+            color={"secondary"}
+            variant={"contained"}
+            style={{paddingLeft:40,paddingRight:40}}
+            onClick={() => {
+                sessionStorage.clear()
+                setAuthenticated(null)
+                // window.location.reload()
+            }}
+        >
+            SIGN OUT
+        </Button>
+    )
+}
+
+    useEffect(async () => {
+        let user = await Auth.currentAuthenticatedUser();
+        console.log('current user', user)
+    })
+
     return (
     <Admin
+      logoutButton={MyLogoutButton}
+      title={"Biorithm Admin"}
       authProvider={authProvider}
       dataProvider={dataProvider}
-      loginPage={LoginPage}
+      // loginPage={LoginPage}
       dashboard={Dashboard}
     >
         {(permissions) => [

@@ -7,7 +7,7 @@ import { Title } from "react-admin";
 
 export const Dashboard = () => (
   <Card>
-    <Title title="React Admin Amplify Demo" />
+    <Title title="Biorithm Admin Demo" />
     <CardContent>
       <Typography gutterBottom variant="h5" component="h2">
         Welcome!

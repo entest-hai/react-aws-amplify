@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="jupyter-hai@3.0.40.65:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/jupyter-hai/reactjs-workspace/react-aws-amplify" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
