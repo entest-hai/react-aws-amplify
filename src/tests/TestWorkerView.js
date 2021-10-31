@@ -1,20 +1,9 @@
-//=====================================================================================================================
-// Purpose: Plot CTG in real time for demo purpose with entire data in local
-// Author: TRAN MINH HAI 
-// Date: 20 AUG 2021
-//********************************************************************************************************************/
-// Update |  Date             | Author             | Content 
-//********************************************************************************************************************/
-// 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header
-// 002.   |  02 SEP 2021.     | TRAN MINH HAI      | - Fixed canvas size
-//=====================================================================================================================
 import React, {useEffect, useState, useRef} from "react";
-import heartRateData from "./data";
+import heartRateData from "../components/canvas/data";
 import {makeStyles} from "@material-ui/core/styles";
 import { Card, CardMedia, Container, Paper } from "@material-ui/core";
-
-import WebWorker from "../../tests/workerSetup";
-import { worker } from "../../tests/SimpleWorker";
+import {worker} from './SimpleWorker';
+import WebWorker from "./workerSetup";
 
 const ctgImageHeight = 550
 const windowinnerWidth = 1920
@@ -38,8 +27,9 @@ const FHRLiveCanvas = (props) => {
     // counter 
     var counter = 0;
     // heart rate data state
-    const mHRIn = props.heartRate.mHR;
-    const fHRIn = props.heartRate.fHR;
+    // const mHRIn = props.heartRate.mHR;
+    // const fHRIn = props.heartRate.fHR;
+
     const [mHR, setmHR] = useState([]);
     const [fHR, setfHR] = useState([]);
 
@@ -131,19 +121,20 @@ const FHRLiveCanvas = (props) => {
         ctx.stroke();
     }
 
-    const updateHeartRate = () => {
-        interval = setInterval(() => {
-            if (counter < 200) {
-                console.log("update heart rate", counter);
-                setmHR([...mHRIn.slice(1, counter*20)]);
-                setfHR([...fHRIn.slice(1, counter*20)]);
-                counter += 1;
-            } else {
-                console.log("clear timer");
-                clearInterval(interval);
-            }
-        }, 1000)
-    }
+    // const updateHeartRate = () => {
+    //     interval = setInterval(() => {
+    //         if (counter < 200) {
+    //             console.log("update heart rate", counter);
+    //             setmHR([...mHRIn.slice(1, counter*20)]);
+    //             setfHR([...fHRIn.slice(1, counter*20)]);
+    //             counter += 1;
+    //         } else {
+    //             console.log("clear timer");
+    //             clearInterval(interval);
+    //         }
+    //     }, 1000)
+    // }
+
 
     useEffect(() => {
        // get canvas and contextsc
@@ -174,6 +165,7 @@ const FHRLiveCanvas = (props) => {
     //     }
     // },[])
 
+
     useEffect( async () => {
         const simpleWorker = new WebWorker(worker)
         simpleWorker.addEventListener('message', event => {
@@ -192,7 +184,32 @@ const FHRLiveCanvas = (props) => {
     )
 }
 
-const CTGLiveView = () => {
+
+const TestWorkerView1 = () => {
+
+    const [mHR, setmHR] = useState([]);
+    const [fHR, setfHR] = useState([]);
+
+    useEffect( async () => {
+        const simpleWorker = new WebWorker(worker)
+        simpleWorker.addEventListener('message', event => {
+            console.log(event.data.mHR)
+            // update heart rate 
+            setmHR(mHR => [...mHR, ...event.data.mHR]);
+            setfHR(fHR => [...fHR, ...event.data.fHR])
+        })
+      
+    },[])
+
+    return (
+        <div>
+            <h1>mHR length: {mHR.length} fHR length: {fHR.length}</h1>
+        </div>
+    )
+}
+
+
+const TestWorkerView = () => {
 
     const classes = makeStyles(() => {
         return {
@@ -221,5 +238,4 @@ const CTGLiveView = () => {
     )
 }
 
-export {CTGLiveView};
-
+export {TestWorkerView, TestWorkerView1}

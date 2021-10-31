@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import {AdminApp} from "./App";
+import {CTGApp, CtgLiveWebWorker} from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify from "@aws-amplify/core";
 import config from "./aws-exports";
@@ -10,7 +9,7 @@ Amplify.configure(config)
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CTGApp />
   </React.StrictMode>,
   document.getElementById('root')
 );
