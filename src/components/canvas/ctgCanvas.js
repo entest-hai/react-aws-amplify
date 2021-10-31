@@ -7,6 +7,7 @@
 //********************************************************************************************************************/
 // 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header
 // 002.   |  02 SEP 2021.     | TRAN MINH HAI      | - Fixed canvas size
+// 003    |  31 OCT 2021      | TRAN MINH HAI      | - CTG updating in background 
 //=====================================================================================================================
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "./data";
