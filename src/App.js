@@ -43,6 +43,7 @@ import {LoginHomePage, LoginProfilePage, UserLoginPage} from "./authentication/U
 import {FHRLiveCanvas, TestWorkerView} from './tests/TestWorkerView';
 import {TestGridView} from "./tests/TestGridView";
 import {TestFHRStaticTrace} from "./tests/TestStaticTrace";
+import {ScrollBarDragger} from "./tests/TestScrollBarDragger";
 
 
 const CtgLiveWebWorker = () => {
@@ -57,6 +58,9 @@ const CtgLiveWebWorker = () => {
                 </Route>
                 <Route exact path={"/sheep"}>
                     <TestFHRStaticTrace></TestFHRStaticTrace>
+                </Route>
+                <Route exact path={"/scroll"}>
+                    <ScrollBarDragger></ScrollBarDragger>
                 </Route>
             </Switch>
         </Router>
