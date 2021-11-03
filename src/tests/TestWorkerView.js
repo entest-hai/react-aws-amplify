@@ -6,39 +6,43 @@ import {worker} from './SimpleWorker';
 import WebWorker from "./workerSetup";
 
 const ctgImageHeight = 550
-const windowinnerWidth = 1920
-const windowinnerHeight = 1080
+
 
 const FHRLiveCanvas = (props) => {
-
+    const canvasId = props.id ? props.id : 0
+    const canvasIdString = "canvas_ctg" + canvasId.toString()
     // canvas and context 
     var canvas;
     var ctx;
-
     // parameters for CTG paper
-    const xOffset = props.position ? props.position.xOffset : 50;
-    const yOffset = props.position ? props.position.yOffset : 50;
-    const boxSize = 20;
+    const ctgHeightNumBox = 34
+    const numCtgRowPerScreen = 4
+    // const windowinnerWidth = window.screen.width/2
+    const windowinnerHeight = window.screen.height/numCtgRowPerScreen
+    const xOffset = props.position ? props.position.xOffset : 40;
+    const yOffset = props.position ? props.position.yOffset : 10;
+    const boxSize = window.screen.height/(1.0 * numCtgRowPerScreen * ctgHeightNumBox);
+    const textSize = Math.floor(window.screen.height/(2.0 * ctgHeightNumBox) * 0.8)
     const heartRateMin = 30;
     const heartRateMax = 240;
     const heartRateStep = 10;
     const timeStep = 30;
-
+    // window inner width proportional to number of minutes
+    // const numMinute = (Math.ceil(heartRateData.fHR.length / (5*4*60)) + 1) * 5 + 20;
+    const numMinute = 60
+    const windowinnerWidth = boxSize * numMinute * 2
     // counter 
     var counter = 0;
     // heart rate data state
     // const mHRIn = props.heartRate.mHR;
     // const fHRIn = props.heartRate.fHR;
-
     const [mHR, setmHR] = useState([]);
     const [fHR, setfHR] = useState([]);
-
     // interval of counter 
     let interval = useRef();
-
     // function to create CTG paper
     const createCTGPaper = (ctx) => {
-        const numMinute = (Math.ceil(heartRateData.fHR.length / (5*4*60)) + 1) * 5 ;
+        // const numMinute = (Math.ceil(heartRateData.fHR.length / (5*4*60)) + 1) * 5 + 20;
         const numHorizontalLine = (heartRateMax-heartRateMin)/heartRateStep;
         const numVerticalLine = numMinute*2;
         // Paths
@@ -62,32 +66,32 @@ const FHRLiveCanvas = (props) => {
         // mark 5 minutes
         ctx.fillStyle = "rgba(50, 50, 168, 0.2)";
         for (var i = 0; i < numMinute/5; i++){
-            ctx.fillRect(xOffset+20*10*i, yOffset, 20, numHorizontalLine*boxSize);
+            ctx.fillRect(xOffset+boxSize*10*i, yOffset, boxSize, numHorizontalLine*boxSize);
         }
          // mark 5 minutes
-        ctx.font = "15px Arial";
+        ctx.font =  textSize.toString() +  "px Arial";
         ctx.fillStyle = "red";
         for (var i = 0; i < numMinute/5+1; i++){
-            ctx.fillText((i*5).toString(), xOffset+20*10*i, 20+yOffset+numHorizontalLine*boxSize);
+            ctx.fillText((i*5).toString(), xOffset+boxSize*10*i, textSize+yOffset+numHorizontalLine*boxSize);
         }
         // mark bpm stick
         ctx.fillStyle = "rgba(67, 153, 28, 0.2)";
-        ctx.fillRect(xOffset-30, yOffset, 30, numHorizontalLine*boxSize);
+        // ctx.fillRect(xOffset-boxSize, yOffset, boxSize, numHorizontalLine*boxSize);
         // mark 10bpm stick spacing
-        ctx.font = "15px Arial";
+        ctx.font = textSize.toString() + "px Arial";
         ctx.fillStyle = "red";
         for(var i = 0; i < 5; i++){
-            ctx.fillText((30 + i*50).toString(), xOffset-30, yOffset+numHorizontalLine*boxSize-i*5*20);
+            ctx.fillText((30 + i*50).toString(), xOffset-textSize*1.8, yOffset+numHorizontalLine*boxSize-i*5*boxSize);
             ctx.stroke();
         }
         // mart time stick
         ctx.fillStyle = "rgba(67, 153, 28, 0.2)";
-        ctx.fillRect(xOffset, yOffset+numHorizontalLine*boxSize, boxSize*numVerticalLine, 30);
+        // ctx.fillRect(xOffset, yOffset+numHorizontalLine*boxSize, boxSize*numVerticalLine, boxSize);
 
         // mark id and date time
         // let datetime = new Date();
         ctx.fillStyle = "black"
-        ctx.fillText(Date().toString(), xOffset, yOffset+numHorizontalLine*boxSize+45)
+        ctx.fillText(Date().toString(), xOffset, yOffset+numHorizontalLine*boxSize+textSize*3)
     }
 
     // function to plot heart rate
@@ -96,7 +100,7 @@ const FHRLiveCanvas = (props) => {
         const numHorizontalLine = (heartRateMax-heartRateMin)/heartRateStep;
         const numVerticalLine = numMinute*2;
         ctx.strokeStyle = "blue";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1/2;
         ctx.beginPath();
         for (var i = 0; i < fHR.length - 1; i++){
             let currentX = (i*0.25*boxSize)/(timeStep);
@@ -138,7 +142,7 @@ const FHRLiveCanvas = (props) => {
 
     useEffect(() => {
        // get canvas and contextsc
-        canvas = document.getElementById("ctg_canvas");
+        canvas = document.getElementById(canvasIdString);
         ctx = canvas.getContext("2d");
         canvas.width = windowinnerWidth * 2;
         canvas.height = windowinnerHeight *2;
@@ -151,7 +155,7 @@ const FHRLiveCanvas = (props) => {
     }, [])
 
     useEffect(() => {
-        canvas = document.getElementById("ctg_canvas");
+        canvas = document.getElementById(canvasIdString);
         ctx = canvas.getContext("2d");
         plotHeartRate(ctx);
     }, [mHR, fHR])
@@ -169,7 +173,7 @@ const FHRLiveCanvas = (props) => {
     useEffect( async () => {
         const simpleWorker = new WebWorker(worker)
         simpleWorker.addEventListener('message', event => {
-            console.log(event.data.mHR)
+            // console.log(event.data.mHR)
             // update heart rate 
             setmHR(mHR => [...mHR, ...event.data.mHR]);
             setfHR(fHR => [...fHR, ...event.data.fHR])
@@ -178,11 +182,13 @@ const FHRLiveCanvas = (props) => {
     },[])
 
     return (
-        <canvas id="ctg_canvas">
+        <canvas id={canvasIdString}>
             Canvas
         </canvas>
     )
 }
+
+
 
 
 const TestWorkerView1 = () => {
@@ -193,7 +199,7 @@ const TestWorkerView1 = () => {
     useEffect( async () => {
         const simpleWorker = new WebWorker(worker)
         simpleWorker.addEventListener('message', event => {
-            console.log(event.data.mHR)
+            // console.log(event.data.mHR)
             // update heart rate 
             setmHR(mHR => [...mHR, ...event.data.mHR]);
             setfHR(fHR => [...fHR, ...event.data.fHR])
@@ -238,4 +244,4 @@ const TestWorkerView = () => {
     )
 }
 
-export {TestWorkerView, TestWorkerView1}
+export {TestWorkerView, TestWorkerView1, FHRLiveCanvas}

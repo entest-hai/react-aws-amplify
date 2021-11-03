@@ -40,12 +40,26 @@ import {AdminPage} from "./components/admin/Admin";
 import {useEffect, useState} from "react";
 import {CtgCreateNote} from "./components/ctg/CtgCreateNote";
 import {LoginHomePage, LoginProfilePage, UserLoginPage} from "./authentication/UserLoginPage";
-import { TestWorkerView } from './tests/TestWorkerView';
+import {FHRLiveCanvas, TestWorkerView} from './tests/TestWorkerView';
+import {TestGridView} from "./tests/TestGridView";
+import {TestFHRStaticTrace} from "./tests/TestStaticTrace";
 
 
 const CtgLiveWebWorker = () => {
     return (
-       <CTGLiveView></CTGLiveView>
+        // <TestGridView></TestGridView>
+       // <FHRLiveCanvas></FHRLiveCanvas>
+       //  <TestFHRStaticTrace></TestFHRStaticTrace>
+        <Router>
+            <Switch>
+                <Route exact path={"/"}>
+                    <TestGridView></TestGridView>
+                </Route>
+                <Route exact path={"/sheep"}>
+                    <TestFHRStaticTrace></TestFHRStaticTrace>
+                </Route>
+            </Switch>
+        </Router>
     )
 }
 
@@ -80,7 +94,7 @@ function CTGApp() {
                        <UploadView></UploadView>
                    </Route>
                    <Route path={"/livefhr"}>
-                        <CTGLiveView></CTGLiveView>
+                        <TestGridView></TestGridView>
                    </Route>
                    <Route path={"/edit"}>
                        <TestCtgAnnotateCanvas></TestCtgAnnotateCanvas>
@@ -90,6 +104,9 @@ function CTGApp() {
                    </Route>
                    <Route path={"/openfhir"}>
                        <OpenFhirServer></OpenFhirServer>
+                   </Route>
+                   <Route path={"/sheep"}>
+                       <TestFHRStaticTrace></TestFHRStaticTrace>
                    </Route>
                </CTGAppLayout>
            </Switch>

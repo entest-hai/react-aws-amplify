@@ -50,6 +50,7 @@ import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './ctg/CTGNoteView';
 import { UploadView } from './upload/S3UploadView';
 import Skeleton from '@material-ui/lab/Skeleton';
+import PetsIcon from '@material-ui/icons/Pets';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -95,6 +96,7 @@ const useStyles = makeStyles((theme) => {
               duration: theme.transitions.duration.leavingScreen,
             }),
             marginLeft: -drawerWidth,
+            overflow:'auto'
           },
           contentShift: {
             transition: theme.transitions.create('margin', {
@@ -272,6 +274,11 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             text: "Annotate",
             icon: <Edit color={"secondary"}></Edit>,
             path: "/edit"
+        },
+        {
+            text: "Sheep",
+            icon: <PetsIcon color={"secondary"}></PetsIcon>,
+            path: "/sheep"
         }
     ];
 
