@@ -23,7 +23,7 @@ import {ScrollBarDragger} from "./TestScrollBarDragger";
 const FHRStaticTrace = (props) => {
     // starting time of CTG data
     // new Date('2020-06-08 10:45:26')
-    const startTimeStamp = new Date('2020-06-08 10:45:26')
+    const startTimeStamp = new Date('2020-06-08 10:45:26'.replace(/-/g, "/"))
     // canvas id number when there are multiple canvas
     const canvasId = props.id ? props.id : 0
     // canvas id string when there are multiple canvas
