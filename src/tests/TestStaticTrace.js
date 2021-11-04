@@ -48,7 +48,7 @@ const FHRStaticTrace = (props) => {
     // height of a CTG canvas
     var canvasHeight = window.screen.height/numCtgRowPerScreen
     // xOffset top-left corner of the CTG canvas
-    const xOffset = props.position ? props.position.xOffset : 0;
+    const xOffset = props.position ? props.position.xOffset : 10;
     // yOffset top-left corner of the CTG canvas
     const yOffset = props.position ? props.position.yOffset : 10;
     // default box size
@@ -314,7 +314,7 @@ const TestFHRStaticTrace = () => {
 
     return (
             <Paper style={{overflow:'hidden', overflowX:'scroll', margin: 0}} elevation={4}>
-                {isFetching && <FHRStaticTrace heartRate={heartRate} ctgId={ctgId}></FHRStaticTrace>}
+                {isFetching && <FHRStaticTrace heartRate={heartRate} ctgId={ctgId} ></FHRStaticTrace>}
                 <CtgTableTest setCtgId={setCtgId}></CtgTableTest>
             </Paper>
     )
@@ -327,7 +327,7 @@ const CtgTableTest = (props)  => {
     const classes = makeStyles(() => {
         return {
             container: {
-                maxHeight:window.screen.height/2-150
+                maxHeight:window.screen.height/2-100
             },
             tableRow: {
             "&$selected, &$selected:hover": {
@@ -363,6 +363,30 @@ const CtgTableTest = (props)  => {
     const rows = [
         createDate("SHEEP001",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 700, "normal"),
         createDate("STG001A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG006A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG007A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG011A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG013A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG015A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG022A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG025A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG030A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG034A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG035A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG037A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG040A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG040B",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG041A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG043A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG045A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG046A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG046B",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG048A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG049A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG050A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG051A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG052A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG053A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
         createDate("STG090A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
         createDate("STG091A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
         createDate("STG092A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
