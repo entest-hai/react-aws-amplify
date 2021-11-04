@@ -44,6 +44,7 @@ import {FHRLiveCanvas, TestWorkerView} from './tests/TestWorkerView';
 import {TestGridView} from "./tests/TestGridView";
 import {TestFHRStaticTrace} from "./tests/TestStaticTrace";
 import {ScrollBarDragger} from "./tests/TestScrollBarDragger";
+import {TestDownloadS3} from "./tests/TestDownloadS3";
 
 
 const CtgLiveWebWorker = () => {
@@ -61,6 +62,9 @@ const CtgLiveWebWorker = () => {
                 </Route>
                 <Route exact path={"/scroll"}>
                     <ScrollBarDragger></ScrollBarDragger>
+                </Route>
+                <Route exact path={"/s3"}>
+                    <TestDownloadS3></TestDownloadS3>
                 </Route>
             </Switch>
         </Router>

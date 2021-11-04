@@ -26,6 +26,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import {Storage} from "aws-amplify";
+import Checkbox from '@material-ui/core/Checkbox';
 
 const FHRStaticTrace = (props) => {
     // starting time of CTG data
@@ -73,6 +75,8 @@ const FHRStaticTrace = (props) => {
     const mHR = props.heartRate.mHR ? props.heartRate.mHR : [];
     // fetal heart rate array from props
     const fHR = props.heartRate.fHR ? props.heartRate.fHR: [];
+    // ctg id
+    const ctgId = props.ctgId ? props.ctgId : "UNKNOWN"
     // data length in minute
     const ctgDataInMinute = props.heartRate.fHR ? props.heartRate.fHR.length/(4*60) : numMinute
     // ratio between screen size and data length
@@ -160,10 +164,9 @@ const FHRStaticTrace = (props) => {
                     ctx.stroke();
                 }
             }
-        }
-        // let datetime = new Date();
+        }        // let datetime = new Date();
         ctx.fillStyle = "black"
-        ctx.fillText(Date().toString() + " offset: " + convertScrollBarOffsetToHeartRateOffset(offsetDraw).toString(), xOffset, yOffset+numHorizontalLine*boxSize+textSize*3)
+        ctx.fillText(Date().toString() + " offset: " + convertScrollBarOffsetToHeartRateOffset(offsetDraw).toString() + " ID: "  + ctgId, xOffset, yOffset+numHorizontalLine*boxSize+textSize*3)
     }
 
     // function to plot heart rate
@@ -187,24 +190,33 @@ const FHRStaticTrace = (props) => {
         ctx.lineWidth = 1.0;
         ctx.beginPath();
         for (var i = 0; i < fHRBuffer.length - 1; i++){
-            let currentX = (i*0.25*boxSize)/(timeStep);
-            let currentY = ((fHRBuffer[i]-30)*boxSize)/heartRateStep;
-            let nextX = ((i+1)*0.25*boxSize)/(timeStep);
-            let nextY = ((fHRBuffer[i+1]-30)*boxSize)/heartRateStep;
-            ctx.moveTo(xOffset+currentX,yOffset + numHorizontalLine*boxSize - currentY);
-            ctx.lineTo(xOffset+nextX, yOffset + numHorizontalLine*boxSize - nextY);
+            if (Number.isNaN(fHRBuffer[i]) || Number.isNaN(fHRBuffer[i+1])){
+
+            } else {
+                let currentX = (i*0.25*boxSize)/(timeStep);
+                let currentY = ((fHRBuffer[i]-30)*boxSize)/heartRateStep;
+                let nextX = ((i+1)*0.25*boxSize)/(timeStep);
+                let nextY = ((fHRBuffer[i+1]-30)*boxSize)/heartRateStep;
+                ctx.moveTo(xOffset+currentX,yOffset + numHorizontalLine*boxSize - currentY);
+                ctx.lineTo(xOffset+nextX, yOffset + numHorizontalLine*boxSize - nextY);
+            }
+
         }
          ctx.stroke();
         //mHR
         ctx.beginPath();
         ctx.strokeStyle = "black";
         for (var i = 0; i < mHRBuffer.length - 1; i++){
-            let currentX = (i*0.25*boxSize)/(timeStep);
-            let currentY = ((mHRBuffer[i]-30)*boxSize)/heartRateStep;
-            let nextX = ((i+1)*0.25*boxSize)/(timeStep);
-            let nextY = ((mHRBuffer[i+1]-30)*boxSize)/heartRateStep;
-            ctx.moveTo(xOffset+currentX,yOffset + numHorizontalLine*boxSize - currentY);
-            ctx.lineTo(xOffset+nextX, yOffset + numHorizontalLine*boxSize - nextY);
+            if (Number.isNaN(mHRBuffer[i]) || Number.isNaN(mHRBuffer[i+1])){
+
+            } else {
+                let currentX = (i*0.25*boxSize)/(timeStep);
+                let currentY = ((mHRBuffer[i]-30)*boxSize)/heartRateStep;
+                let nextX = ((i+1)*0.25*boxSize)/(timeStep);
+                let nextY = ((mHRBuffer[i+1]-30)*boxSize)/heartRateStep;
+                ctx.moveTo(xOffset+currentX,yOffset + numHorizontalLine*boxSize - currentY);
+                ctx.lineTo(xOffset+nextX, yOffset + numHorizontalLine*boxSize - nextY);
+            }
         }
         ctx.stroke();
     }
@@ -256,50 +268,83 @@ const FHRStaticTrace = (props) => {
 const TestFHRStaticTrace = () => {
     const [ctgId, setCtgId] = useState("SHEEP001")
     const [isFetching, setIsFetching] = useState(false)
-    const [heartRate, setHeartRate] = useState({mHR:[], fHR:[]})
+    const [heartRate, setHeartRate] = useState({mHR:[0], fHR:[0]})
+
+    const updateHeartRate = (heartRate) => {
+        let mHR = heartRate.mHR
+        let fHR = heartRate.fHR
+        // replace null by NaN for plotting
+        for (var i = 0; i < mHR.length; i++){
+            if (mHR[i] == null){
+                mHR[i] = Number.NaN
+            }
+            if (fHR[i] == null){
+                fHR[i] = Number.NaN
+            }
+        }
+        // set mHR and fHR to upload the CTG plot
+        setHeartRate({mHR: mHR, fHR: fHR})
+        setIsFetching(true)
+    }
+
     useEffect(async () => {
-        fetch("db.json")
-            .then(response => response.json())
-            .then(json => {
-                try {
-                    let heartRate = json[ctgId]
-                    let mHR = heartRate.mHR
-                    let fHR = heartRate.fHR
-                    for (var i = 0; i < mHR.length; i++){
-                        if (mHR[i] == null){
-                            mHR[i] = Number.NaN
-                        }
-                        if (fHR[i] == null){
-                            fHR[i] = Number.NaN
-                        }
-                    }
-                    setHeartRate({mHR: mHR, fHR: fHR})
-                    setIsFetching(true)
-                } catch {
-                    setHeartRate({mHR: [0], fHR: [0]})
-                    setIsFetching(true)
+        // get data from sessionStorage
+        try{
+            const heartRate = JSON.parse(sessionStorage.getItem(ctgId))
+            updateHeartRate(heartRate)
+        } catch(e) {
+        try {
+            const result = await Storage.get(ctgId +".json", {download: true})
+            result.Body.text().then(text => {
+                let heartRate = JSON.parse(text)
+                updateHeartRate(heartRate)
+                // buffer it to local storage
+                try{
+                    sessionStorage.setItem(ctgId, text)
+                } catch (e) {
+
                 }
             })
-    }, [heartRate])
+        } catch (e) {
+            setHeartRate({mHR: [0], fHR: [0]})
+            setIsFetching(true)
+        }
+        }
+    }, [ctgId])
 
     return (
             <Paper style={{overflow:'hidden', overflowX:'scroll', margin: 0}} elevation={4}>
-                {isFetching && <FHRStaticTrace heartRate={heartRate}></FHRStaticTrace>}
+                {isFetching && <FHRStaticTrace heartRate={heartRate} ctgId={ctgId}></FHRStaticTrace>}
                 <CtgTableTest setCtgId={setCtgId}></CtgTableTest>
             </Paper>
     )
 }
 
 const CtgTableTest = (props)  => {
+
+    const [selectedRow, setSelectedRow] = useState(null)
+
     const classes = makeStyles(() => {
         return {
             container: {
-                maxHeight:300
+                maxHeight:window.screen.height/2-150
+            },
+            tableRow: {
+            "&$selected, &$selected:hover": {
+              backgroundColor: "purple"
             }
+          },
+          tableCell: {
+            "$selected &": {
+              color: "yellow"
+            }
+          },
+          selected: {}
         }
     })()
 
     const columns = [
+        {id: 'select', label: 'Show'},
         {id: 'name', label: 'Name'},
         {id: 'createdTime', label: "Created Time"},
         {id: 'length', label: "Length in Minute"},
@@ -316,14 +361,18 @@ const CtgTableTest = (props)  => {
     }
 
     const rows = [
-        createDate("STG001",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
         createDate("SHEEP001",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 700, "normal"),
-        // createDate("STG094",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
-        // createDate("STG095",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 150, "normal"),
-        // createDate("STG130",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 160, "normal"),
-        // createDate("STG120",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 170, "normal"),
-        // createDate("STG131",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 180, "normal"),
-        // createDate("STG132",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 190, "normal")
+        createDate("STG001A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("STG090A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
+        createDate("STG091A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
+        createDate("STG092A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
+        createDate("STG093A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
+        createDate("STG094A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
+        createDate("STG095A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 150, "normal"),
+        createDate("STG130A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 160, "normal"),
+        createDate("STG120A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 170, "normal"),
+        createDate("STG131A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 180, "normal"),
+        createDate("STG132A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 190, "normal")
     ]
 
     return (
@@ -343,17 +392,29 @@ const CtgTableTest = (props)  => {
                 <TableBody>
                     {rows.map((row) => {
                         return (
-                            <TableRow key={row.name}>
+                            <TableRow
+                                key={row.name}
+                                className={classes.tableRow}
+                                onClick={() => {
+                                    setSelectedRow(row.name)
+                                    if (props.setCtgId){
+                                        props.setCtgId(row.name)
+                                    }
+                                }}
+                                selected={selectedRow == row.name}
+                            >
                                 {columns.map((column) => {
                                     const value = row[column.id]
                                     return (
-                                        <TableCell key={column.id} onClick={() => {
+                                        <TableCell
+                                            key={column.id}
+                                            onClick={() => {
                                             if (props.setCtgId){
-                                                console.log(row.name)
-                                                props.setCtgId(row.name)
+                                                // console.log(row.name)
+                                                // props.setCtgId(row.name)
                                             }
                                         }}>
-                                            {value}
+                                            {column.id=="select" ? <Checkbox></Checkbox> : value}
                                         </TableCell>
                                     )
                                 })}
