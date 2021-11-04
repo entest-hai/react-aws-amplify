@@ -55,9 +55,9 @@ const FHRStaticTrace = (props) => {
     // number of heart rate per screen or buffer screen size
     var numMinute = Math.floor(window.screen.width / (2.0 * boxSize))
     // minimum heart rate
-    const heartRateMin = 30;
+    const heartRateMin = 20;
     // maximum heart rate
-    const heartRateMax = 310;
+    const heartRateMax = 290;
     // heart rate minor step
     const heartRateStep = 10;
     // time step
@@ -76,11 +76,11 @@ const FHRStaticTrace = (props) => {
     }
 
     const convertScrollBarOffsetToPixelOffsetOneBox = (scrollBarOffset) => {
-        return Math.floor(1.0 * scrollBarOffset / boxSize)*boxSize - 1.0*scrollBarOffset
+        return (Math.floor(1.0*convertScrollBarOffsetToHeartRateOffset(scrollBarOffset)/120)*120 - convertScrollBarOffsetToHeartRateOffset(scrollBarOffset))/120.0*boxSize
     }
 
     const convertScrollBarOffsetToPixelOffsetTenMinuteBlock = (scrollBarOffset) => {
-        return (Math.floor(1.0*convertScrollBarOffsetToHeartRateOffset(offsetDraw)/(10*60*4))*(10*60*4) - convertScrollBarOffsetToHeartRateOffset(offsetDraw))/120.0*boxSize
+        return (Math.floor(1.0*convertScrollBarOffsetToHeartRateOffset(scrollBarOffset)/(10*60*4))*(10*60*4) - convertScrollBarOffsetToHeartRateOffset(scrollBarOffset))/120.0*boxSize
     }
 
     // function to setup ctgCanvasConfiguration
@@ -100,6 +100,9 @@ const FHRStaticTrace = (props) => {
     const drawCtgPaper = (ctx) => {
         const numHorizontalLine = (heartRateMax-heartRateMin)/heartRateStep;
         const numVerticalLine =  numMinute*2;
+        // mark fetal heart rate region 100 to 200 bpm
+        ctx.fillStyle = "rgba(252, 215, 227, 0.5)";
+        ctx.fillRect(xOffset,yOffset+boxSize*(heartRateMax-200)/10,boxSize*numVerticalLine,boxSize*10)
         // Paths
         ctx.strokeStyle = "black"
         ctx.fillStyle = "red";
@@ -121,11 +124,12 @@ const FHRStaticTrace = (props) => {
         }
         // rect box mark 10 minute block
         scrollBarOffsetInPixel =convertScrollBarOffsetToPixelOffsetTenMinuteBlock(offsetDraw)
-        ctx.fillStyle = "rgba(50, 50, 168, 0.2)";
+        // ctx.fillStyle = "rgba(50, 50, 168, 0.2)";
+        ctx.fillStyle = "rgba(33, 246, 30, 0.2)";
         for (var i = 0; i < numMinute/5; i++){
             ctx.fillRect(xOffset+scrollBarOffsetInPixel+boxSize*20*i, yOffset, boxSize*2, numHorizontalLine*boxSize);
         }
-         // time stamp for each 10 minute block
+        // time stamp for each 10 minute block
         ctx.font =  textSize.toString() +  "px Arial";
         ctx.fillStyle = "black";
         for (var i = 0; i < numMinute/5+1; i++){
@@ -140,21 +144,16 @@ const FHRStaticTrace = (props) => {
         for (var j = 0; j < numMinute/5 + 1; j++){
             if (j == 0){
                 for(var i = 0; i < heartRateMax/50; i++){
-                    ctx.fillText((30 + i*50).toString(), xOffset+scrollBarOffsetInPixel+boxSize*20*j-textSize*0, yOffset+numHorizontalLine*boxSize-i*5*boxSize);
+                    ctx.fillText((50 + i*50).toString(), xOffset+scrollBarOffsetInPixel+boxSize*20*j-textSize*0, yOffset+numHorizontalLine*boxSize-i*5*boxSize-(50-heartRateMin)/10*boxSize);
                     ctx.stroke();
                 }
             } else {
                 for(var i = 0; i < heartRateMax/50; i++){
-                    ctx.fillText((30 + i*50).toString(), xOffset+scrollBarOffsetInPixel+boxSize*20*j-textSize*0, yOffset+numHorizontalLine*boxSize-i*5*boxSize);
+                    ctx.fillText((50 + i*50).toString(), xOffset+scrollBarOffsetInPixel+boxSize*20*j-textSize*0, yOffset+numHorizontalLine*boxSize-i*5*boxSize-(50-heartRateMin)/10*boxSize);
                     ctx.stroke();
                 }
             }
         }
-        // mart time stick
-        ctx.fillStyle = "rgba(67, 153, 28, 0.2)";
-        // ctx.fillRect(xOffset, yOffset+numHorizontalLine*boxSize, boxSize*numVerticalLine, boxSize);
-
-        // mark id and date time
         // let datetime = new Date();
         ctx.fillStyle = "black"
         ctx.fillText(Date().toString() + " offset: " + convertScrollBarOffsetToHeartRateOffset(offsetDraw).toString(), xOffset, yOffset+numHorizontalLine*boxSize+textSize*3)
