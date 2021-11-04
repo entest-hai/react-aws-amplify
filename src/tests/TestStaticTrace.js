@@ -9,7 +9,6 @@
 // - Add zoom in zoom out feature by calling setUpCanvasConfiguration and drawCtgPaper
 //********************************************************************************************************************/
 //=====================================================================================================================
-
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "../components/canvas/data";
 import {makeStyles} from "@material-ui/core/styles";
@@ -19,6 +18,14 @@ import WebWorker from "./workerSetup";
 import {FHRLiveCanvas} from "./TestWorkerView";
 import Button from "@material-ui/core/Button";
 import {ScrollBarDragger} from "./TestScrollBarDragger";
+// table
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
 
 const FHRStaticTrace = (props) => {
     // starting time of CTG data
@@ -33,7 +40,7 @@ const FHRStaticTrace = (props) => {
     // canvas context
     var ctx;
     // CTG height in number of box
-    const ctgHeightNumBox = 34
+    const ctgHeightNumBox = 31
     // number of CTG row per screen
     const numCtgRowPerScreen = 2
     // height of a CTG canvas
@@ -215,7 +222,7 @@ const FHRStaticTrace = (props) => {
         setUpCtgCanvas(canvas, ctx)
         drawCtgPaper(ctx)
         drawCtgData(ctx)
-    }, [boxSize, textSize, offsetDraw])
+    }, [boxSize, textSize, offsetDraw, mHR, fHR])
 
     return (
         <div>
@@ -247,32 +254,117 @@ const FHRStaticTrace = (props) => {
 }
 
 const TestFHRStaticTrace = () => {
+    const [ctgId, setCtgId] = useState("SHEEP001")
     const [isFetching, setIsFetching] = useState(false)
     const [heartRate, setHeartRate] = useState({mHR:[], fHR:[]})
     useEffect(async () => {
         fetch("db.json")
             .then(response => response.json())
             .then(json => {
-                let heartRate = json["sheep001"]
-                let mHR = heartRate.mHR
-                let fHR = heartRate.fHR
-                for (var i = 0; i < mHR.length; i++){
-                    if (mHR[i] == null){
-                        mHR[i] = Number.NaN
+                try {
+                    let heartRate = json[ctgId]
+                    let mHR = heartRate.mHR
+                    let fHR = heartRate.fHR
+                    for (var i = 0; i < mHR.length; i++){
+                        if (mHR[i] == null){
+                            mHR[i] = Number.NaN
+                        }
+                        if (fHR[i] == null){
+                            fHR[i] = Number.NaN
+                        }
                     }
-                    if (fHR[i] == null){
-                        fHR[i] = Number.NaN
-                    }
+                    setHeartRate({mHR: mHR, fHR: fHR})
+                    setIsFetching(true)
+                } catch {
+                    setHeartRate({mHR: [0], fHR: [0]})
+                    setIsFetching(true)
                 }
-                setHeartRate({mHR: mHR, fHR: fHR})
-                setIsFetching(true)
             })
     }, [heartRate])
 
     return (
             <Paper style={{overflow:'hidden', overflowX:'scroll', margin: 0}} elevation={4}>
                 {isFetching && <FHRStaticTrace heartRate={heartRate}></FHRStaticTrace>}
+                <CtgTableTest setCtgId={setCtgId}></CtgTableTest>
             </Paper>
     )
 }
+
+const CtgTableTest = (props)  => {
+    const classes = makeStyles(() => {
+        return {
+            container: {
+                maxHeight:300
+            }
+        }
+    })()
+
+    const columns = [
+        {id: 'name', label: 'Name'},
+        {id: 'createdTime', label: "Created Time"},
+        {id: 'length', label: "Length in Minute"},
+        {id: 'comment', label: "Comments"}
+    ]
+
+    const createDate = (name, createdTime, length, comment) => {
+        return {name, createdTime, length, comment}
+    }
+
+    const dateTimeToString = (time) => {
+        let obj = new Date(time)
+        return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
+    }
+
+    const rows = [
+        createDate("STG001",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
+        createDate("SHEEP001",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 700, "normal"),
+        // createDate("STG094",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
+        // createDate("STG095",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 150, "normal"),
+        // createDate("STG130",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 160, "normal"),
+        // createDate("STG120",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 170, "normal"),
+        // createDate("STG131",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 180, "normal"),
+        // createDate("STG132",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 190, "normal")
+    ]
+
+    return (
+        <TableContainer className={classes.container}>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        {columns.map((column) => {
+                            return (
+                                <TableCell key={column.id}>
+                                    {column.label}
+                                </TableCell>
+                            )
+                        })}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row) => {
+                        return (
+                            <TableRow key={row.name}>
+                                {columns.map((column) => {
+                                    const value = row[column.id]
+                                    return (
+                                        <TableCell key={column.id} onClick={() => {
+                                            if (props.setCtgId){
+                                                console.log(row.name)
+                                                props.setCtgId(row.name)
+                                            }
+                                        }}>
+                                            {value}
+                                        </TableCell>
+                                    )
+                                })}
+                            </TableRow>
+                        )
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    )
+}
+
+
 export {FHRStaticTrace, TestFHRStaticTrace}
