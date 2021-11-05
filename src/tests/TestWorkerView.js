@@ -6,42 +6,60 @@ import {worker} from './SimpleWorker';
 import WebWorker from "./workerSetup";
 const ctgImageHeight = 550
 const FHRLiveCanvas = (props) => {
+    // ctg id
+    const ctgId = props.ctgId ? props.ctgId : "1234567"
+    // starting time of CTG data
+    const startTimeStamp = new Date('2020-06-08 10:45:26'.replace(/-/g, "/"))
+    // heart rate line width
+    const heartRateLineWidth = props.heartRateLineWidth ? props.heartRateLineWidth : 0.5
     const canvasId = props.id ? props.id : 0
     const canvasIdString = "canvas_ctg" + canvasId.toString()
     // canvas and context 
     var canvas;
     var ctx;
     // parameters for CTG paper
-    const ctgHeightNumBox = 34
-    const numCtgRowPerScreen = 4
-    // const windowinnerWidth = window.screen.width/2
-    const windowinnerHeight = window.screen.height/numCtgRowPerScreen
-    const xOffset = props.position ? props.position.xOffset : 40;
-    const yOffset = props.position ? props.position.yOffset : 10;
-    const boxSize = window.screen.height/(1.0 * numCtgRowPerScreen * ctgHeightNumBox);
-    const textSize = Math.floor(window.screen.height/(2.0 * ctgHeightNumBox) * 0.8)
-    const heartRateMin = 30;
-    const heartRateMax = 240;
+    const ctgHeightNumBox = props.ctgHeigthNumBox ? props.ctgHeigthNumBox : 30
+    // number of ctg row per screen
+    const numCtgRowPerScreen = props.numCtgRowPerScreen ? props.numCtgRowPerScreen : 4
+    // xOffset top-left corner of the CTG canvas
+    const xOffset = props.xOffset ? props.xOffset : 0;
+    // yOffset top-left corner of the CTG canvas
+    const yOffset = props.yOffset ? props.yOffset : 0;
+    // default box size
+    var defaultBoxSize = (window.screen.height - 200)/(1.0 * numCtgRowPerScreen * ctgHeightNumBox)
+    // default text size
+    var defaultTextSize = Math.floor(window.screen.height/(2.0 * ctgHeightNumBox) * 0.8)
+    const boxSize = defaultBoxSize;
+    const textSize = defaultTextSize
+    const heartRateMin = 20;
+    const heartRateMax = 280;
     const heartRateStep = 10;
     const timeStep = 30;
-    // window inner width proportional to number of minutes
-    // const numMinute = (Math.ceil(heartRateData.fHR.length / (5*4*60)) + 1) * 5 + 20;
-    const numMinute = 60
-    const windowinnerWidth = boxSize * numMinute * 2
-    // counter 
-    var counter = 0;
+    const numMinute = 120
     // heart rate data state
-    // const mHRIn = props.heartRate.mHR;
-    // const fHRIn = props.heartRate.fHR;
     const [mHR, setmHR] = useState([]);
     const [fHR, setfHR] = useState([]);
-    // interval of counter 
-    let interval = useRef();
+
+    // function to setup ctgCanvasConfiguration
+    const setUpCtgCanvas = (canvas, ctx) => {
+        canvas.width = (boxSize * numMinute * 2) * 2;
+        // setup canvas height
+        canvas.height = (boxSize * ctgHeightNumBox) * 2;
+        // setup canvas style width
+        canvas.style.width =  `${boxSize * numMinute * 2}px`;
+        // setup canvas style height
+        canvas.style.height = `${boxSize * ctgHeightNumBox}px`;
+        // scale for device screen size
+        ctx.scale(2,2);
+        ctx.translate(0.5, 0.5);
+    }
     // function to create CTG paper
     const createCTGPaper = (ctx) => {
-        // const numMinute = (Math.ceil(heartRateData.fHR.length / (5*4*60)) + 1) * 5 + 20;
         const numHorizontalLine = (heartRateMax-heartRateMin)/heartRateStep;
         const numVerticalLine = numMinute*2;
+        // mark fetal heart rate region 100 to 200 bpm
+        ctx.fillStyle = "rgba(252, 215, 227, 0.5)";
+        ctx.fillRect(xOffset,yOffset+boxSize*(heartRateMax-200)/10,boxSize*numVerticalLine,boxSize*10)
         // Paths
         ctx.strokeStyle = "black"
         ctx.fillStyle = "red";
@@ -61,34 +79,33 @@ const FHRLiveCanvas = (props) => {
             ctx.stroke();
         }
         // mark 5 minutes
-        ctx.fillStyle = "rgba(50, 50, 168, 0.2)";
-        for (var i = 0; i < numMinute/5; i++){
-            ctx.fillRect(xOffset+boxSize*10*i, yOffset, boxSize, numHorizontalLine*boxSize);
+         ctx.fillStyle = "rgba(33, 246, 30, 0.2)";
+        for (var i = 0; i < numMinute/10; i++){
+            ctx.fillRect(xOffset+boxSize*20*i, yOffset, boxSize*2, numHorizontalLine*boxSize);
         }
-         // mark 5 minutes
+         // mark 10 minutes
         ctx.font =  textSize.toString() +  "px Arial";
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "black";
         for (var i = 0; i < numMinute/5+1; i++){
-            ctx.fillText((i*5).toString(), xOffset+boxSize*10*i, textSize+yOffset+numHorizontalLine*boxSize);
+            let timeStampOffset = new Date(startTimeStamp.getTime() + i * 10 * 60 * 1000)
+            ctx.fillText(timeStampOffset.toLocaleTimeString(), xOffset+boxSize*20*i, textSize+yOffset+numHorizontalLine*boxSize);
         }
         // mark bpm stick
         ctx.fillStyle = "rgba(67, 153, 28, 0.2)";
-        // ctx.fillRect(xOffset-boxSize, yOffset, boxSize, numHorizontalLine*boxSize);
         // mark 10bpm stick spacing
         ctx.font = textSize.toString() + "px Arial";
         ctx.fillStyle = "red";
-        for(var i = 0; i < 5; i++){
-            ctx.fillText((30 + i*50).toString(), xOffset-textSize*1.8, yOffset+numHorizontalLine*boxSize-i*5*boxSize);
-            ctx.stroke();
+        for (var j = 0; j < numMinute/5 + 1; j++){
+            for (var i = 0; i < heartRateMax/50; i++){
+                ctx.fillText((50 + i*50).toString(), xOffset+boxSize*20*j-textSize*0, yOffset+numHorizontalLine*boxSize-i*5*boxSize-(50-heartRateMin)/10*boxSize);
+                ctx.stroke();
+            }
         }
         // mart time stick
         ctx.fillStyle = "rgba(67, 153, 28, 0.2)";
-        // ctx.fillRect(xOffset, yOffset+numHorizontalLine*boxSize, boxSize*numVerticalLine, boxSize);
-
         // mark id and date time
-        // let datetime = new Date();
         ctx.fillStyle = "black"
-        ctx.fillText(Date().toString(), xOffset, yOffset+numHorizontalLine*boxSize+textSize*3)
+        ctx.fillText(Date().toString() + " ID: " + ctgId, xOffset, yOffset+numHorizontalLine*boxSize+textSize*3)
     }
 
     // function to plot heart rate
@@ -97,7 +114,7 @@ const FHRLiveCanvas = (props) => {
         const numHorizontalLine = (heartRateMax-heartRateMin)/heartRateStep;
         const numVerticalLine = numMinute*2;
         ctx.strokeStyle = "blue";
-        ctx.lineWidth = 1/2;
+        ctx.lineWidth = heartRateLineWidth;
         ctx.beginPath();
         for (var i = 0; i < fHR.length - 1; i++){
             let currentX = (i*0.25*boxSize)/(timeStep);
@@ -122,32 +139,10 @@ const FHRLiveCanvas = (props) => {
         ctx.stroke();
     }
 
-    // const updateHeartRate = () => {
-    //     interval = setInterval(() => {
-    //         if (counter < 200) {
-    //             console.log("update heart rate", counter);
-    //             setmHR([...mHRIn.slice(1, counter*20)]);
-    //             setfHR([...fHRIn.slice(1, counter*20)]);
-    //             counter += 1;
-    //         } else {
-    //             console.log("clear timer");
-    //             clearInterval(interval);
-    //         }
-    //     }, 1000)
-    // }
-
-
     useEffect(() => {
-       // get canvas and contextsc
         canvas = document.getElementById(canvasIdString);
         ctx = canvas.getContext("2d");
-        canvas.width = windowinnerWidth * 2;
-        canvas.height = windowinnerHeight *2;
-        canvas.style.width =  `${windowinnerWidth}px`;
-        canvas.style.height = `${windowinnerHeight}px`;
-        // TODO: scale for device screen size
-        ctx.scale(2,2);
-        ctx.translate(0.5, 0.5);
+        setUpCtgCanvas(canvas, ctx)
         createCTGPaper(ctx);
     }, [])
 
@@ -156,16 +151,6 @@ const FHRLiveCanvas = (props) => {
         ctx = canvas.getContext("2d");
         plotHeartRate(ctx);
     }, [mHR, fHR])
-
-
-    // useEffect(() => {
-    //     updateHeartRate();
-    //     return () => {
-    //         console.log("unmount the ctg live");
-    //         clearInterval(interval);
-    //     }
-    // },[])
-
 
     useEffect( async () => {
         const simpleWorker = new WebWorker(worker)
@@ -205,7 +190,6 @@ const TestWorkerView1 = () => {
     )
 }
 
-
 const TestWorkerView = () => {
     const classes = makeStyles(() => {
         return {
@@ -221,15 +205,9 @@ const TestWorkerView = () => {
     })()
 
     return (
-       <Container maxWidth={"lg"}>
-            <Card>
-            <CardMedia className={classes.media}>
-                <Paper style={{overflow:'auto'}} elevation={4}>
-                    <FHRLiveCanvas heartRate={heartRateData} position={{xOffset: 50, yOffset: 50}}></FHRLiveCanvas>
-                </Paper>
-            </CardMedia>
-        </Card>
-       </Container>
+       <Paper style={{overflow:'auto', elevation:10, padding:0, margin:10}}>
+           <FHRLiveCanvas heartRateLineWidth={1} numCtgRowPerScreen={2} ctgHeightNumBox={31} xOffset={0} yOffset={0}></FHRLiveCanvas>
+       </Paper>
     )
 }
 

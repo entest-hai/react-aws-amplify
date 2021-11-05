@@ -11,7 +11,7 @@ const TestGridView = () => {
            <Grid container spacing={1}>
                {Array.from(Array(16)).map((_,index) => (
                    <Grid item md={12} lg={3} key={index}>
-                       <Paper style={{height:window.screen.height/4.6, overflow:'auto', elevation:10, padding:0}}>
+                       <Paper style={{height:(window.screen.height-200)/4.0, overflow:'auto', elevation:10, padding:0}}>
                            <FHRLiveCanvas id={index}></FHRLiveCanvas>
                        </Paper>
                    </Grid>

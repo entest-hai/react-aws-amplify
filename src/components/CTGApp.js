@@ -273,9 +273,14 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             path: "/upload"
         },
         {
-            text: "Live FHR",
+            text: "Live Single FHR",
             icon: <CloudCircle color={"secondary"}></CloudCircle>,
-            path: "/livefhr"
+            path: "/live"
+        },
+        {
+            text: "Live Multiple FHR",
+            icon: <CloudCircle color={"secondary"}></CloudCircle>,
+            path: "/grid"
         },
         {
             text: "Annotate",

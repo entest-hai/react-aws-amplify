@@ -127,7 +127,10 @@ function CTGApp() {
                    <Route path={"/upload"}>
                        <UploadView></UploadView>
                    </Route>
-                   <Route path={"/livefhr"}>
+                   <Route path={"/live"}>
+                       <TestWorkerView></TestWorkerView>
+                   </Route>
+                   <Route path={"/grid"}>
                         <TestGridView></TestGridView>
                    </Route>
                    <Route path={"/edit"}>
