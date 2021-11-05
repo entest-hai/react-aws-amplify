@@ -26,7 +26,7 @@ const FHRLiveCanvas = (props) => {
     // yOffset top-left corner of the CTG canvas
     const yOffset = props.yOffset ? props.yOffset : 0;
     // default box size
-    var defaultBoxSize = (window.screen.height - 200)/(1.0 * numCtgRowPerScreen * ctgHeightNumBox)
+    var defaultBoxSize = (window.screen.height-110)/(1.0 * numCtgRowPerScreen * ctgHeightNumBox)
     // default text size
     var defaultTextSize = Math.floor(window.screen.height/(2.0 * ctgHeightNumBox) * 0.8)
     const boxSize = defaultBoxSize;

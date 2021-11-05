@@ -260,10 +260,10 @@ const TestFHRStaticTrace = () => {
         let fHR = heartRate.fHR
         // replace null by NaN for plotting
         for (var i = 0; i < mHR.length; i++){
-            if (mHR[i] == null){
+            if (mHR[i] == null || mHR[i] < 10.0){
                 mHR[i] = Number.NaN
             }
-            if (fHR[i] == null){
+            if (fHR[i] == null || fHR[i] < 10.0){
                 fHR[i] = Number.NaN
             }
         }
@@ -386,7 +386,7 @@ const CtgTableTest = (props)  => {
         await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
-                eq: sessionStorage.getItem('doctorID')
+                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
         // catch error when calling graphql qpi
