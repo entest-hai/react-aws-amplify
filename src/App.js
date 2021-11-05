@@ -45,13 +45,29 @@ import {TestGridView} from "./tests/TestGridView";
 import {TestFHRStaticTrace} from "./tests/TestStaticTrace";
 import {ScrollBarDragger} from "./tests/TestScrollBarDragger";
 import {TestDownloadS3} from "./tests/TestDownloadS3";
+import {API, Auth} from "aws-amplify";
+import {getDoctor} from "./graphql/queries";
+import {CtgImageViewer} from "./components/ctg/CtgImageViewer";
 
 
 const CtgLiveWebWorker = () => {
+    const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
+    useEffect(async () => {
+        try {
+        let user = await  Auth.signIn("hai", "Hai@865525")
+        sessionStorage.setItem('username',user.username)
+        sessionStorage.setItem('cognitoUserID',user.attributes.sub)
+        setAuthenticated(user.attributes.sub)
+        } catch (e) {
+            console.log("error auth")
+        }
+    },)
+
+    if (!authenticated){
+        return <UserLoginPage setAuthenticated={setAuthenticated}></UserLoginPage>
+    }
+
     return (
-        // <TestGridView></TestGridView>
-       // <FHRLiveCanvas></FHRLiveCanvas>
-       //  <TestFHRStaticTrace></TestFHRStaticTrace>
         <Router>
             <Switch>
                 <Route exact path={"/"}>
@@ -65,6 +81,19 @@ const CtgLiveWebWorker = () => {
                 </Route>
                 <Route exact path={"/s3"}>
                     <TestDownloadS3></TestDownloadS3>
+                </Route>
+                <Route exact path={"/upload"}>
+                    <UploadView></UploadView>
+                </Route>
+                <Route exact path={"/view"}>
+                    <CtgImageViewer ctgS3Url={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}></CtgImageViewer>
+                </Route>
+                <Route exact path={"/ctg"}>
+                    <CTGNoteView ctgRecord={{username:"patient id",ctgUrl:process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}}>
+                    </CTGNoteView>
+                </Route>
+                <Route exact path={"/records"}>
+                    <CTGRecords></CTGRecords>
                 </Route>
             </Switch>
         </Router>
@@ -92,7 +121,7 @@ function CTGApp() {
                    </Route>
                    <Route path={"/ctg"}>
                        <CTGNoteView
-                            ctgRecord={{username:"patient id",ctgUrl:"doctor comments"}}>
+                            ctgRecord={{username:"patient id",ctgUrl:process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}}>
                        </CTGNoteView>
                    </Route>
                    <Route path={"/create"}>

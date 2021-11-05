@@ -112,7 +112,7 @@ const CTGNoteView = ({ctgRecord}) => {
 
     return (
         <div>
-            <CtgImageViewer></CtgImageViewer>
+            <CtgImageViewer ctgS3Url={ctgRecord.ctgUrl}></CtgImageViewer>
             <Container className={classes.searchForm}>
              <TextField
                     disabled

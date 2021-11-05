@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 import Skeleton from '@material-ui/lab/Skeleton';
 import awsmobile from '../../aws-exports';
 import { fhr_api_end_point } from '../../config/apiendpoint';
+import {CtgImageViewer} from "../ctg/CtgImageViewer";
 
 
 const ctgImageHeight = 400
@@ -56,6 +57,11 @@ const UploadView = () => {
 
     const classes = makeStyles(() => {
         return {
+            container: {
+            maxWidth:window.screen.width-350,
+            // backgroundColor: "grey",
+            padding: 0,
+        },
             button: {
                 
             },
@@ -156,17 +162,18 @@ const UploadView = () => {
 
     return (
        <div>
-            <Container maxWidth={"lg"}>
-                <Card>
-                    <CardMedia className={classes.media}>
-                        <Paper style={{overflow:'auto'}} elevation={4}>
-                            {ctgS3Url != null ? <img src={ctgS3Url}/> : 
-                            <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                        </Paper>
-                    </CardMedia>
-                </Card>
-            </Container>
-            <Container>
+            {/*<Container className={classes.container}>*/}
+            {/*    <Card>*/}
+            {/*        <CardMedia className={classes.media}>*/}
+            {/*            <Paper style={{overflow:'auto'}} elevation={4}>*/}
+            {/*                {ctgS3Url != null ? <img src={ctgS3Url}/> : */}
+            {/*                <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}*/}
+            {/*            </Paper>*/}
+            {/*        </CardMedia>*/}
+            {/*    </Card>*/}
+            {/*</Container>*/}
+            <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>
+            <Container className={classes.container}>
                 <TextField
                     className={classes.field}
                     label={fileName}

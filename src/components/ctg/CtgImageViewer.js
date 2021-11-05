@@ -31,10 +31,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import CardActions from "@material-ui/core/CardActions";
 import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
 
-const CtgImageViewer = () => {
+const CtgImageViewer = (props) => {
     const scale = 1.1
     const ctgImageHeight = 500
-
     const classes = makeStyles({
         container: {
             maxWidth:window.screen.width-350,
@@ -70,7 +69,9 @@ const CtgImageViewer = () => {
             <Card elevation={0}>
                 <CardMedia>
                     <Paper style={{overflow:'auto'}} elevation={0}>
-                        {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"} style={imageStyle}/> :
+                        {/*{showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"} style={imageStyle}/> :*/}
+                        {/*<Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}*/}
+                        {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
                         <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
                     </Paper>
                 </CardMedia>
