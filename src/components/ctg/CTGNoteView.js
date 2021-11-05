@@ -47,7 +47,7 @@ const CTGNoteView = ({match}) => {
     useEffect(async () => {
          try {
              // TODO add check exist file or not or using download
-             const signedURL = await Storage.get(location.state.record.ctgUrl.split("/").pop(), {expires: 60});
+             const signedURL = await Storage.get(location.state.record.ctgUrl, {expires: 60});
              setCtgS3Url(signedURL);
          } catch (e) {
              setCtgS3Url(null)

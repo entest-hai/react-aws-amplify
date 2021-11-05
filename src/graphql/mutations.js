@@ -292,6 +292,69 @@ export const deleteCtg = /* GraphQL */ `
     }
   }
 `;
+export const createCtgNumerical = /* GraphQL */ `
+  mutation CreateCtgNumerical(
+    $input: CreateCtgNumericalInput!
+    $condition: ModelCtgNumericalConditionInput
+  ) {
+    createCtgNumerical(input: $input, condition: $condition) {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateCtgNumerical = /* GraphQL */ `
+  mutation UpdateCtgNumerical(
+    $input: UpdateCtgNumericalInput!
+    $condition: ModelCtgNumericalConditionInput
+  ) {
+    updateCtgNumerical(input: $input, condition: $condition) {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteCtgNumerical = /* GraphQL */ `
+  mutation DeleteCtgNumerical(
+    $input: DeleteCtgNumericalInput!
+    $condition: ModelCtgNumericalConditionInput
+  ) {
+    deleteCtgNumerical(input: $input, condition: $condition) {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createPatient = /* GraphQL */ `
   mutation CreatePatient(
     $input: CreatePatientInput!

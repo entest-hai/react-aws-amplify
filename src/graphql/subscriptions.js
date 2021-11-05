@@ -238,6 +238,60 @@ export const onDeleteCtg = /* GraphQL */ `
     }
   }
 `;
+export const onCreateCtgNumerical = /* GraphQL */ `
+  subscription OnCreateCtgNumerical {
+    onCreateCtgNumerical {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCtgNumerical = /* GraphQL */ `
+  subscription OnUpdateCtgNumerical {
+    onUpdateCtgNumerical {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCtgNumerical = /* GraphQL */ `
+  subscription OnDeleteCtgNumerical {
+    onDeleteCtgNumerical {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreatePatient = /* GraphQL */ `
   subscription OnCreatePatient {
     onCreatePatient {

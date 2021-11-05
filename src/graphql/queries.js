@@ -201,6 +201,49 @@ export const listCtgs = /* GraphQL */ `
     }
   }
 `;
+export const getCtgNumerical = /* GraphQL */ `
+  query GetCtgNumerical($id: ID!) {
+    getCtgNumerical(id: $id) {
+      id
+      ctgJsonUrl
+      ctgUrl
+      ecgUrl
+      comment
+      patientID
+      doctorID
+      hospitalID
+      sessionTime
+      createdTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCtgNumericals = /* GraphQL */ `
+  query ListCtgNumericals(
+    $filter: ModelCtgNumericalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        ctgJsonUrl
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        sessionTime
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getPatient = /* GraphQL */ `
   query GetPatient($id: ID!) {
     getPatient(id: $id) {

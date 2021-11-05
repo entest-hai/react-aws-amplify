@@ -26,8 +26,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import {Storage} from "aws-amplify";
+import {API, Storage} from "aws-amplify";
 import Checkbox from '@material-ui/core/Checkbox';
+import {UserSessionService} from "../services/UserSessionService";
 
 const FHRStaticTrace = (props) => {
     // starting time of CTG data
@@ -241,22 +242,6 @@ const FHRStaticTrace = (props) => {
             <canvas id={canvasIdString}>
                 Canvas
             </canvas>
-            {/*<Button*/}
-            {/*    onClick={() => {*/}
-            {/*        setBoxSize(0.9*boxSize)*/}
-            {/*        setTextSize(0.9*textSize)*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    Zoom In*/}
-            {/*</Button>*/}
-            {/*<Button*/}
-            {/*    onClick={() => {*/}
-            {/*        setBoxSize(defaultBoxSize)*/}
-            {/*        setTextSize(defaultTextSize)*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    Default*/}
-            {/*</Button>*/}
             <ScrollBarDragger
                 setOffsetDraw={setOffsetDraw}
                 screenSizeToDataLenghth={screenSizeToDataLenghth}>
@@ -266,7 +251,7 @@ const FHRStaticTrace = (props) => {
 }
 
 const TestFHRStaticTrace = () => {
-    const [ctgId, setCtgId] = useState("SHEEP001")
+    const [ctgId, setCtgId] = useState("SHEEP001.json")
     const [isFetching, setIsFetching] = useState(false)
     const [heartRate, setHeartRate] = useState({mHR:[0], fHR:[0]})
 
@@ -294,7 +279,7 @@ const TestFHRStaticTrace = () => {
             updateHeartRate(heartRate)
         } catch(e) {
         try {
-            const result = await Storage.get(ctgId +".json", {download: true})
+            const result = await Storage.get(ctgId, {download: true})
             result.Body.text().then(text => {
                 let heartRate = JSON.parse(text)
                 updateHeartRate(heartRate)
@@ -321,9 +306,9 @@ const TestFHRStaticTrace = () => {
 }
 
 const CtgTableTest = (props)  => {
-
+    const [rows, setRows] = useState([])
+    // const [records, setRecords] = useState([])
     const [selectedRow, setSelectedRow] = useState(null)
-
     const classes = makeStyles(() => {
         return {
             container: {
@@ -345,14 +330,15 @@ const CtgTableTest = (props)  => {
 
     const columns = [
         {id: 'select', label: 'Show'},
+        {id: 'id', label: "ID"},
         {id: 'name', label: 'Name'},
         {id: 'createdTime', label: "Created Time"},
         {id: 'length', label: "Length in Minute"},
         {id: 'comment', label: "Comments"}
     ]
 
-    const createDate = (name, createdTime, length, comment) => {
-        return {name, createdTime, length, comment}
+    const createDate = (id, name, createdTime, length, comment) => {
+        return {id, name, createdTime, length, comment}
     }
 
     const dateTimeToString = (time) => {
@@ -360,44 +346,50 @@ const CtgTableTest = (props)  => {
         return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
     }
 
-    const rows = [
-        createDate("SHEEP001",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 700, "normal"),
-        createDate("STG001A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG006A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG007A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG011A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG013A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG015A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG022A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG025A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG030A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG034A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG035A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG037A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG040A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG040B",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG041A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG043A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG045A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG046A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG046B",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG048A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG049A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG050A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG051A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG052A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG053A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 50, "normal"),
-        createDate("STG090A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
-        createDate("STG091A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
-        createDate("STG092A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
-        createDate("STG093A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
-        createDate("STG094A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 140, "normal"),
-        createDate("STG095A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 150, "normal"),
-        createDate("STG130A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 160, "normal"),
-        createDate("STG120A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 170, "normal"),
-        createDate("STG131A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 180, "normal"),
-        createDate("STG132A",  dateTimeToString('2020-06-08 10:45:26'.replace(/-/g, "/")), 190, "normal")
-    ]
+    const listCtgNumericalsByDoctorID = `
+        query ListCtgNumericalsByDoctorID(
+            $filter: ModelCtgNumericalFilterInput
+            $limit: Int
+            $nextToken: String
+        ) {
+          listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+            items {
+              id
+              comment
+              ctgJsonUrl
+              ctgUrl
+              doctorID
+              hospitalID
+              patientID
+              sessionTime
+              createdTime
+            }
+            nextToken
+          }
+    }
+`;
+
+    useEffect(async () => {
+        await UserSessionService.getUserSession()
+        let filter = {
+            doctorID: {
+                eq: sessionStorage.getItem('doctorID')
+            }
+        }
+        const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});
+        // build table raws
+        let records = apiData.data.listCtgNumericals.items
+        let rows = records.map((record) => {
+            let name = record.ctgJsonUrl ? record.ctgJsonUrl : "UNKNOWN"
+            let createdTime = record.createdTime ? dateTimeToString(record.createdTime) : "UNKNOWN"
+            let comment = record.comment? record.comment : "UNKNOWN"
+            let length = record.length? record.length: "UNKNOWN"
+            return (
+                createDate(record.id, name,  createdTime, length, comment)
+            )
+        })
+        setRows(rows)
+    })
 
     return (
         <TableContainer className={classes.container}>
@@ -417,7 +409,7 @@ const CtgTableTest = (props)  => {
                     {rows.map((row) => {
                         return (
                             <TableRow
-                                key={row.name}
+                                key={row.id}
                                 className={classes.tableRow}
                                 onClick={() => {
                                     setSelectedRow(row.name)
@@ -431,13 +423,7 @@ const CtgTableTest = (props)  => {
                                     const value = row[column.id]
                                     return (
                                         <TableCell
-                                            key={column.id}
-                                            onClick={() => {
-                                            if (props.setCtgId){
-                                                // console.log(row.name)
-                                                // props.setCtgId(row.name)
-                                            }
-                                        }}>
+                                            key={column.id}>
                                             {column.id=="select" ? <Checkbox></Checkbox> : value}
                                         </TableCell>
                                     )

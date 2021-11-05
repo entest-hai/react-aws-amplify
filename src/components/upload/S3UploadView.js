@@ -15,7 +15,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
-import { Storage } from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -24,6 +24,8 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import awsmobile from '../../aws-exports';
 import { fhr_api_end_point } from '../../config/apiendpoint';
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
+import {UserSessionService} from "../../services/UserSessionService";
+import {createCtgNumerical} from "../../graphql/mutations";
 
 
 const ctgImageHeight = 400
@@ -90,7 +92,10 @@ const UploadView = () => {
             fetch(fhr_api_end_point + fileName)
             .then(response => response.json())
             .then(result => {
-                getCTGSignedS3Url(result.s3Url.split("/").pop())
+                let ctgUrl = result.s3Url.split("/").pop()
+                let ctgJsonUrl = result.ctgJsonUrl ? result.ctgJsonUrl : "STG015A.json"
+                getCTGSignedS3Url(ctgUrl)
+                writeCtgRecordToDB(ctgUrl, ctgJsonUrl)
             })
             .catch(error => {
                 console.log('error', error)
@@ -99,10 +104,23 @@ const UploadView = () => {
         // 
     }
 
+    async function writeCtgRecordToDB(ctgUrl, ctgJsonUrl) {
+        let createdTime = new Date()
+        await UserSessionService.getUserSession()
+        await API.graphql({ query: createCtgNumerical, variables: { input: {
+            ctgUrl: ctgUrl,
+            ecgUrl: "",
+            ctgJsonUrl:ctgJsonUrl,
+            doctorID: UserSessionService.user.doctorID,
+            patientID: 'e183c626-dd86-4834-9b4a-5e136a09cce7',
+            hospitalID: UserSessionService.user.hospitalID,
+            createdTime: createdTime.getTime()}}}
+            );
+    }
+
     const getCTGSignedS3Url = async(s3Url) => {
         const signedURL = await Storage.get(s3Url, {expires: 60});
         setCtgS3Url(signedURL);
-        // setShowImage(true)
     }
 
     const handleUpload = async () => {
@@ -162,16 +180,6 @@ const UploadView = () => {
 
     return (
        <div>
-            {/*<Container className={classes.container}>*/}
-            {/*    <Card>*/}
-            {/*        <CardMedia className={classes.media}>*/}
-            {/*            <Paper style={{overflow:'auto'}} elevation={4}>*/}
-            {/*                {ctgS3Url != null ? <img src={ctgS3Url}/> : */}
-            {/*                <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}*/}
-            {/*            </Paper>*/}
-            {/*        </CardMedia>*/}
-            {/*    </Card>*/}
-            {/*</Container>*/}
             <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>
             <Container className={classes.container}>
                 <TextField

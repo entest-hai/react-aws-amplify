@@ -6,6 +6,7 @@ import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {API, Auth} from "aws-amplify";
 import {createCtg as createCTGImageMutation} from "../../graphql/mutations";
+import {createCtgNumerical} from "../../graphql/mutations";
 import {getDoctor} from "../../graphql/queries";
 import {Button, Container, Paper, TextField} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
@@ -16,6 +17,7 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import {KeyboardArrowRight} from "@material-ui/icons";
 import {UserSessionService} from "../../services/UserSessionService";
+import {CtgImageViewer} from "./CtgImageViewer";
 
 const CtgCreateNote = () => {
 
@@ -64,33 +66,21 @@ const CtgCreateNote = () => {
     }, [ctgUrl])
 
     // TODO: search patient ID and clean things here
-    // since doctorID and hostpitalID given from authenticated session
     async function writeCtgRecordToDB() {
+        let createdTime = new Date()
         await UserSessionService.getUserSession()
-        // var doctorID = null
-        // var hospitalID = null
-        // try {
-        //     let user = await Auth.currentAuthenticatedUser();
-        //     doctorID = String(user.attributes.sub)
-        //     console.log(doctorID)
-        //     try {
-        //         let doctor = await API.graphql({query: getDoctor, variables:{id: user.attributes.sub}})
-        //         hospitalID = String(doctor.data.getDoctor.hospitalID);
-        //         console.log(hospitalID)
-        //     } catch (e) {
-        //
-        //     }
-        // } catch (e){
-        // }
-
-        await API.graphql({ query: createCTGImageMutation, variables: { input: {
-            ctgUrl: details,
-            ecgUrl: "s3://biorithm-testing-data/log/STG045A_raw/STG045A_raw_ctg.png",
+        await API.graphql({ query: createCtgNumerical, variables: { input: {
+            ctgJsonUrl: "STG095A.json",
+            ctgUrl: "095A_raw.csv.png",
+            ecgUrl: "",
             doctorID: UserSessionService.user.doctorID,
             patientID: 'e183c626-dd86-4834-9b4a-5e136a09cce7',
             hospitalID: UserSessionService.user.hospitalID,
-            createdTime: 10}}});
-    }
+            comment: details ? details : "",
+            createdTime: createdTime.getTime()}}
+        }
+            );
+        }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -114,14 +104,15 @@ const CtgCreateNote = () => {
 
     return (
        <Container maxWidth={window.screen.width-10}>
-           <Card>
+          {/* <Card>
                 <CardMedia className={classes.media}>
                     <Paper style={{overflow:'auto'}} elevation={4}>
                         {showImage ? <img src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> :
                         <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
                     </Paper>
                 </CardMedia>
-            </Card>
+            </Card>*/}
+            <CtgImageViewer ctgS3Url={showImage ? process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png" : null}></CtgImageViewer>
            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                <TextField
                    className={classes.field}

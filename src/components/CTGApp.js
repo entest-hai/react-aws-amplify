@@ -86,6 +86,29 @@ const listCtgsByDoctorID = `
   }
 `;
 
+const listCtgNumericalsByDoctorID = `
+    query ListCtgNumericalsByDoctorID(
+        $filter: ModelCtgNumericalFilterInput
+        $limit: Int
+        $nextToken: String
+    ) {
+      listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+        items {
+          id
+          comment
+          ctgJsonUrl
+          ctgUrl
+          doctorID
+          hospitalID
+          patientID
+          sessionTime
+          createdTime
+        }
+        nextToken
+      }
+}
+`;
+
 const useStyles = makeStyles((theme) => {
     return {
         content: {
@@ -212,24 +235,8 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
     const [hospitalName, setHospitalName] = useState(null)
 
     useEffect(async () => {
-        // await UserSessionService.getUserSession()
-        // console.log(UserSessionService.user)
         setUserName(sessionStorage.getItem('username'))
         setDoctorName(sessionStorage.getItem('doctorName'))
-        // if (UserSessionService.user.userName = "admin"){
-        //     setDoctorName('Admin')
-        // } else{
-        //     setDoctorName(UserSessionService.user.doctorName)
-        // }
-        // let user = await Auth.currentAuthenticatedUser();
-        // setUserName(user.username);
-        // setUserID(user.attributes.sub);
-        // const apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
-        // try {
-        //     setDoctorName(apiData.data.getDoctor.name)
-        // } catch (error){
-        //     setDoctorName("Admin")
-        // }
     })
 
     const handleDrawerOpen = () => {
@@ -388,18 +395,6 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
 
 const CTGRecords = ({match}) => {
 
-    // const [userID, setUserID] = useState(null)
-    // const [userName, setUserName] = useState(null)
-    // const [userEmail, setUserEmail] = useState(null)
-    //
-    // async function fetchUserAttribute() {
-    //     let user = await Auth.currentAuthenticatedUser();
-    //     setUserID(user.attributes.sub)
-    //     setUserName(user.attributes.username)
-    //     setUserEmail(user.attributes.email)
-    //     console.log(userID)
-    // }
-
     useScript('fhir-client.js')
 
     const breakpoints = {
@@ -410,23 +405,18 @@ const CTGRecords = ({match}) => {
 
     const classes = useStyles()
     const [records, setRecords] = useState([])
-
     async function fetchCtgRecords() {
-        // let user = await Auth.currentAuthenticatedUser();
-        // setUserID(user.attributes.sub)
-        // setUserName(user.attributes.username)
-        // setUserEmail(user.attributes.email)
         await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
+                // eq: '0f150cec-842f-43a0-9f89-ab06625e832a'
                 eq: sessionStorage.getItem('doctorID')
                 // eq: UserSessionService.user.doctorID
                 // eq: String(user.attributes.sub)
             }
         }
-        const apiData = await API.graphql({query: listCtgsByDoctorID, variables: {filter: filter}});
-        setRecords(apiData.data.listCtgs.items);
-        // console.log(apiData.data.listCtgs.items);
+        const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});
+        setRecords(apiData.data.listCtgNumericals.items);
     }
 
     const handleDelete = async (record) => {
@@ -495,12 +485,12 @@ const CTGRecordNote = ({record, handleDelete}) => {
                         </IconButton>
                     }
                     title={record.id}
-                    subheader={record.ctgUrl}
+                    subheader={record.ctgJsonUrl ? record.ctgUrl + ", " + record.ctgJsonUrl : record.ctgUrl}
                 >
                 </CardHeader>
                 <CardContent>
                    <Typography>
-                    {record.details}
+                    {record.comment}
                    </Typography>
                 </CardContent>
                 <CardActions>

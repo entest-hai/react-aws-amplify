@@ -13,18 +13,19 @@
     },
     "categories": {
       "auth": {
-        "flutteramplifyfad84c13": {}
-      },
-      "storage": {
-        "flutteramplifyd4cf1fb6": {
-          "bucketName": "amplify-flutteramplify-dev-102628-deployment",
-          "region": "ap-southeast-1"
-        }
+        "flutteramplifyfad84c13": {},
+        "userPoolGroups": {}
       },
       "function": {
         "AdminQueries8103ddad": {
           "deploymentBucketName": "amplify-flutteramplify-dev-102628-deployment",
           "s3Key": "amplify-builds/AdminQueries8103ddad-486739515a592f497651-build.zip"
+        }
+      },
+      "storage": {
+        "flutteramplifyd4cf1fb6": {
+          "bucketName": "amplify-flutteramplify-dev-102628-deployment",
+          "region": "ap-southeast-1"
         }
       }
     }
