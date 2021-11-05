@@ -120,9 +120,7 @@ function CTGApp() {
                        <CTGRecords></CTGRecords>
                    </Route>
                    <Route path={"/ctg"}>
-                       <CTGNoteView
-                            ctgRecord={{username:"patient id",ctgUrl:process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}}>
-                       </CTGNoteView>
+                       <CTGNoteView></CTGNoteView>
                    </Route>
                    <Route path={"/create"}>
                         <CtgCreateNote></CtgCreateNote>

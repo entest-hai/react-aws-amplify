@@ -505,8 +505,12 @@ const CTGRecordNote = ({record, handleDelete}) => {
                 </CardContent>
                 <CardActions>
                     <Button onClick = {() => {
-                        // console.log("show detail ctg record", record);
-                        history.push("/ctg")
+                        history.push({
+                            pathname: '/ctg',
+                            state: {
+                                record: record
+                            }
+                        })
                     }}>
                         Details 
                     </Button>

@@ -30,14 +30,28 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { CloudCircle, ZoomIn, ZoomOut, ZoomOutRounded, ZoomOutSharp } from '@material-ui/icons';
 import CardActions from '@material-ui/core/CardActions';
 import {CtgImageViewer} from "./CtgImageViewer";
+import { useHistory, useLocation } from 'react-router-dom';
+import {Storage} from "aws-amplify";
 
-const CTGNoteView = ({ctgRecord}) => {
-    const scale = 1.1 
+const CTGNoteView = ({match}) => {
+    const location = useLocation()
+    const [ctgS3Url, setCtgS3Url] = useState(null)
+    const scale = 1.1
     const [image, setimage] = useState(null)
     const [width, setWidth] = useState(null)
     const [height, setHeight] = useState(null)
     const ctgImageHeight = 600
     const [showImage, setShowImage] = useState(true)
+
+    useEffect(async () => {
+         try {
+             // TODO add check exist file or not or using download
+             const signedURL = await Storage.get(location.state.record.ctgUrl.split("/").pop(), {expires: 60});
+             setCtgS3Url(signedURL);
+         } catch (e) {
+             setCtgS3Url(null)
+         }
+    })
 
     const classes = makeStyles((theme) => {
         return {
@@ -112,7 +126,7 @@ const CTGNoteView = ({ctgRecord}) => {
 
     return (
         <div>
-            <CtgImageViewer ctgS3Url={ctgRecord.ctgUrl}></CtgImageViewer>
+            <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>
             <Container className={classes.searchForm}>
              <TextField
                     disabled
@@ -120,7 +134,7 @@ const CTGNoteView = ({ctgRecord}) => {
                     variant={"outlined"}
                     color={"primary"}
                     className={classes.textField}
-                    placeholder={ctgRecord.username ?? "patient name"}
+                    placeholder={location.state.record.username ?? "patient name"}
                     onChange={(event) => {
                         console.log(event.target.value)
                     }}
@@ -147,7 +161,7 @@ const CTGNoteView = ({ctgRecord}) => {
                     variant={"outlined"}
                     color={"primary"}
                     className={classes.textField}
-                    placeholder={ctgRecord.ctgUrl ?? "comments from doctor"}
+                    placeholder={location.state.record.ctgUrl ?? "comments from doctor"}
                 >
                 </TextField>
             </Container>
@@ -162,88 +176,6 @@ const CTGNoteView = ({ctgRecord}) => {
                 </Button>
             </Container>
         </div>
-        // <div>
-        //     <Container maxWidth={"xl"}>
-        //         <Card>
-        //             <CardMedia className={classes.media}>
-        //                 <Paper style={{overflow:'auto'}} elevation={4}>
-        //                     {showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> :
-        //                     <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-        //                 </Paper>
-        //             </CardMedia>
-        //             <CardActions>
-        //                 <IconButton
-        //                     onClick={zoomInHandle}>
-        //                     <ZoomIn></ZoomIn>
-        //                 </IconButton>
-        //                 <IconButton
-        //                     onClick={zoomOutHandle}>
-        //                     <ZoomOutRounded></ZoomOutRounded>
-        //                 </IconButton>
-        //                 <Button
-        //                     // variant={"contained"}
-        //                     onClick={defaultHandle}>
-        //                     Default
-        //                 </Button>
-        //             </CardActions>
-        //         </Card>
-        //     </Container>
-        //
-        //     <Container className={classes.searchForm} maxWidth={"xl"}>
-        //     <TextField
-        //             disabled
-        //             rows={1}
-        //             variant={"outlined"}
-        //             color={"primary"}
-        //             className={classes.textField}
-        //             placeholder={ctgRecord.username ?? "patient name"}
-        //             onChange={(event) => {
-        //                 console.log(event.target.value)
-        //             }}
-        //             InputProps={{
-        //                 endAdornment: (
-        //                     <InputAdornment position="end">
-        //                       <IconButton
-        //                         onClick={() =>{
-        //                             setShowImage(true)
-        //                         }}>
-        //                           <SearchIcon></SearchIcon>
-        //                       </IconButton>
-        //                     </InputAdornment>
-        //                   ),
-        //             }}
-        //         >
-        //         </TextField>
-        //     </Container>
-        //     <Container className={classes.searchForm} maxWidth={"xl"}>
-        //         <TextField
-        //             disabled
-        //             multiline
-        //             rows={7}
-        //             variant={"outlined"}
-        //             color={"primary"}
-        //             className={classes.textField}
-        //             placeholder={ctgRecord.ctgUrl ?? "comments from doctor"}
-        //         >
-        //         </TextField>
-        //     </Container>
-        //     <Container>
-        //         <Button
-        //             disabled={true}
-        //             className={classes.saveButton}
-        //             type="submit"
-        //             color="primary"
-        //             variant="contained">
-        //             Save
-        //         </Button>
-        //     </Container>
-        //     <Typography
-        //         className={classes.permissionText}
-        //         color="secondary"
-        //     >
-        //         Only admin is allowed to edit this information
-        //     </Typography>
-        // </div>
     )
 }
 
