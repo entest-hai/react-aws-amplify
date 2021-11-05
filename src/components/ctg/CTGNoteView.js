@@ -35,6 +35,7 @@ import {Storage} from "aws-amplify";
 
 const CTGNoteView = ({match}) => {
     const location = useLocation()
+    const [record, setRecord] = useState(location.state ? location.state.record : null)
     const [ctgS3Url, setCtgS3Url] = useState(null)
     const scale = 1.1
     const [image, setimage] = useState(null)
@@ -134,7 +135,7 @@ const CTGNoteView = ({match}) => {
                     variant={"outlined"}
                     color={"primary"}
                     className={classes.textField}
-                    placeholder={location.state.record.username ?? "patient name"}
+                    placeholder={record ?  record.username : "patient name"}
                     onChange={(event) => {
                         console.log(event.target.value)
                     }}
@@ -161,7 +162,7 @@ const CTGNoteView = ({match}) => {
                     variant={"outlined"}
                     color={"primary"}
                     className={classes.textField}
-                    placeholder={location.state.record.ctgUrl ?? "comments from doctor"}
+                    placeholder={record ? record.comment : "comments from doctor"}
                 >
                 </TextField>
             </Container>

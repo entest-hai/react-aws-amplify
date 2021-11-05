@@ -89,8 +89,7 @@ const CtgLiveWebWorker = () => {
                     <CtgImageViewer ctgS3Url={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}></CtgImageViewer>
                 </Route>
                 <Route exact path={"/ctg"}>
-                    <CTGNoteView ctgRecord={{username:"patient id",ctgUrl:process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}}>
-                    </CTGNoteView>
+                    <CTGNoteView></CTGNoteView>
                 </Route>
                 <Route exact path={"/records"}>
                     <CTGRecords></CTGRecords>
