@@ -43,7 +43,7 @@ const CTGNoteView = ({ctgRecord}) => {
         return {
             // toolbar: theme.mixins.toolbar,
             searchForm: {
-                maxWidth:window.screen.width-350,
+                maxWidth:window.screen.width-10,
                 padding: 0,
                 display: "flex"
             },

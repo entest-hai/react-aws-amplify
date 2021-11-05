@@ -58,7 +58,7 @@ const UploadView = () => {
     const classes = makeStyles(() => {
         return {
             container: {
-            maxWidth:window.screen.width-350,
+            maxWidth:window.screen.width-10,
             // backgroundColor: "grey",
             padding: 0,
         },

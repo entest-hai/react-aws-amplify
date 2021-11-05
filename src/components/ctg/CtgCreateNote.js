@@ -113,7 +113,7 @@ const CtgCreateNote = () => {
     }
 
     return (
-       <Container maxWidth='xl'>
+       <Container maxWidth={window.screen.width-10}>
            <Card>
                 <CardMedia className={classes.media}>
                     <Paper style={{overflow:'auto'}} elevation={4}>

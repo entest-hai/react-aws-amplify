@@ -36,7 +36,7 @@ const CtgImageViewer = (props) => {
     const ctgImageHeight = 500
     const classes = makeStyles({
         container: {
-            maxWidth:window.screen.width-350,
+            maxWidth:window.screen.width-10,
             backgroundColor: "grey",
             padding: 0,
         }
