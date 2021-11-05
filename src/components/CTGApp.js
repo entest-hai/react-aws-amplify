@@ -59,6 +59,7 @@ import Divider from '@material-ui/core/Divider';
 import {useScript} from "./epic/useScript";
 import {MyChartHome} from "./epic/MyChartHome";
 import {UserSessionService} from "../services/UserSessionService";
+import MultilineChartIcon from '@material-ui/icons/MultilineChart';
 
 const drawerWidth = 240
 
@@ -279,7 +280,7 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
         },
         {
             text: "Live Multiple FHR",
-            icon: <CloudCircle color={"secondary"}></CloudCircle>,
+            icon: <MultilineChartIcon color={"secondary"}></MultilineChartIcon>,
             path: "/grid"
         },
         {
@@ -399,15 +400,12 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
 
 
 const CTGRecords = ({match}) => {
-
     useScript('fhir-client.js')
-
     const breakpoints = {
         default: 3,
         1100: 2,
         700: 1
     };
-
     const classes = useStyles()
     const [records, setRecords] = useState([])
     async function fetchCtgRecords() {
@@ -458,9 +456,7 @@ const CTGRecords = ({match}) => {
 }
 
 const CTGRecordNote = ({record, handleDelete}) => {
-
     const history = useHistory()
-
     const classes1 = makeStyles({
         avatar: {
             backgroundColor: (record) => {

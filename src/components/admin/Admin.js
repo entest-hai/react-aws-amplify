@@ -51,6 +51,7 @@ import {
     CognitoUserListCustom
 } from "./CognitoUserList";
 import {Button} from "@material-ui/core";
+import {CtgNumericalCreate, CtgNumericalEdit, CtgNumericalList, CtgNumericalShow} from "./CtgNumericalList";
 Amplify.configure(awsExports);
 
 const authProvider = buildAuthProvider({
@@ -134,6 +135,14 @@ const AdminPage = ({setAuthenticated}) => {
                 edit={CtgEdit}
                 create={CtgCreate}
             ></Resource>,
+            <Resource
+                name={"CtgNumericals"}
+                list={CtgNumericalList}
+                show={CtgNumericalShow}
+                edit={CtgNumericalEdit}
+                create={CtgNumericalCreate}
+            >
+            </Resource>,
             <Resource
                 name={"cognitoUsers"}
                 options={{label: "Cognito User"}}
