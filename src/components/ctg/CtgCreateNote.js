@@ -30,8 +30,15 @@ const CtgCreateNote = () => {
     const ctgImageHeight = 400
     const [showImage, setShowImage] = useState(false)
 
+
+
     const classes = makeStyles((theme) => {
         return {
+            container: {
+                maxWidth:window.screen.width-10,
+                backgroundColor: "grey",
+                padding: 0,
+            },
             searchForm: {
                 display: "flex"
             },
@@ -103,7 +110,7 @@ const CtgCreateNote = () => {
     }
 
     return (
-       <Container maxWidth={window.screen.width-10}>
+       <Container className={classes.container}>
           {/* <Card>
                 <CardMedia className={classes.media}>
                     <Paper style={{overflow:'auto'}} elevation={4}>

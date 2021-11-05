@@ -306,8 +306,30 @@ const TestFHRStaticTrace = () => {
 }
 
 const CtgTableTest = (props)  => {
+    const listCtgNumericalsByDoctorID = `
+        query ListCtgNumericalsByDoctorID(
+            $filter: ModelCtgNumericalFilterInput
+            $limit: Int
+            $nextToken: String
+        ) {
+          listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+            items {
+              id
+              comment
+              ctgJsonUrl
+              ctgUrl
+              doctorID
+              hospitalID
+              patientID
+              sessionTime
+              createdTime
+            }
+            nextToken
+          }
+    }
+`;
+    const [isFetching, setIsFetching] = useState(false)
     const [rows, setRows] = useState([])
-    // const [records, setRecords] = useState([])
     const [selectedRow, setSelectedRow] = useState(null)
     const classes = makeStyles(() => {
         return {
@@ -346,40 +368,8 @@ const CtgTableTest = (props)  => {
         return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
     }
 
-    const listCtgNumericalsByDoctorID = `
-        query ListCtgNumericalsByDoctorID(
-            $filter: ModelCtgNumericalFilterInput
-            $limit: Int
-            $nextToken: String
-        ) {
-          listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
-            items {
-              id
-              comment
-              ctgJsonUrl
-              ctgUrl
-              doctorID
-              hospitalID
-              patientID
-              sessionTime
-              createdTime
-            }
-            nextToken
-          }
-    }
-`;
-
-    useEffect(async () => {
-        await UserSessionService.getUserSession()
-        let filter = {
-            doctorID: {
-                eq: sessionStorage.getItem('doctorID')
-            }
-        }
-        const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});
-        // build table raws
-        let records = apiData.data.listCtgNumericals.items
-        let rows = records.map((record) => {
+    const buildRows = (records) => {
+        let recordRows = records.map((record) => {
             let name = record.ctgJsonUrl ? record.ctgJsonUrl : "UNKNOWN"
             let createdTime = record.createdTime ? dateTimeToString(record.createdTime) : "UNKNOWN"
             let comment = record.comment? record.comment : "UNKNOWN"
@@ -388,8 +378,28 @@ const CtgTableTest = (props)  => {
                 createDate(record.id, name,  createdTime, length, comment)
             )
         })
-        setRows(rows)
-    })
+        setRows(recordRows)
+    }
+
+    useEffect(async () => {
+        let isMounted = true
+        await UserSessionService.getUserSession()
+        let filter = {
+            doctorID: {
+                eq: sessionStorage.getItem('doctorID')
+            }
+        }
+        // catch error when calling graphql qpi
+        try {
+            let apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});
+            if (isMounted){
+                buildRows(apiData.data.listCtgNumericals.items)
+            }
+        } catch (e) {
+
+        }
+        return () => {isMounted = false}
+    }, [])
 
     return (
         <TableContainer className={classes.container}>
@@ -412,12 +422,12 @@ const CtgTableTest = (props)  => {
                                 key={row.id}
                                 className={classes.tableRow}
                                 onClick={() => {
-                                    setSelectedRow(row.name)
+                                    setSelectedRow(row.id)
                                     if (props.setCtgId){
                                         props.setCtgId(row.name)
                                     }
                                 }}
-                                selected={selectedRow == row.name}
+                                selected={selectedRow == row.id}
                             >
                                 {columns.map((column) => {
                                     const value = row[column.id]

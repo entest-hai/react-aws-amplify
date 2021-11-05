@@ -4,10 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import { Card, CardMedia, Container, Paper } from "@material-ui/core";
 import {worker} from './SimpleWorker';
 import WebWorker from "./workerSetup";
-
 const ctgImageHeight = 550
-
-
 const FHRLiveCanvas = (props) => {
     const canvasId = props.id ? props.id : 0
     const canvasIdString = "canvas_ctg" + canvasId.toString()
@@ -174,11 +171,11 @@ const FHRLiveCanvas = (props) => {
         const simpleWorker = new WebWorker(worker)
         simpleWorker.addEventListener('message', event => {
             // console.log(event.data.mHR)
-            // update heart rate 
+            // update heart rate
             setmHR(mHR => [...mHR, ...event.data.mHR]);
             setfHR(fHR => [...fHR, ...event.data.fHR])
         })
-      
+
     },[])
 
     return (
@@ -188,23 +185,17 @@ const FHRLiveCanvas = (props) => {
     )
 }
 
-
-
-
 const TestWorkerView1 = () => {
-
     const [mHR, setmHR] = useState([]);
     const [fHR, setfHR] = useState([]);
-
     useEffect( async () => {
         const simpleWorker = new WebWorker(worker)
         simpleWorker.addEventListener('message', event => {
             // console.log(event.data.mHR)
-            // update heart rate 
+            // update heart rate
             setmHR(mHR => [...mHR, ...event.data.mHR]);
             setfHR(fHR => [...fHR, ...event.data.fHR])
         })
-      
     },[])
 
     return (
@@ -216,13 +207,11 @@ const TestWorkerView1 = () => {
 
 
 const TestWorkerView = () => {
-
     const classes = makeStyles(() => {
         return {
             root: {
                 flexGrow: 1,
                 overflow: "auto"
-    
             },
             media: {
                 height: ctgImageHeight,
