@@ -573,5 +573,4 @@ const CtgMuiTableTest = (props) => {
     )
 }
 
-
 export {FHRStaticTrace, TestFHRStaticTrace, CtgMuiTableTest}

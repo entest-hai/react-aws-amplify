@@ -130,7 +130,7 @@ function CTGApp() {
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
                            <Route exact path={"/"}>
-                               <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
+                               <TestFHRStaticTrace></TestFHRStaticTrace>
                            </Route>
                            <Route path={"/ctg"}>
                                <CTGNoteView></CTGNoteView>
