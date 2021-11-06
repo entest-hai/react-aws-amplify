@@ -5,7 +5,8 @@ import MUIDataTable from "mui-datatables";
 import {listCtgNumericalsByDoctorID} from "../../graphql/customQueries";
 import {Button} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from "@mui/styles";
+import { createTheme } from "@mui/material/styles";
 
 const CtgListDoctorFacing = (props) => {
     const history = useHistory()
@@ -133,18 +134,9 @@ const CtgListDoctorFacing = (props) => {
         }
     };
 
-    const getMuiTheme = () => createTheme({
-        overrides: {
-          MUIDataTableBodyCell: {
-            root: {
-              backgroundColor: "#FF0000"
-            }
-          }
-        }
-      })
 
     return (
-        <ThemeProvider theme={getMuiTheme()}>
+        <ThemeProvider theme={createTheme()}>
             <MUIDataTable
                   title={"CTG List"}
                   data={ctgRows}

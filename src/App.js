@@ -73,14 +73,14 @@ const CtgLiveWebWorker = () => {
     }
 
     return (
-        <ThemeProvider theme={createTheme()}>
+        // <ThemeProvider theme={createTheme()}>
             <Router>
                 <Switch>
                     <Route exact path={"/"}>
                         <TestWorkerView></TestWorkerView>
                     </Route>
                     <Route exact path={"/sheep"}>
-                        <TestFHRStaticTrace></TestFHRStaticTrace>
+                        <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
                     </Route>
                     <Route exact path={"/grid"}>
                         <TestGridView></TestGridView>
@@ -108,7 +108,7 @@ const CtgLiveWebWorker = () => {
                     {/*</Route>*/}
                 </Switch>
             </Router>
-        </ThemeProvider>
+        // </ThemeProvider>
     )
 }
 
@@ -125,12 +125,12 @@ function CTGApp() {
           )
       }
       return (
-           <ThemeProvider theme={createTheme()}>
+           // <ThemeProvider theme={createTheme()}>
                <Router>
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
                            <Route exact path={"/"}>
-                               <TestFHRStaticTrace></TestFHRStaticTrace>
+                               <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
                            </Route>
                            <Route path={"/ctg"}>
                                <CTGNoteView></CTGNoteView>
@@ -156,13 +156,13 @@ function CTGApp() {
                            <Route path={"/openfhir"}>
                                <OpenFhirServer></OpenFhirServer>
                            </Route>
-                           <Route path={"/sheep"}>
-                               <TestFHRStaticTrace></TestFHRStaticTrace>
-                           </Route>
+                           {/*<Route path={"/sheep"}>*/}
+                           {/*    <TestFHRStaticTrace></TestFHRStaticTrace>*/}
+                           {/*</Route>*/}
                        </CTGAppLayout>
                    </Switch>
                 </Router>
-           </ThemeProvider>
+           // </ThemeProvider>
       )
 }
   
