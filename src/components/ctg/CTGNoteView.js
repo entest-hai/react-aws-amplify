@@ -34,6 +34,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import {Storage} from "aws-amplify";
 
 const CTGNoteView = ({match}) => {
+
     const location = useLocation()
     const [record, setRecord] = useState(location.state ? location.state.record : null)
     const [ctgS3Url, setCtgS3Url] = useState(null)
@@ -87,10 +88,17 @@ const CTGNoteView = ({match}) => {
                 color: 'error'
             },
             container: {
-            maxWidth:window.screen.width-350,
-            backgroundColor: "grey",
-            padding: 0,
-        }
+                maxWidth:window.screen.width-350,
+                backgroundColor: "grey",
+                padding: 0,
+            },
+            ctgFormTitleText:{
+              fontSize: 12,
+            },
+            ctgRecordText: {
+                fontSize: 14,
+                paddingBottom: 10
+            }
         }
     })()
 
@@ -123,60 +131,122 @@ const CTGNoteView = ({match}) => {
             console.log("unmount the image viewer")
         }
     }, [])
- 
+
+    const dateTimeToString = (time) => {
+        let obj = new Date(time)
+        return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
+    }
+
+    const CtgInformationDetails =  () => {
+        return (
+            <div style={{paddingBottom: 20}}>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    Patient ID
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.patientID ? location.state.record.patientID : "UNKNOWN"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    Hospital ID
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.hospitalID ? location.state.record.hospitalID : "UNKNOWN"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    Doctor ID
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.doctorID ? location.state.record.doctorID : "UNKNOWN"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    Ctg ID
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.id ? location.state.record.id : "UNKNOWN"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    CtgUrl
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.ctgUrl ? location.state.record.ctgUrl : "UNKNOWN"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    CtgJsonUrl
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.ctgJsonUrl ? location.state.record.ctgJsonUrl : "UNKNOWN"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    Comment
+                </Typography>
+                <Typography className={classes.ctgRecordText}>
+                    {location.state.record.comment ? location.state.record.comment : "NULL"}
+                </Typography>
+                <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
+                    Created At
+                </Typography>
+                <Typography className={classes.ctgFormTitleText}>
+                    {location.state.record.createdTime ? dateTimeToString(location.state.record.createdTime) : "UNKNOWN"}
+                </Typography>
+            </div>
+        )
+    }
 
     return (
-        <div>
+        <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
+            <CtgInformationDetails></CtgInformationDetails>
             <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>
-            <Container className={classes.searchForm}>
-             <TextField
-                    disabled
-                    rows={1}
-                    variant={"outlined"}
-                    color={"primary"}
-                    className={classes.textField}
-                    placeholder={record ?  record.username : "patient name"}
-                    onChange={(event) => {
-                        console.log(event.target.value)
-                    }}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                onClick={() =>{
-                                    setShowImage(true)
-                                }}>
-                                  <SearchIcon></SearchIcon>
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                    }}
-                >
-                </TextField>
-            </Container>
-            <Container className={classes.searchForm}>
-                <TextField
-                    disabled
-                    multiline
-                    rows={7}
-                    variant={"outlined"}
-                    color={"primary"}
-                    className={classes.textField}
-                    placeholder={record ? record.comment : "comments from doctor"}
-                >
-                </TextField>
-            </Container>
-            <Container className={classes.searchForm}>
-                <Button
-                    disabled={true}
-                    className={classes.saveButton}
-                    type="submit"
-                    color="primary"
-                    variant="contained">
-                    Save
-                </Button>
-            </Container>
-        </div>
+
+            {/*Old code on 05 NOV 2021*/}
+            {/*<Container className={classes.searchForm}>*/}
+            {/* <TextField*/}
+            {/*        disabled*/}
+            {/*        rows={1}*/}
+            {/*        variant={"outlined"}*/}
+            {/*        color={"primary"}*/}
+            {/*        className={classes.textField}*/}
+            {/*        placeholder={record ?  record.username : "patient name"}*/}
+            {/*        onChange={(event) => {*/}
+            {/*            console.log(event.target.value)*/}
+            {/*        }}*/}
+            {/*        InputProps={{*/}
+            {/*            endAdornment: (*/}
+            {/*                <InputAdornment position="end">*/}
+            {/*                  <IconButton*/}
+            {/*                    onClick={() =>{*/}
+            {/*                        setShowImage(true)*/}
+            {/*                    }}>*/}
+            {/*                      <SearchIcon></SearchIcon>*/}
+            {/*                  </IconButton>*/}
+            {/*                </InputAdornment>*/}
+            {/*              ),*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*    </TextField>*/}
+            {/*</Container>*/}
+            {/*<Container className={classes.searchForm}>*/}
+            {/*    <TextField*/}
+            {/*        disabled*/}
+            {/*        multiline*/}
+            {/*        rows={7}*/}
+            {/*        variant={"outlined"}*/}
+            {/*        color={"primary"}*/}
+            {/*        className={classes.textField}*/}
+            {/*        placeholder={location.state.record.comment ? location.state.record.comment : "comments from doctor"}*/}
+            {/*    >*/}
+            {/*    </TextField>*/}
+            {/*</Container>*/}
+            {/*<Container className={classes.searchForm}>*/}
+            {/*    <Button*/}
+            {/*        disabled={true}*/}
+            {/*        className={classes.saveButton}*/}
+            {/*        type="submit"*/}
+            {/*        color="primary"*/}
+            {/*        variant="contained">*/}
+            {/*        Save*/}
+            {/*    </Button>*/}
+            {/*</Container>*/}
+        </Paper>
     )
 }
 

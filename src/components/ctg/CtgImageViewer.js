@@ -89,7 +89,7 @@ const CtgImageViewer = (props) => {
                         Default
                     </Button>
                 </CardActions>
-        </Card>
+            </Card>
         </Container>
     )
 }

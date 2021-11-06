@@ -12,7 +12,7 @@
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "../components/canvas/data";
 import {makeStyles} from "@material-ui/core/styles";
-import { Card, CardMedia, Container, Paper } from "@material-ui/core";
+import { Card, CardMedia, Container, Paper, withStyles } from "@material-ui/core";
 import {worker} from './SimpleWorker';
 import WebWorker from "./workerSetup";
 import {FHRLiveCanvas} from "./TestWorkerView";
@@ -29,6 +29,11 @@ import TableRow from '@material-ui/core/TableRow';
 import {API, Storage} from "aws-amplify";
 import Checkbox from '@material-ui/core/Checkbox';
 import {UserSessionService} from "../services/UserSessionService";
+import {listCtgNumericalsByDoctorID} from "../graphql/customQueries";
+//
+import MUIDataTable from "mui-datatables";
+import {Waypoint} from "react-waypoint";
+import {CtgListDoctorFacing} from "../components/ctg/CtgListDoctorFacing";
 
 const FHRStaticTrace = (props) => {
     // starting time of CTG data
@@ -300,35 +305,13 @@ const TestFHRStaticTrace = () => {
     return (
             <Paper style={{overflow:'hidden', overflowX:'scroll', margin: 0}} elevation={4}>
                 {isFetching && <FHRStaticTrace heartRate={heartRate} ctgId={ctgId} ></FHRStaticTrace>}
-                <CtgTableTest setCtgId={setCtgId}></CtgTableTest>
+                <CtgListDoctorFacing setCtgId={setCtgId}></CtgListDoctorFacing>
             </Paper>
     )
 }
 
 const CtgTableTest = (props)  => {
-    const listCtgNumericalsByDoctorID = `
-        query ListCtgNumericalsByDoctorID(
-            $filter: ModelCtgNumericalFilterInput
-            $limit: Int
-            $nextToken: String
-        ) {
-          listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
-            items {
-              id
-              comment
-              ctgJsonUrl
-              ctgUrl
-              doctorID
-              hospitalID
-              patientID
-              sessionTime
-              createdTime
-            }
-            nextToken
-          }
-    }
-`;
-    const [isFetching, setIsFetching] = useState(false)
+    const [nextToken, setNextToken] = useState(null)
     const [rows, setRows] = useState([])
     const [selectedRow, setSelectedRow] = useState(null)
     const classes = makeStyles(() => {
@@ -381,8 +364,7 @@ const CtgTableTest = (props)  => {
         setRows(recordRows)
     }
 
-    useEffect(async () => {
-        let isMounted = true
+    const fetchCtgs = async () => {
         await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
@@ -391,12 +373,35 @@ const CtgTableTest = (props)  => {
         }
         // catch error when calling graphql qpi
         try {
-            let apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});
-            if (isMounted){
-                buildRows(apiData.data.listCtgNumericals.items)
-            }
+            let apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}});
+            buildRows(apiData.data.listCtgNumericals.items)
+            setNextToken(apiData.data.listCtgNumericals.nextToken)
         } catch (e) {
+            console.log("error fetch ctg records")
+        }
+    }
 
+    const fetchMoreCtgs = async () => {
+        let filter = {
+            doctorID: {
+                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+            }
+        }
+        if (nextToken){
+            try {
+                let apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10, nextToken: nextToken}});
+                buildRows(apiData.data.listCtgNumericals.items)
+                setNextToken(apiData.data.listCtgNumericals.nextToken)
+            } catch (e) {
+                console.log("error fetch more ctg records")
+            }
+        }
+    }
+
+    useEffect(async () => {
+        let isMounted = true
+        if (isMounted){
+            fetchCtgs()
         }
         return () => {isMounted = false}
     }, [])
@@ -447,5 +452,126 @@ const CtgTableTest = (props)  => {
     )
 }
 
+const CtgMuiTableTest = (props) => {
+    const [nextToken, setNextToken] = useState(null)
+    const columns = [
+        {
+            name: "Index",
+            options: {
+                filter: false,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    const rowIndex = tableMeta.rowIndex
+                    if (ctgRows.length - 2  == value) {
+                        return (
+                        <React.Fragment key={value}>
+                            <Waypoint
+                                onEnter={() => {
+                                    console.log("waypoint reach", value)
+                                    fetchMoreCtgRecords()
+                                }
+                                }>
+                            </Waypoint>
+                            {value}
+                        </React.Fragment>)
+                    } else {
+                        return (<React.Fragment key={value}>{value}</React.Fragment>)
+                    }
+                }
+            }
+        },
+        {name: "Id"},
+        {name: "Name"},
+        {name: "Accepted"},
+        {name: "FHR Lost"},
+        {name: "Comment"},
+        {name: "Created Time"}
+        ];
+    const [ctgRows, setCtgRows] = useState([])
+    const dateTimeToString = (time) => {
+        let obj = new Date(time)
+        return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
+    }
 
-export {FHRStaticTrace, TestFHRStaticTrace}
+    const buildCtgRows = (ctgRecords) => {
+        let newCtgRows = ctgRecords.map((record,index) => {
+            return [index + ctgRows.length,
+                record.id ? record.id.substring(0,8): "UNKNOWN",
+                record.ctgJsonUrl ? record.ctgJsonUrl: "UNKNOWN",
+                record.accepted ? record.accepted : "UNKNOWN",
+                record.fHRLost ? record.fHRLost: "UNKNOWN",
+                record.comment ? record.comment: "UNKNOWN",
+                dateTimeToString(record.createdTime)]
+        })
+        setCtgRows([...ctgRows, ...newCtgRows])
+    }
+
+    const fetchCtgRecords = async () => {
+        console.log("fetch records")
+        let filter = {
+            doctorID: {
+                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+            }
+        }
+        try {
+            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}})
+            buildCtgRows(apiData.data.listCtgNumericals.items)
+            setNextToken(apiData.data.listCtgNumericals.nextToken)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const fetchMoreCtgRecords = async () => {
+        let filter = {
+            doctorID: {
+                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+            }
+        }
+        if (nextToken ){
+            console.log("fetch more ctg records")
+            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10, nextToken}})
+            buildCtgRows(apiData.data.listCtgNumericals.items)
+            setNextToken(apiData.data.listCtgNumericals.nextToken)
+        } else {
+            console.log("null token no more to fetch ctg records")
+        }
+    }
+
+    useEffect(async () => {
+        let isMounted = true
+        if(isMounted){
+            await  fetchCtgRecords()
+        }
+        return () => {isMounted = false}
+    },[])
+
+    useEffect(() => {
+        console.log("length ", ctgRows.length)
+    }, [ctgRows])
+
+    const options = {
+        filter: true,
+        filterType: 'dropdown',
+        responsive: 'standard',
+        fixedHeader:true,
+        pagination: false,
+        tableBodyHeight: props.tableHeight ? props.tableHeight :  '400px',
+        onRowClick(rowNode){
+            if (props.setCtgId){
+                props.setCtgId(rowNode[2])
+            }
+        }
+    };
+
+    return (
+          <MUIDataTable
+              title={"CTG List"}
+              data={ctgRows}
+              columns={columns}
+              options={options}
+          />
+    )
+}
+
+
+export {FHRStaticTrace, TestFHRStaticTrace, CtgMuiTableTest}

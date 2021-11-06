@@ -414,8 +414,6 @@ const CTGRecords = ({match}) => {
             doctorID: {
                 // eq: '0f150cec-842f-43a0-9f89-ab06625e832a'
                 eq: sessionStorage.getItem('doctorID')
-                // eq: UserSessionService.user.doctorID
-                // eq: String(user.attributes.sub)
             }
         }
         const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});

@@ -31,12 +31,11 @@ const CtgCreateNote = () => {
     const [showImage, setShowImage] = useState(false)
 
 
-
     const classes = makeStyles((theme) => {
         return {
             container: {
                 maxWidth:window.screen.width-10,
-                backgroundColor: "grey",
+                // backgroundColor: "grey",
                 padding: 0,
             },
             searchForm: {
@@ -61,9 +60,9 @@ const CtgCreateNote = () => {
                 paddingRight: 20
             },
             field: {
-            marginTop: 20,
-            marginBottom: 20,
-            display: "block"
+                marginTop: 20,
+                marginBottom: 20,
+                display: "block"
         },
         }
     })()
@@ -110,15 +109,7 @@ const CtgCreateNote = () => {
     }
 
     return (
-       <Container className={classes.container}>
-          {/* <Card>
-                <CardMedia className={classes.media}>
-                    <Paper style={{overflow:'auto'}} elevation={4}>
-                        {showImage ? <img src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> :
-                        <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                    </Paper>
-                </CardMedia>
-            </Card>*/}
+       <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
             <CtgImageViewer ctgS3Url={showImage ? process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png" : null}></CtgImageViewer>
            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                <TextField
@@ -150,17 +141,17 @@ const CtgCreateNote = () => {
                </TextField>
                   <TextField
                       className={classes.field}
-                    label="Doctor comments"
-                    onChange={(event) => {
-                        setDetails(event.target.value)
-                    }}
-                    variant="outlined"
-                    color="secondary"
-                    multiline
-                    rows={4}
-                    fullWidth
-                    required
-                    error={detailsError}
+                        label="Doctor comments"
+                        onChange={(event) => {
+                            setDetails(event.target.value)
+                        }}
+                        variant="outlined"
+                        color="secondary"
+                        multiline
+                        rows={13}
+                        fullWidth
+                        required
+                        error={detailsError}
                   >
                   </TextField>
                    <Button
@@ -172,7 +163,7 @@ const CtgCreateNote = () => {
                    Submit
                 </Button>
            </form>
-       </Container>
+       </Paper>
     );
 }
 
