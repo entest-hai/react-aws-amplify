@@ -50,7 +50,7 @@ import {
     CognitoUserEditCustom,
     CognitoUserListCustom
 } from "./CognitoUserList";
-import {Button} from "@material-ui/core";
+import {Button} from "@mui/material";
 import {CtgNumericalCreate, CtgNumericalEdit, CtgNumericalList, CtgNumericalShow} from "./CtgNumericalList";
 Amplify.configure(awsExports);
 

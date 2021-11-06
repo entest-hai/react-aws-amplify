@@ -8,27 +8,28 @@
 // 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
 //=====================================================================================================================
 import {React, useState, useEffect} from 'react'
-import { 
+import {
     AppBar,
     Container,
-    makeStyles, 
-    Toolbar, 
-    Typography, 
-    Paper, 
-    Button, 
-    InputBase, 
-    Box, 
-    IconButton, 
+    Toolbar,
+    Typography,
+    Paper,
+    Button,
+    InputBase,
+    Box,
+    IconButton,
     Card,
     TextField,
     CardMedia,
-    CardHeader} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import Skeleton from '@material-ui/lab/Skeleton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import { CloudCircle, ZoomIn, ZoomOut, ZoomOutRounded, ZoomOutSharp } from '@material-ui/icons';
-import CardActions from '@material-ui/core/CardActions';
+    CardHeader,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import SearchIcon from '@mui/icons-material/Search';
+import Skeleton from '@mui/material/Skeleton';
+import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { CloudCircle, ZoomIn, ZoomOut, ZoomOutRounded, ZoomOutSharp } from '@mui/icons-material';
+import CardActions from '@mui/material/CardActions';
 import {CtgImageViewer} from "./CtgImageViewer";
 import { useHistory, useLocation } from 'react-router-dom';
 import {Storage} from "aws-amplify";

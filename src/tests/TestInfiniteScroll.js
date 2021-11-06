@@ -1,6 +1,6 @@
 import React from "react";
 import {Waypoint} from "react-waypoint";
-import {List, ListItem, Paper} from "@material-ui/core";
+import {List, ListItem, Paper} from "@mui/material";
 
 const TestInfiniteScroll = () => {
 

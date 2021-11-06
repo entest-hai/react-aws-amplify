@@ -1,6 +1,6 @@
-import {Paper, TextField, Typography, Button, Box} from '@material-ui/core'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import {Paper, TextField, Typography, Button, Box} from '@mui/material'
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import React, {useEffect, useState} from "react";
 import {API, Auth} from 'aws-amplify'
 import {UserProfile} from "../services/UserSessionService";

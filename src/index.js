@@ -1,4 +1,6 @@
 import React from 'react';
+import { ThemeProvider } from "@mui/styles";
+import { createTheme } from "@mui/material/styles";
 import ReactDOM from 'react-dom';
 import './index.css';
 import {CTGApp, CtgLiveWebWorker} from './App';
@@ -9,7 +11,9 @@ Amplify.configure(config)
 
 ReactDOM.render(
   <React.StrictMode>
-    <CTGApp />
+    <ThemeProvider theme={createTheme()}>
+        <CTGApp></CTGApp>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

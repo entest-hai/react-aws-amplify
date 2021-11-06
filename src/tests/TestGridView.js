@@ -1,6 +1,6 @@
 import React from "react";
-import {Box, Paper} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import {Box, Paper} from "@mui/material";
+import Grid from "@mui/material/Grid";
 import {TestWorkerView} from "./TestWorkerView";
 import {FHRLiveCanvas} from "./TestWorkerView";
 import {CtgImageViewer} from "../components/ctg/CtgImageViewer";

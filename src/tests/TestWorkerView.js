@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "../components/canvas/data";
-import {makeStyles} from "@material-ui/core/styles";
-import { Card, CardMedia, Container, Paper } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import { Card, CardMedia, Container, Paper } from "@mui/material";
 import {worker} from './SimpleWorker';
 import WebWorker from "./workerSetup";
 const ctgImageHeight = 550

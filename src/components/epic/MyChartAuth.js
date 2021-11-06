@@ -31,7 +31,7 @@
 // <!-- https://main.d25ixo3i27kpqh.amplifyapp.com -->
 //==============================================================================
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Container} from "@material-ui/core";
+import {Box, Button, Container} from "@mui/material";
 import {useHistory, useLocation} from 'react-router-dom';
 import {useScript} from "./useScript";
 

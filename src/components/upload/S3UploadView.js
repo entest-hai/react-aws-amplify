@@ -9,18 +9,19 @@
 // 002.   |  31 AUG 2021.     | TRAN MINH HAI      | - Call FHR API and create a CTGRecord in DynamoDB comments 
 //=====================================================================================================================
 
-import { Button, Container, makeStyles, Card, CardMedia, Paper} from '@material-ui/core';
+import { Button, Container, Card, CardMedia, Paper } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {React, useState} from 'react';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import SearchIcon from '@material-ui/icons/Search';
-import { IconButton } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import { IconButton } from '@mui/material';
+import { TextField } from '@mui/material';
 import {API, Storage} from 'aws-amplify';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@mui/material/Skeleton';
 import awsmobile from '../../aws-exports';
 import { fhr_api_end_point } from '../../config/apiendpoint';
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
@@ -45,16 +46,16 @@ function LinearProgressWithLabel(props) {
       </Box>
     );
   }
-  
-  LinearProgressWithLabel.propTypes = {
-    /**
-     * The value of the progress indicator for the determinate and buffer variants.
-     * Value between 0 and 100.
-     */
-    value: PropTypes.number.isRequired,
-  };
 
-  
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+};
+
+
 const UploadView = () => {
 
     const classes = makeStyles(() => {

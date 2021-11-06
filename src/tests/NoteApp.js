@@ -18,23 +18,23 @@ import {
     FormLabel, List, ListItem, ListItemIcon, ListItemText,
     Paper, Toolbar,
     Typography, useTheme
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
-import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, SubjectOutlined} from "@material-ui/icons";
-import { TextField } from "@material-ui/core";
-import Radio from '@material-ui/core/Radio';
-import {RadioGroup} from "@material-ui/core";
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import {AddCircleOutlineOutlined, DeleteOutline, KeyboardArrowRight, SubjectOutlined} from "@mui/icons-material";
+import { TextField } from "@mui/material";
+import Radio from '@mui/material/Radio';
+import {RadioGroup} from "@mui/material";
 import {useHistory, useLocation} from "react-router-dom";
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import {CardHeader} from "@material-ui/core";
-import {IconButton} from "@material-ui/core";
-import Grid from '@material-ui/core/Grid';
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import {Avatar} from "@material-ui/core";
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import {CardHeader} from "@mui/material";
+import {IconButton} from "@mui/material";
+import Grid from '@mui/material/Grid';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {Avatar} from "@mui/material";
 import {format} from 'date-fns';
 import Masonry from "react-masonry-css";
-import {yellow, green, pink, blue} from "@material-ui/core/colors";
+import {yellow, green, pink, blue} from "@mui/material/colors";
 
 const drawerWidth = 240
 
@@ -188,7 +188,7 @@ function NoteCard({note, handleDelete}){
                    </Avatar>
                }
                 action={
-                    <IconButton onClick={() => handleDelete(note.id)}>
+                    <IconButton onClick={() => handleDelete(note.id)} size="large">
                        <DeleteOutline>
 
                        </DeleteOutline>
@@ -206,7 +206,7 @@ function NoteCard({note, handleDelete}){
                </CardContent>
            </Card>
         </div>
-    )
+    );
 }
 
 const Notes = () => {

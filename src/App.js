@@ -117,7 +117,9 @@ function CTGApp() {
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
       if (!authenticated){
           return (
-              <UserLoginPage setAuthenticated={setAuthenticated}></UserLoginPage>
+              <ThemeProvider theme={createTheme()}>
+                  <UserLoginPage setAuthenticated={setAuthenticated}></UserLoginPage>
+              </ThemeProvider>
           )
       }
       else if (sessionStorage.getItem('username')=='admin'){
@@ -126,7 +128,6 @@ function CTGApp() {
           )
       }
       return (
-           // <ThemeProvider theme={createTheme()}>
                <Router>
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
@@ -157,13 +158,9 @@ function CTGApp() {
                            <Route path={"/openfhir"}>
                                <OpenFhirServer></OpenFhirServer>
                            </Route>
-                           {/*<Route path={"/sheep"}>*/}
-                           {/*    <TestFHRStaticTrace></TestFHRStaticTrace>*/}
-                           {/*</Route>*/}
                        </CTGAppLayout>
                    </Switch>
                 </Router>
-           // </ThemeProvider>
       )
 }
   

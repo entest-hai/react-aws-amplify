@@ -3,7 +3,7 @@ import {Waypoint} from "react-waypoint";
 import {API} from "aws-amplify";
 import MUIDataTable from "mui-datatables";
 import {listCtgNumericalsByDoctorID} from "../../graphql/customQueries";
-import {Button} from "@material-ui/core";
+import {Button} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
@@ -134,17 +134,16 @@ const CtgListDoctorFacing = (props) => {
         }
     };
 
-
     return (
-        <ThemeProvider theme={createTheme()}>
-            <MUIDataTable
-                  title={"CTG List"}
-                  data={ctgRows}
-                  columns={columns}
-                  options={options}
-          />
-        </ThemeProvider>
-    )
+            <ThemeProvider theme={createTheme()}>
+                <MUIDataTable
+                      title={"CTG List"}
+                      data={ctgRows}
+                      columns={columns}
+                      options={options}
+              />
+            </ThemeProvider>
+    );
 }
 
 export {CtgListDoctorFacing}

@@ -3,19 +3,19 @@
 
 import {useHistory} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {API, Auth} from "aws-amplify";
 import {createCtg as createCTGImageMutation} from "../../graphql/mutations";
 import {createCtgNumerical} from "../../graphql/mutations";
 import {getDoctor} from "../../graphql/queries";
-import {Button, Container, Paper, TextField} from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import Skeleton from "@material-ui/lab/Skeleton";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
-import {KeyboardArrowRight} from "@material-ui/icons";
+import {Button, Container, Paper, TextField} from "@mui/material";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import Skeleton from '@mui/material/Skeleton';
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import {KeyboardArrowRight} from "@mui/icons-material";
 import {UserSessionService} from "../../services/UserSessionService";
 import {CtgImageViewer} from "./CtgImageViewer";
 
@@ -109,61 +109,62 @@ const CtgCreateNote = () => {
     }
 
     return (
-       <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
-            <CtgImageViewer ctgS3Url={showImage ? process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png" : null}></CtgImageViewer>
-           <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-               <TextField
-                   className={classes.field}
-                    label={"Patient Id & Click Search"}
-                    rows={1}
-                    variant={"outlined"}
-                    color={"secondary"}
-                    fullWidth
-                    placeholder={"Hai"}
-                    required
-                    error={patientIdError}
-                    onChange={(event) => {
-                        setPatientId(event.target.value)
+        <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
+             <CtgImageViewer ctgS3Url={showImage ? process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png" : null}></CtgImageViewer>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <TextField
+                    className={classes.field}
+                     label={"Patient Id & Click Search"}
+                     rows={1}
+                     variant={"outlined"}
+                     color={"secondary"}
+                     fullWidth
+                     placeholder={"Hai"}
+                     required
+                     error={patientIdError}
+                     onChange={(event) => {
+                         setPatientId(event.target.value)
 
-                    }}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                onClick={() =>{
-                                    setShowImage(true)
-                                }}>
-                                    <SearchIcon></SearchIcon>
-                                </IconButton>
-                            </InputAdornment>
-                            ),
-                    }}>
-               </TextField>
-                  <TextField
-                      className={classes.field}
-                        label="Doctor comments"
-                        onChange={(event) => {
-                            setDetails(event.target.value)
-                        }}
-                        variant="outlined"
-                        color="secondary"
-                        multiline
-                        rows={13}
-                        fullWidth
-                        required
-                        error={detailsError}
-                  >
-                  </TextField>
-                   <Button
-                       type="submit"
-                       color="primary"
-                       variant="contained"
-                       endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+                     }}
+                     InputProps={{
+                         endAdornment: (
+                             <InputAdornment position="end">
+                                 <IconButton
+                                     onClick={() =>{
+                                         setShowImage(true)
+                                     }}
+                                     size="large">
+                                     <SearchIcon></SearchIcon>
+                                 </IconButton>
+                             </InputAdornment>
+                             ),
+                     }}>
+                </TextField>
+                   <TextField
+                       className={classes.field}
+                         label="Doctor comments"
+                         onChange={(event) => {
+                             setDetails(event.target.value)
+                         }}
+                         variant="outlined"
+                         color="secondary"
+                         multiline
+                         rows={13}
+                         fullWidth
+                         required
+                         error={detailsError}
                    >
-                   Submit
-                </Button>
-           </form>
-       </Paper>
+                   </TextField>
+                    <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+                    >
+                    Submit
+                 </Button>
+            </form>
+        </Paper>
     );
 }
 

@@ -9,8 +9,8 @@
 //=====================================================================================================================
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import { Card, CardMedia, Container, Paper } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import { Card, CardMedia, Container, Paper } from "@mui/material";
 
 const ctgAnnotateCanvasHeight = 600;
 

@@ -8,9 +8,9 @@
 // 001.   |  30 SEP 2021.     | TRAN MINH HAI      | - Refactor and add header
 //=====================================================================================================================
 import React, {useState} from "react";
-import {Box, Button, Typography} from "@material-ui/core";
+import {Box, Button, Typography} from "@mui/material";
 import {useScript} from "./useScript";
-import {Paper} from "@material-ui/core";
+import {Paper} from "@mui/material";
 
 const MyChartHome = () => {
     useScript('fhir-client.js')

@@ -11,55 +11,56 @@
 // 003 
 //=====================================================================================================================
 import React, {useEffect, useState} from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import {blue, green, pink, red, yellow} from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import {blue, green, pink, red, yellow} from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {AppBar, Button, Container, Paper, Toolbar,  FormLabel, List, ListItem, ListItemIcon, ListItemText, Drawer, FormControl,
     FormControlLabel,
-    Menu, MenuItem} from "@material-ui/core";
-import {AccountCircle, AddCircleOutlineOutlined, CloudCircle, CloudUpload, DeleteOutline, Edit, KeyboardArrowRight, Search, SubjectOutlined} from "@material-ui/icons";
+    Menu, MenuItem} from "@mui/material";
+import {AccountCircle, AddCircleOutlineOutlined, CloudCircle, CloudUpload, DeleteOutline, Edit, KeyboardArrowRight, Search, SubjectOutlined} from "@mui/icons-material";
 import Masonry from "react-masonry-css";
 import { format } from 'date-fns';
-import { DeleteOutlined } from '@material-ui/icons';
+import { DeleteOutlined } from '@mui/icons-material';
 import { useHistory, useLocation } from 'react-router-dom';
-import { TextField } from "@material-ui/core";
-import Radio from '@material-ui/core/Radio';
-import {RadioGroup} from "@material-ui/core";
-import { InputBase } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { TextField } from "@mui/material";
+import Radio from '@mui/material/Radio';
+import {RadioGroup} from "@mui/material";
+import { InputBase } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import {API, Auth, totpQrcode} from 'aws-amplify';
 import {listTodos, listCtgImages, listCtgs, getUser, getDoctor} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
 import { createCtg as createCTGImageMutation, deleteCtg as deleteCTGImageMutation } from './../graphql/mutations';
 import { getCtgImage} from './../graphql/queries';
-import { ListItemAvatar } from '@material-ui/core';
+import { ListItemAvatar } from '@mui/material';
 import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './ctg/CTGNoteView';
 import { UploadView } from './upload/S3UploadView';
-import Skeleton from '@material-ui/lab/Skeleton';
-import PetsIcon from '@material-ui/icons/Pets';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Divider from '@material-ui/core/Divider';
+import Skeleton from '@mui/material/Skeleton';
+import PetsIcon from '@mui/icons-material/Pets';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Divider from '@mui/material/Divider';
 import {useScript} from "./epic/useScript";
 import {MyChartHome} from "./epic/MyChartHome";
 import {UserSessionService} from "../services/UserSessionService";
-import MultilineChartIcon from '@material-ui/icons/MultilineChart';
+import MultilineChartIcon from '@mui/icons-material/MultilineChart';
 
 const drawerWidth = 240
 
@@ -323,79 +324,78 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
     )
 
     return (
-    <div className={classes.root}>
-        <AppBar 
-         className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-         color={"primary"}
-         position={"fixed"}>
-            <Toolbar>
-                <IconButton
-                 color="inherit"
-                 aria-label="open drawer"
-                 onClick={handleDrawerOpen}
-                 edge={"start"}
-                 className={clsx(classes.menuButton, open && classes.hide)}
-                >
-                    <MenuIcon></MenuIcon>
-                </IconButton>
-                <Typography className={classes.date}>
-                    Today is the {format(new Date(), 'do MMM Y')} 
-                </Typography>
-                <Typography>
-                    {doctorName ? doctorName : userName}
-                </Typography>
-                <Avatar
-                 className={classes.avatar}
-                 onClick={handleLogoutMenuOpen}
-                 >{ doctorName ? (doctorName[4].toUpperCase() == "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase()) :  (userName[4].toUpperCase() == "." ? userName[6].toUpperCase() : userName[4].toUpperCase())} </Avatar>
-            </Toolbar>
-        </AppBar>
-        <Drawer
-           className={classes.drawer}
-           variant={"persistent"}
-           anchor={"left"}
-           open={open}
-           classes={{paper: classes.drawerPaper}}
-           >
-               <div className={classes.drawerHeader}>
-                    <Typography variant={"h5"} className={classes.title}>
-                       Menu
-                   </Typography>
-                   <IconButton
-                    onClick={handleDrawerClose}>
-                       {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                   </IconButton>
-               </div>
-               <Divider />
-               <List>
-                   {menuItems.map((item) => (
-                       <ListItem
-                        button
-                        key={item.text}
-                        onClick={() => history.push(item.path)}
-                        className={location.pathname == item.path ? classes.active : null}
-                       >
-                           <ListItemIcon>
-                               {item.icon}
-                           </ListItemIcon>
-                           <ListItemText primary={item.text}>
+        <div className={classes.root}>
+            <AppBar 
+             className={clsx(classes.appBar, {
+                [classes.appBarShift]: open,
+              })}
+             color={"primary"}
+             position={"fixed"}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge={"start"}
+                        className={clsx(classes.menuButton, open && classes.hide)}
+                        size="large">
+                        <MenuIcon></MenuIcon>
+                    </IconButton>
+                    <Typography className={classes.date}>
+                        Today is the {format(new Date(), 'do MMM Y')} 
+                    </Typography>
+                    <Typography>
+                        {doctorName ? doctorName : userName}
+                    </Typography>
+                    <Avatar
+                     className={classes.avatar}
+                     onClick={handleLogoutMenuOpen}
+                     >{ doctorName ? (doctorName[4].toUpperCase() == "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase()) :  (userName[4].toUpperCase() == "." ? userName[6].toUpperCase() : userName[4].toUpperCase())} </Avatar>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+               className={classes.drawer}
+               variant={"persistent"}
+               anchor={"left"}
+               open={open}
+               classes={{paper: classes.drawerPaper}}
+               >
+                   <div className={classes.drawerHeader}>
+                        <Typography variant={"h5"} className={classes.title}>
+                           Menu
+                       </Typography>
+                       <IconButton onClick={handleDrawerClose} size="large">
+                           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                       </IconButton>
+                   </div>
+                   <Divider />
+                   <List>
+                       {menuItems.map((item) => (
+                           <ListItem
+                            button
+                            key={item.text}
+                            onClick={() => history.push(item.path)}
+                            className={location.pathname == item.path ? classes.active : null}
+                           >
+                               <ListItemIcon>
+                                   {item.icon}
+                               </ListItemIcon>
+                               <ListItemText primary={item.text}>
 
-                           </ListItemText>
-                       </ListItem>
-                   ))}
-               </List>
-           </Drawer>
-        <div className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}>
-            <div className={classes.toolbar}></div>
-            {children}
+                               </ListItemText>
+                           </ListItem>
+                       ))}
+                   </List>
+               </Drawer>
+            <div className={clsx(classes.content, {
+              [classes.contentShift]: open,
+            })}>
+                <div className={classes.toolbar}></div>
+                {children}
+            </div>
+            {showLogoutMenu}
         </div>
-        {showLogoutMenu}
-    </div>
-    )
+    );
 }
 
 
@@ -476,9 +476,11 @@ const CTGRecordNote = ({record, handleDelete}) => {
                         </Avatar>
                     }
                     action={
-                        <IconButton onClick={() => {
-                            handleDelete(record)
-                        }}>
+                        <IconButton
+                            onClick={() => {
+                                handleDelete(record)
+                            }}
+                            size="large">
                             <DeleteOutlined>
                             </DeleteOutlined>
                         </IconButton>
@@ -506,7 +508,7 @@ const CTGRecordNote = ({record, handleDelete}) => {
                 </CardActions>
             </Card>
         </div>
-    )
+    );
 }
 
 const CreateCTGNote = () => {
@@ -580,68 +582,69 @@ const CreateCTGNote = () => {
     }
 
     return (
-       <Container maxWidth='lg'>
-           <Card>
-                <CardMedia className={classes1.media}>
-                    <Paper style={{overflow:'auto'}} elevation={4}>
-                        {showImage ? <img src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> : 
-                        <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                    </Paper>
-                </CardMedia>
-            </Card>
-           <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-               <TextField
-                    className={classes.field}
-                    label={"Patient Id & Click Search"}
-                    rows={1}
-                    variant={"outlined"}
-                    color={"secondary"}
-                    fullWidth
-                    placeholder={"Hai"}
-                    required
-                    error={patientIdError}
-                    onChange={(event) => {
-                        setPatientId(event.target.value)
+        <Container maxWidth='lg'>
+            <Card>
+                 <CardMedia className={classes1.media}>
+                     <Paper style={{overflow:'auto'}} elevation={4}>
+                         {showImage ? <img src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}/> : 
+                         <Skeleton variant="rectangular" width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
+                     </Paper>
+                 </CardMedia>
+             </Card>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <TextField
+                     className={classes.field}
+                     label={"Patient Id & Click Search"}
+                     rows={1}
+                     variant={"outlined"}
+                     color={"secondary"}
+                     fullWidth
+                     placeholder={"Hai"}
+                     required
+                     error={patientIdError}
+                     onChange={(event) => {
+                         setPatientId(event.target.value)
 
-                    }}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                onClick={() =>{
-                                    setShowImage(true)
-                                }}>
-                                    <SearchIcon></SearchIcon>
-                                </IconButton>
-                            </InputAdornment>
-                            ),
-                    }}>
-               </TextField>
-                  <TextField
-                    className={classes.field}
-                    label="Doctor comments"
-                    onChange={(event) => {
-                        setDetails(event.target.value)
-                    }}
-                    variant="outlined"
-                    color="secondary"
-                    multiline
-                    rows={4}
-                    fullWidth
-                    required
-                    error={detailsError}
-                  >
-                  </TextField>
-                   <Button
-                       type="submit"
-                       color="primary"
-                       variant="contained"
-                       endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+                     }}
+                     InputProps={{
+                         endAdornment: (
+                             <InputAdornment position="end">
+                                 <IconButton
+                                     onClick={() =>{
+                                         setShowImage(true)
+                                     }}
+                                     size="large">
+                                     <SearchIcon></SearchIcon>
+                                 </IconButton>
+                             </InputAdornment>
+                             ),
+                     }}>
+                </TextField>
+                   <TextField
+                     className={classes.field}
+                     label="Doctor comments"
+                     onChange={(event) => {
+                         setDetails(event.target.value)
+                     }}
+                     variant="outlined"
+                     color="secondary"
+                     multiline
+                     rows={4}
+                     fullWidth
+                     required
+                     error={detailsError}
                    >
-                   Submit
-                </Button>
-           </form>
-       </Container>
+                   </TextField>
+                    <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+                    >
+                    Submit
+                 </Button>
+            </form>
+        </Container>
     );
 }
 

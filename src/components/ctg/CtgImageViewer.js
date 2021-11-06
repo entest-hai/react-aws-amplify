@@ -23,13 +23,13 @@ import {
   TextInput,
 } from "react-admin";
 import React, {useState} from "react";
-import CardMedia from "@material-ui/core/CardMedia";
-import {Box, Button, Container, IconButton, Paper} from "@material-ui/core";
-import Skeleton from "@material-ui/lab/Skeleton";
-import Card from "@material-ui/core/Card";
-import {makeStyles} from "@material-ui/core/styles";
-import CardActions from "@material-ui/core/CardActions";
-import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
+import CardMedia from "@mui/material/CardMedia";
+import {Box, Button, Container, IconButton, Paper} from "@mui/material";
+import Skeleton from '@mui/material/Skeleton';
+import Card from "@mui/material/Card";
+import makeStyles from '@mui/styles/makeStyles';
+import CardActions from "@mui/material/CardActions";
+import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
 
 const CtgImageViewer = (props) => {
     const scale = 1.1
@@ -65,33 +65,31 @@ const CtgImageViewer = (props) => {
     }
 
     return (
-         <Container className={classes.container}>
-            <Card elevation={0}>
-                <CardMedia>
-                    <Paper style={{overflow:'auto'}} elevation={0}>
-                        {/*{showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"} style={imageStyle}/> :*/}
-                        {/*<Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}*/}
-                        {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
-                        <Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-                    </Paper>
-                </CardMedia>
-                <CardActions>
-                    <IconButton
-                        onClick={zoomInHandle}>
-                        <ZoomIn></ZoomIn>
-                    </IconButton>
-                    <IconButton
-                        onClick={zoomOutHandle}>
-                        <ZoomOutRounded></ZoomOutRounded>
-                    </IconButton>
-                    <Button
-                        onClick={defaultHandle}>
-                        Default
-                    </Button>
-                </CardActions>
-            </Card>
-        </Container>
-    )
+        <Container className={classes.container}>
+           <Card elevation={0}>
+               <CardMedia>
+                   <Paper style={{overflow:'auto'}} elevation={0}>
+                       {/*{showImage ? <img onLoad={getImageSize} id={"image123"} src={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"} style={imageStyle}/> :*/}
+                       {/*<Skeleton variant={"rect"} width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}*/}
+                       {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
+                       <Skeleton variant="rectangular" width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
+                   </Paper>
+               </CardMedia>
+               <CardActions>
+                   <IconButton onClick={zoomInHandle} size="large">
+                       <ZoomIn></ZoomIn>
+                   </IconButton>
+                   <IconButton onClick={zoomOutHandle} size="large">
+                       <ZoomOutRounded></ZoomOutRounded>
+                   </IconButton>
+                   <Button
+                       onClick={defaultHandle}>
+                       Default
+                   </Button>
+               </CardActions>
+           </Card>
+       </Container>
+    );
 }
 
 export  {CtgImageViewer};

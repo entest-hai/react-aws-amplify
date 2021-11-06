@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
-import Box from '@material-ui/core/Box';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const ScrollBarDragger = (props) => {
 

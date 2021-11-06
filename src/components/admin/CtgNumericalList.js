@@ -21,13 +21,13 @@ import {
   TextInput,
 } from "react-admin";
 import React, {useEffect, useState} from "react";
-import CardMedia from "@material-ui/core/CardMedia";
-import {Box, Button, Container, IconButton, Paper} from "@material-ui/core";
-import Skeleton from "@material-ui/lab/Skeleton";
-import Card from "@material-ui/core/Card";
-import {makeStyles} from "@material-ui/core/styles";
-import CardActions from "@material-ui/core/CardActions";
-import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
+import CardMedia from "@mui/material/CardMedia";
+import {Box, Button, Container, IconButton, Paper} from "@mui/material";
+import Skeleton from '@mui/material/Skeleton';
+import Card from "@mui/material/Card";
+import makeStyles from '@mui/styles/makeStyles';
+import CardActions from "@mui/material/CardActions";
+import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {API, Storage} from "aws-amplify";
 

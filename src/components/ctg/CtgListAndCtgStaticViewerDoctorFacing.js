@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Storage} from "aws-amplify";
-import {Paper} from "@material-ui/core";
+import {Paper} from "@mui/material";
 import {CtgListDoctorFacing} from "./CtgListDoctorFacing";
 import {CtgStaticCanvasViewer} from "./CtgStaticCanvasViewer";
 

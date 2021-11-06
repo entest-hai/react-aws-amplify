@@ -1,6 +1,6 @@
-import { Button, Card, CardActions, CardMedia, Container, IconButton, Paper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
-import { CloudCircle, ZoomIn, ZoomOut, ZoomOutRounded, ZoomOutSharp } from '@material-ui/icons';
+import { Button, Card, CardActions, CardMedia, Container, IconButton, Paper } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { CloudCircle, ZoomIn, ZoomOut, ZoomOutRounded, ZoomOutSharp } from '@mui/icons-material';
 import React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -73,12 +73,10 @@ const TestImageViewer = () => {
                         </Paper>
                     </CardMedia>
                     <CardActions>
-                        <IconButton
-                            onClick={zoomInHandle}>
+                        <IconButton onClick={zoomInHandle} size="large">
                             <ZoomIn></ZoomIn>
                         </IconButton>
-                        <IconButton
-                            onClick={zoomOutHandle}>
+                        <IconButton onClick={zoomOutHandle} size="large">
                             <ZoomOutRounded></ZoomOutRounded>
                         </IconButton>
                         <Button 
@@ -92,7 +90,7 @@ const TestImageViewer = () => {
             
             
         </div>
-    )
+    );
 }
 
 export {TestImageViewer};

@@ -11,23 +11,24 @@
 //=====================================================================================================================
 import React, {useEffect, useState, useRef} from "react";
 import heartRateData from "../components/canvas/data";
-import {makeStyles} from "@material-ui/core/styles";
-import { Card, CardMedia, Container, Paper, withStyles } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import { Card, CardMedia, Container, Paper } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import {worker} from './SimpleWorker';
 import WebWorker from "./workerSetup";
 import {FHRLiveCanvas} from "./TestWorkerView";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import {ScrollBarDragger} from "./TestScrollBarDragger";
 // table
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 import {API, Storage} from "aws-amplify";
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import {UserSessionService} from "../services/UserSessionService";
 import {listCtgNumericalsByDoctorID} from "../graphql/customQueries";
 //
