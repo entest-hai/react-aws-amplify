@@ -128,6 +128,7 @@ function CTGApp() {
           )
       }
       return (
+             <ThemeProvider theme={createTheme()}>
                <Router>
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
@@ -161,6 +162,7 @@ function CTGApp() {
                        </CTGAppLayout>
                    </Switch>
                 </Router>
+             </ThemeProvider>
       )
 }
   

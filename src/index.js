@@ -11,9 +11,7 @@ Amplify.configure(config)
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={createTheme()}>
         <CTGApp></CTGApp>
-    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

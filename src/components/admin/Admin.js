@@ -68,25 +68,23 @@ const dataProvider = buildDataProvider({
     enableAdminQueries: true,
 })
 
-
-
 const AdminPage = ({setAuthenticated}) => {
 
     const MyLogoutButton = () => {
-    return (
-        <Button
-            color={"secondary"}
-            variant={"contained"}
-            style={{paddingLeft:40,paddingRight:40}}
-            onClick={() => {
-                sessionStorage.clear()
-                setAuthenticated(null)
-                // window.location.reload()
-            }}
-        >
-            SIGN OUT
-        </Button>
-    )
+        return (
+            <Button
+                color={"secondary"}
+                variant={"contained"}
+                style={{paddingLeft:40,paddingRight:40}}
+                onClick={() => {
+                    sessionStorage.clear()
+                    setAuthenticated(null)
+                    // window.location.reload()
+                }}
+            >
+                SIGN OUT
+            </Button>
+        )
 }
 
     useEffect(async () => {
