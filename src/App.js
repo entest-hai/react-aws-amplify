@@ -22,7 +22,8 @@
 // - Use sessionStorage.getItem nd sessionStorage.setItem
 // - Use singleton pattern UserProfile.set and UserProfile.get
 //********************************************************************************************************************/
-// 006.   |  31 OCT 2021.     | TRAN MINH HAI      | - Keep updating canvas in background using web worker 
+// 006.   |  31 OCT 2021.     | TRAN MINH HAI      | - Keep updating canvas in background using web worker
+// 007.   |  06 NOV 2021      | TRAN MINH HAI      | - Backup before migrating to Material V5.0
 //=====================================================================================================================
 import logo from './logo.svg';
 import './App.css';
