@@ -140,7 +140,8 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"id"}></TextField>
                 <TextField source={"patientID"}></TextField>
                 <TextField source={"ctgUrl"}></TextField>
-                 <TextField source={"ctgJsonUrl"}></TextField>
+                <TextField source={"ctgJsonUrl"}></TextField>
+                <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
                 <CtgImageViewer ctgS3Url={ctgS3Url ? ctgS3Url : null}></CtgImageViewer>
@@ -155,7 +156,12 @@ const CtgNumericalEdit = (props) => {
             <SimpleForm>
                 <TextInput source={"id"}></TextInput>
                 <TextInput source={"patientID"}></TextInput>
+                 <TextInput source={"hospitalID"}></TextInput>
+                 <TextInput source={"doctorID"}></TextInput>
                 <TextInput source={"ctgUrl"}></TextInput>
+                <TextInput source={"ctgJsonUrl"}></TextInput>
+                <TextInput source={"comment"}></TextInput>
+                <TextField source={"updatedAt"}></TextField>
             </SimpleForm>
         </Edit>
     )
@@ -167,7 +173,12 @@ const CtgNumericalCreate = (props) => {
             <SimpleForm>
                  <TextInput source={"id"}></TextInput>
                 <TextInput source={"patientID"}></TextInput>
+                <TextInput source={"hospitalID"}></TextInput>
+                 <TextInput source={"doctorID"}></TextInput>
                 <TextInput source={"ctgUrl"}></TextInput>
+                <TextInput source={"ctgJsonUrl"}></TextInput>
+                <TextInput source={"comment"}></TextInput>
+                <TextField source={"updatedAt"}></TextField>
             </SimpleForm>
         </Create>
     )
