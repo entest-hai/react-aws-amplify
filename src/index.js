@@ -1,6 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from "@mui/styles";
-import { createTheme } from "@mui/material/styles";
 import ReactDOM from 'react-dom';
 import './index.css';
 import {CTGApp, CtgLiveWebWorker} from './App';

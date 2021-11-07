@@ -24,7 +24,8 @@
 //********************************************************************************************************************/
 // 006.   |  31 OCT 2021.     | TRAN MINH HAI      | - Keep updating canvas in background using web worker
 // 007.   |  06 NOV 2021      | TRAN MINH HAI      | - Backup before migrating to Material V5.0
-// 
+//********************************************************************************************************************/
+// 006.   |  07 NOV 2021.     | TRAN MINH HAI      | - How to get theme.mixins.toolbar.minHeight
 //=====================================================================================================================
 import logo from './logo.svg';
 import './App.css';
@@ -136,7 +137,7 @@ function CTGApp() {
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
                            <Route path={"/search"}>
                                <CtgListDoctorFacing
-                                   tableHeight={(window.innerHeight - 200).toString() + 'px'}>
+                                   tableHeight={'85vh'}>
                                </CtgListDoctorFacing>
                            </Route>
                            <Route path={"/ctg"}>
