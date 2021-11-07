@@ -57,7 +57,7 @@ const CtgListDoctorFacing = (props) => {
                 record.ctgJsonUrl ? record.ctgJsonUrl: "UNKNOWN",
                 record.accepted ? record.accepted : "UNKNOWN",
                 record.fHRLost ? record.fHRLost: "UNKNOWN",
-                record.comment ? record.comment: "UNKNOWN",
+                record.comment ? record.comment.substring(0,50): "UNKNOWN",
                 dateTimeToString(record.createdTime),
                 <Button
                     color={"primary"}
