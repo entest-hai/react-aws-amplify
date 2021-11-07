@@ -3,6 +3,8 @@ import {Storage} from "aws-amplify";
 import {Paper} from "@mui/material";
 import {CtgListDoctorFacing} from "./CtgListDoctorFacing";
 import {CtgStaticCanvasViewer} from "./CtgStaticCanvasViewer";
+import Box from "@mui/material/Box";
+import {makeStyles} from "@mui/styles";
 
 const CtgListAndCtgStaticViewerDoctorFacing = () => {
     const [ctgId, setCtgId] = useState("SHEEP001.json")
@@ -51,11 +53,29 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
         }
     }, [ctgId])
 
+    // ctg canvas size
+    const numCtgRowPerScreen = 2.5
+    const ctgCanvasHeight = window.screen.height/numCtgRowPerScreen
+    const ctgViewerControllerHeight = 80
+    const tableHeight = window.innerHeight - ctgCanvasHeight - ctgViewerControllerHeight
+
+    const classes = makeStyles((theme) => ({
+        table: {
+            height: tableHeight - theme.mixins.toolbar.minHeight,
+            overflow: "auto",
+            margin:0
+        }
+    }))()
+
     return (
-            <Paper style={{overflow:'hidden', overflowX:'scroll', margin: 0}} elevation={4}>
-                {isFetching && <CtgStaticCanvasViewer heartRate={heartRate} ctgId={ctgId} ></CtgStaticCanvasViewer>}
-                <CtgListDoctorFacing setCtgId={setCtgId} tableHeight={(window.screen.height/2.8).toString()+'px'}></CtgListDoctorFacing>
+        <div>
+            <Paper style={{width:'100%', overflow:"auto"}}>
+                {isFetching && <CtgStaticCanvasViewer numCtgRowPerScreen = {numCtgRowPerScreen} heartRate={heartRate} ctgId={ctgId} ></CtgStaticCanvasViewer>}
             </Paper>
+            <Paper className={classes.table}>
+                <CtgListDoctorFacing setCtgId={setCtgId}></CtgListDoctorFacing>
+            </Paper>
+        </div>
     )
 }
 

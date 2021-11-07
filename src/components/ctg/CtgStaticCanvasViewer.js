@@ -28,9 +28,7 @@ const CtgStaticCanvasViewer = (props) => {
     // CTG height in number of box
     const ctgHeightNumBox = 31
     // number of CTG row per screen
-    const numCtgRowPerScreen = 2.5
-    // height of a CTG canvas
-    var canvasHeight = window.screen.height/numCtgRowPerScreen
+    const numCtgRowPerScreen = props.numCtgRowPerScreen ? props.numCtgRowPerScreen : 2.5
     // xOffset top-left corner of the CTG canvas
     const xOffset = props.position ? props.position.xOffset : 10;
     // yOffset top-left corner of the CTG canvas

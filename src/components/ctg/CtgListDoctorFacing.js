@@ -126,7 +126,7 @@ const CtgListDoctorFacing = (props) => {
         responsive: 'standard',
         fixedHeader:true,
         pagination: false,
-        tableBodyHeight: props.tableHeight ? props.tableHeight :  '400px',
+        // tableBodyHeight: props.tableHeight ? props.tableHeight :  '400px',
         onRowClick(rowNode){
             if (props.setCtgId){
                 props.setCtgId(rowNode[2])
@@ -135,15 +135,15 @@ const CtgListDoctorFacing = (props) => {
     };
 
     return (
-            <ThemeProvider theme={createTheme()}>
-                <MUIDataTable
-                      title={"CTG List"}
-                      data={ctgRows}
-                      columns={columns}
-                      options={options}
-              />
-            </ThemeProvider>
-    );
+        <ThemeProvider theme={createTheme()}>
+             <MUIDataTable
+                  title={"CTG List"}
+                  data={ctgRows}
+                  columns={columns}
+                  options={options}
+          />
+        </ThemeProvider>
+    )
 }
 
 export {CtgListDoctorFacing}

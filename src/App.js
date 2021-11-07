@@ -56,6 +56,7 @@ import {CtgListAndCtgStaticViewerDoctorFacing} from "./components/ctg/CtgListAnd
 // for mui-datatabe
 import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
+import {TestMuiDataTable} from "./tests/TestMuiDataTable";
 
 const CtgLiveWebWorker = () => {
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
@@ -75,11 +76,11 @@ const CtgLiveWebWorker = () => {
     }
 
     return (
-        // <ThemeProvider theme={createTheme()}>
+        <ThemeProvider theme={createTheme()}>
             <Router>
                 <Switch>
                     <Route exact path={"/"}>
-                        <TestWorkerView></TestWorkerView>
+                        <TestMuiDataTable></TestMuiDataTable>
                     </Route>
                     <Route exact path={"/sheep"}>
                         <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
@@ -110,7 +111,7 @@ const CtgLiveWebWorker = () => {
                     {/*</Route>*/}
                 </Switch>
             </Router>
-        // </ThemeProvider>
+        </ThemeProvider>
     )
 }
 
