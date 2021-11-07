@@ -289,11 +289,11 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             icon: <Edit color={"secondary"}></Edit>,
             path: "/edit"
         },
-        {
-            text: "Sheep",
-            icon: <PetsIcon color={"secondary"}></PetsIcon>,
-            path: "/sheep"
-        }
+        // {
+        //     text: "Sheep",
+        //     icon: <PetsIcon color={"secondary"}></PetsIcon>,
+        //     path: "/sheep"
+        // }
     ];
 
     const showLogoutMenu = (

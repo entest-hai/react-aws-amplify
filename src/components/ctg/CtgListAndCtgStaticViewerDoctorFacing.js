@@ -53,7 +53,6 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
         }
     }, [ctgId])
 
-    // ctg canvas size
     const numCtgRowPerScreen = 2.5
     const ctgCanvasHeight = window.screen.height/numCtgRowPerScreen
     const ctgViewerControllerHeight = 80
@@ -62,10 +61,11 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
     const classes = makeStyles((theme) => ({
         table: {
             height: tableHeight - theme.mixins.toolbar.minHeight,
-            overflow: "auto",
-            margin:0
+            overflow: "hidden",
+            marginBottom:0
         }
     }))()
+
 
     return (
         <div>
@@ -73,7 +73,7 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
                 {isFetching && <CtgStaticCanvasViewer numCtgRowPerScreen = {numCtgRowPerScreen} heartRate={heartRate} ctgId={ctgId} ></CtgStaticCanvasViewer>}
             </Paper>
             <Paper className={classes.table}>
-                <CtgListDoctorFacing setCtgId={setCtgId}></CtgListDoctorFacing>
+                <CtgListDoctorFacing setCtgId={setCtgId} tableHeight={tableHeight-64}></CtgListDoctorFacing>
             </Paper>
         </div>
     )
