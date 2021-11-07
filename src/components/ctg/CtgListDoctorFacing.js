@@ -127,6 +127,12 @@ const CtgListDoctorFacing = (props) => {
         fixedHeader:true,
         pagination: false,
         tableBodyHeight: props.tableHeight ? props.tableHeight :  '500px',
+        setTableProps: () => {
+            return {
+                padding: 'none',
+                size: 'small'
+            }
+        },
         onRowClick(rowNode){
             if (props.setCtgId){
                 props.setCtgId(rowNode[2])

@@ -11,7 +11,13 @@ const TestMuiDataTable = () => {
     const options = {
         filterType: 'checkbox',
         pagination: false,
-        tableBodyHeight:'50vh'
+        tableBodyHeight:'50vh',
+        setTableProps: () => {
+            return {
+                padding: 'none',
+                size: 'small'
+            }
+        }
     };
 
     return (
@@ -27,3 +33,4 @@ const TestMuiDataTable = () => {
 }
 
 export {TestMuiDataTable}
+// 0.90*window.innerHeight.toString()+'px'
