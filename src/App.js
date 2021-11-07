@@ -134,7 +134,7 @@ function CTGApp() {
                <Router>
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
-                           <Route exact path={"/search"}>
+                           <Route path={"/search"}>
                                <CtgListDoctorFacing
                                    tableHeight={(window.innerHeight - 200).toString() + 'px'}>
                                </CtgListDoctorFacing>
@@ -163,7 +163,7 @@ function CTGApp() {
                            <Route path={"/openfhir"}>
                                <OpenFhirServer></OpenFhirServer>
                            </Route>
-                           <Route path={"/"}>
+                           <Route exact path={"/"}>
                                <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
                            </Route>
                        </CTGAppLayout>
