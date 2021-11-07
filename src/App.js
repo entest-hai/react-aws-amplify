@@ -163,9 +163,9 @@ function CTGApp() {
                            <Route path={"/openfhir"}>
                                <OpenFhirServer></OpenFhirServer>
                            </Route>
-                           {/*<Route path={"/"}>*/}
-                           {/*    <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>*/}
-                           {/*</Route>*/}
+                           <Route path={"/"}>
+                               <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
+                           </Route>
                        </CTGAppLayout>
                    </Switch>
                 </Router>
