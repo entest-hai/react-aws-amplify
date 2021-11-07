@@ -40,7 +40,6 @@ import { TextField } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import {RadioGroup} from "@mui/material";
 import { InputBase } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import {API, Auth, totpQrcode} from 'aws-amplify';
 import {listTodos, listCtgImages, listCtgs, getUser, getDoctor} from './../graphql/queries';
 import { createTodo as createTodoMutation, deleteTodo as deleteTodoMutation } from './../graphql/mutations';
@@ -51,7 +50,8 @@ import { withAuthenticator,  AmplifySignOut} from "@aws-amplify/ui-react";
 import { CTGNoteView } from './ctg/CTGNoteView';
 import { UploadView } from './upload/S3UploadView';
 import Skeleton from '@mui/material/Skeleton';
-import PetsIcon from '@mui/icons-material/Pets';
+import SearchIcon from '@mui/icons-material/Search';
+import GroupIcon from '@mui/icons-material/Group';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -259,8 +259,13 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
 
     const menuItems = [
         {
+            text: "Search",
+            icon: <SearchIcon color={"secondary"}></SearchIcon>,
+            path: "/search"
+        },
+        {
             text: "Patients",
-            icon: <SubjectOutlined color={"secondary"}></SubjectOutlined>,
+            icon: <GroupIcon color={"secondary"}></GroupIcon>,
             path: "/"
         },
         {
@@ -289,11 +294,6 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             icon: <Edit color={"secondary"}></Edit>,
             path: "/edit"
         },
-        // {
-        //     text: "Sheep",
-        //     icon: <PetsIcon color={"secondary"}></PetsIcon>,
-        //     path: "/sheep"
-        // }
     ];
 
     const showLogoutMenu = (

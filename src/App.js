@@ -134,8 +134,10 @@ function CTGApp() {
                <Router>
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
-                           <Route exact path={"/"}>
-                               <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
+                           <Route exact path={"/search"}>
+                               <CtgListDoctorFacing
+                                   tableHeight={(window.innerHeight - 200).toString() + 'px'}>
+                               </CtgListDoctorFacing>
                            </Route>
                            <Route path={"/ctg"}>
                                <CTGNoteView></CTGNoteView>
@@ -161,6 +163,9 @@ function CTGApp() {
                            <Route path={"/openfhir"}>
                                <OpenFhirServer></OpenFhirServer>
                            </Route>
+                           {/*<Route path={"/"}>*/}
+                           {/*    <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>*/}
+                           {/*</Route>*/}
                        </CTGAppLayout>
                    </Switch>
                 </Router>
