@@ -21,17 +21,17 @@ import {
   TextInput,
 } from "react-admin";
 import React, {useEffect, useState} from "react";
-import CardMedia from "@mui/material/CardMedia";
-import {Box, Button, Container, IconButton, Paper} from "@mui/material";
-import Skeleton from '@mui/material/Skeleton';
-import Card from "@mui/material/Card";
-import makeStyles from '@mui/styles/makeStyles';
-import CardActions from "@mui/material/CardActions";
-import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
-import {CtgImageViewer} from "../ctg/CtgImageViewer";
+// import CardMedia from "@mui/material/CardMedia";
+// import {Box, Button, Container, IconButton, Paper} from "@mui/material";
+// import Skeleton from '@mui/material/Skeleton';
+// import Card from "@mui/material/Card";
+// import makeStyles from '@mui/styles/makeStyles';
+// import CardActions from "@mui/material/CardActions";
+// import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
+// import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {API, Storage} from "aws-amplify";
-import {Typography} from "@material-ui/core";
-import { useHistory, useLocation } from 'react-router-dom';
+// import {Typography} from "@material-ui/core";
+// import { useHistory, useLocation } from 'react-router-dom';
 
 const CtgNumericalList = (props) => {
     // console.log(props)
@@ -62,81 +62,80 @@ const CtgNumericalList = (props) => {
 }
 
 const CtgNumericalShow = (props) => {
-    const history = useHistory()
-    const scale = 1.1
-    const ctgImageHeight = 500
-    const [image, setImage] = useState(null)
-    const [width, setWidth] = useState(null)
-    const [height, setHeight] = useState(null)
-    const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
-    const classes = makeStyles((theme) => {
-        return {
-            container: {
-            padding: 0,
-            height: ctgImageHeight
-        },
-            media: {
-                height: ctgImageHeight,
-                overflow: "auto"
-            },
-            card: {
-                maxWidth: '80%',
-                maxHeight: 500
-            }
-        }
-    })()
+    // const scale = 1.1
+    // const ctgImageHeight = 500
+    // const [image, setImage] = useState(null)
+    // const [width, setWidth] = useState(null)
+    // const [height, setHeight] = useState(null)
+    // const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
+    // const classes = makeStyles((theme) => {
+    //     return {
+    //         container: {
+    //         padding: 0,
+    //         height: ctgImageHeight
+    //     },
+    //         media: {
+    //             height: ctgImageHeight,
+    //             overflow: "auto"
+    //         },
+    //         card: {
+    //             maxWidth: '80%',
+    //             maxHeight: 500
+    //         }
+    //     }
+    // })()
 
 
-    const getImageSize  = () => {
-        setImage(document.getElementById("image123"))
-        setWidth(document.getElementById("image123").width)
-        setHeight(document.getElementById("image123").height)
-   }
-
-    const zoomInHandle = () => {
-        console.log("zoom in image")
-        image.width = scale * image.width
-        image.height = scale * image.height
-    }
-
-    const zoomOutHandle = () => {
-        console.log("zoom out image")
-        image.width = (1.0 / scale) * image.width
-        image.height = (1.0 / scale) * image.height
-    }
-
-    const defaultHandle = () => {
-        console.log("image size", width, height)
-        image.width = width;
-        image.height = height;
-    }
-
-    const [ctgS3Url, setCtgS3Url] = useState(null)
+   //  const getImageSize  = () => {
+   //      setImage(document.getElementById("image123"))
+   //      setWidth(document.getElementById("image123").width)
+   //      setHeight(document.getElementById("image123").height)
+   // }
+   //
+   //  const zoomInHandle = () => {
+   //      console.log("zoom in image")
+   //      image.width = scale * image.width
+   //      image.height = scale * image.height
+   //  }
+   //
+   //  const zoomOutHandle = () => {
+   //      console.log("zoom out image")
+   //      image.width = (1.0 / scale) * image.width
+   //      image.height = (1.0 / scale) * image.height
+   //  }
+   //
+   //  const defaultHandle = () => {
+   //      console.log("image size", width, height)
+   //      image.width = width;
+   //      image.height = height;
+   //  }
+   //
+   //  const [ctgS3Url, setCtgS3Url] = useState(null)
 
     useEffect(() => {
         console.log("id ", props.id)
     },[props.id])
 
-    useEffect(async () => {
-        const apiData = await API.graphql({query: getCtgNumerical, variables:{id: String(props.id)}})
-        const record = apiData.data.getCtgNumerical
-        var image = new Image()
-        try {
-             // TODO add check exist file or not or using download
-             const signedURL = await Storage.get(record.ctgUrl, {expires: 60});
-             image.src = signedURL
-             image.onerror = () => {
-                 console.log("error file does not exit")
-                 setCtgS3Url(null)
-             }
-             image.onload = () => {
-                 console.log(signedURL)
-                 setCtgS3Url(signedURL)
-             }
-         } catch (e) {
-             setCtgS3Url(null)
-         }
-    },[])
+    // useEffect(async () => {
+    //     const apiData = await API.graphql({query: getCtgNumerical, variables:{id: String(props.id)}})
+    //     const record = apiData.data.getCtgNumerical
+    //     var image = new Image()
+    //     try {
+    //          // TODO add check exist file or not or using download
+    //          const signedURL = await Storage.get(record.ctgUrl, {expires: 60});
+    //          image.src = signedURL
+    //          image.onerror = () => {
+    //              console.log("error file does not exit")
+    //              setCtgS3Url(null)
+    //          }
+    //          image.onload = () => {
+    //              console.log(signedURL)
+    //              setCtgS3Url(signedURL)
+    //          }
+    //      } catch (e) {
+    //          setCtgS3Url(null)
+    //      }
+    // },[])
 
     return (
             <Show {...props}>
@@ -160,18 +159,6 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                <Button
-                    color={"secondary"}
-                    variant={"contained"}
-                    onClick={() => {
-                        history.push({
-                            pathname: '/ctg',
-                            state: {
-                                record: null
-                            }
-                        })
-                    }}
-                >View Ctg</Button>
                  {/*{ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}*/}
             </SimpleShowLayout>
         </Show>
