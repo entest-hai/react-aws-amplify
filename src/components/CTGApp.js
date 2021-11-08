@@ -313,6 +313,7 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
                     style={{paddingLeft:40,paddingRight:40,paddingTop:10,paddingBottom:10}}
                     onClick={() => {
                         sessionStorage.clear()
+                        localStorage.clear()
                         setAuthenticated(null)
                     }}
                 >

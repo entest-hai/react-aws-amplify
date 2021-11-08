@@ -81,17 +81,25 @@ const CtgLiveWebWorker = () => {
             <Router>
                 <Switch>
                     <Route exact path={"/"}>
-                        <TestMuiDataTable></TestMuiDataTable>
+                        <TestWorkerView></TestWorkerView>
                     </Route>
                     <Route exact path={"/sheep"}>
-                        <CtgListDoctorFacing
-                                    tableHeight={0.3*window.innerHeight.toString()+'px'}
-                        >
-                        </CtgListDoctorFacing>
+                        <CtgListAndCtgStaticViewerDoctorFacing>
+                        </CtgListAndCtgStaticViewerDoctorFacing>
                     </Route>
                     <Route exact path={"/grid"}>
                         <TestGridView></TestGridView>
                     </Route>
+                    <Route path={"/ctg"}>
+                       <CTGNoteView></CTGNoteView>
+                   </Route>
+                    <Route path={"/search"}>
+                        <CtgListDoctorFacing tableHeight={'93vh'}>
+                        </CtgListDoctorFacing>
+                    </Route>
+                    <Route path={"/ctg"}>
+                       <CTGNoteView></CTGNoteView>
+                   </Route>
                     {/*<Route exact path={"/scroll"}>*/}
                     {/*    <ScrollBarDragger></ScrollBarDragger>*/}
                     {/*</Route>*/}
@@ -169,7 +177,8 @@ function CTGApp() {
                                <OpenFhirServer></OpenFhirServer>
                            </Route>
                            <Route exact path={"/"}>
-                               <CtgListAndCtgStaticViewerDoctorFacing></CtgListAndCtgStaticViewerDoctorFacing>
+                               <CtgListAndCtgStaticViewerDoctorFacing>
+                               </CtgListAndCtgStaticViewerDoctorFacing>
                            </Route>
                        </CTGAppLayout>
                    </Switch>
