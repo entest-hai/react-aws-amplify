@@ -81,7 +81,7 @@ const CtgLiveWebWorker = () => {
             <Router>
                 <Switch>
                     <Route exact path={"/"}>
-                        <TestWorkerView></TestWorkerView>
+                        <TestDownloadS3></TestDownloadS3>
                     </Route>
                     <Route exact path={"/sheep"}>
                         <CtgListAndCtgStaticViewerDoctorFacing>

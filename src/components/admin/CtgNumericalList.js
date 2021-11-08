@@ -30,6 +30,7 @@ import CardActions from "@mui/material/CardActions";
 import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {API, Storage} from "aws-amplify";
+import {Typography} from "@material-ui/core";
 
 const CtgNumericalList = (props) => {
     // console.log(props)
@@ -110,17 +111,28 @@ const CtgNumericalShow = (props) => {
 
     const [ctgS3Url, setCtgS3Url] = useState(null)
 
+    useEffect(() => {
+        console.log("id ", props.id)
+    },[props.id])
+
     useEffect(async () => {
         const apiData = await API.graphql({query: getCtgNumerical, variables:{id: String(props.id)}})
         const record = apiData.data.getCtgNumerical
+        var image = new Image()
         try {
              // TODO add check exist file or not or using download
              const signedURL = await Storage.get(record.ctgUrl, {expires: 60});
-             setCtgS3Url(signedURL);
+             image.src = signedURL
+             image.onerror = () => {
+                 setCtgS3Url(null)
+             }
+             image.onload = () => {
+                 setCtgS3Url(signedURL)
+             }
          } catch (e) {
              setCtgS3Url(null)
          }
-    })
+    },[])
 
     return (
             <Show {...props}>
@@ -144,7 +156,7 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                <CtgImageViewer ctgS3Url={ctgS3Url ? ctgS3Url : null}></CtgImageViewer>
+                 {<CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>}
             </SimpleShowLayout>
         </Show>
     )
