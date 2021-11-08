@@ -63,10 +63,10 @@ const CtgNumericalList = (props) => {
 const CtgNumericalShow = (props) => {
     const scale = 1.1
     const ctgImageHeight = 500
-    const [image, setimage] = useState(null)
+    const [image, setImage] = useState(null)
     const [width, setWidth] = useState(null)
     const [height, setHeight] = useState(null)
-    const [showImage, setShowImage] = useState(true)
+    const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
     const classes = makeStyles((theme) => {
         return {
             container: {
@@ -86,7 +86,7 @@ const CtgNumericalShow = (props) => {
 
 
     const getImageSize  = () => {
-        setimage(document.getElementById("image123"))
+        setImage(document.getElementById("image123"))
         setWidth(document.getElementById("image123").width)
         setHeight(document.getElementById("image123").height)
    }
@@ -158,7 +158,7 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                 {ctgS3Url && <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>}
+                 {ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}
             </SimpleShowLayout>
         </Show>
     )
