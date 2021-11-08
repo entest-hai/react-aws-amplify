@@ -124,9 +124,11 @@ const CtgNumericalShow = (props) => {
              const signedURL = await Storage.get(record.ctgUrl, {expires: 60});
              image.src = signedURL
              image.onerror = () => {
+                 console.log("error file does not exit")
                  setCtgS3Url(null)
              }
              image.onload = () => {
+                 console.log(signedURL)
                  setCtgS3Url(signedURL)
              }
          } catch (e) {
@@ -156,7 +158,7 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                 {<CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>}
+                 {ctgS3Url && <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>}
             </SimpleShowLayout>
         </Show>
     )
