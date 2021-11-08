@@ -31,6 +31,7 @@ import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {API, Storage} from "aws-amplify";
 import {Typography} from "@material-ui/core";
+import { useHistory, useLocation } from 'react-router-dom';
 
 const CtgNumericalList = (props) => {
     // console.log(props)
@@ -61,6 +62,7 @@ const CtgNumericalList = (props) => {
 }
 
 const CtgNumericalShow = (props) => {
+    const history = useHistory()
     const scale = 1.1
     const ctgImageHeight = 500
     const [image, setImage] = useState(null)
@@ -158,6 +160,18 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
+                <Button
+                    color={"secondary"}
+                    variant={"contained"}
+                    onClick={() => {
+                        history.push({
+                            pathname: '/ctg',
+                            state: {
+                                record: null
+                            }
+                        })
+                    }}
+                >View Ctg</Button>
                  {/*{ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}*/}
             </SimpleShowLayout>
         </Show>

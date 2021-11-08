@@ -138,7 +138,18 @@ function CTGApp() {
       }
       else if (sessionStorage.getItem('username')=='admin'){
           return (
-              <AdminPage setAuthenticated={setAuthenticated}></AdminPage>
+              <ThemeProvider theme={createTheme()}>
+                  <Router>
+                      <Switch>
+                          <Route exact path={"/"}>
+                              <AdminPage setAuthenticated={setAuthenticated}></AdminPage>
+                          </Route>
+                          <Route path={"/ctg"}>
+                              <CtgImageViewer ctgS3Url={null}></CtgImageViewer>
+                          </Route>
+                      </Switch>
+                  </Router>
+              </ThemeProvider>
           )
       }
       return (
