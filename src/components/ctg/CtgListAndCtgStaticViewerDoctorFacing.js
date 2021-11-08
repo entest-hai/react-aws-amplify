@@ -3,7 +3,6 @@ import {Storage} from "aws-amplify";
 import {Paper} from "@mui/material";
 import {CtgListDoctorFacing} from "./CtgListDoctorFacing";
 import {CtgStaticCanvasViewer} from "./CtgStaticCanvasViewer";
-import Box from "@mui/material/Box";
 import {makeStyles} from "@mui/styles";
 
 const CtgListAndCtgStaticViewerDoctorFacing = () => {
@@ -53,7 +52,7 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
         }
     }, [ctgId])
 
-    const numCtgRowPerScreen = 2.5
+    const numCtgRowPerScreen = 2.7
     const ctgCanvasHeight = window.screen.height/numCtgRowPerScreen
     const ctgViewerControllerHeight = 80
     const tableHeight = window.innerHeight - ctgCanvasHeight - ctgViewerControllerHeight
@@ -70,10 +69,17 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
     return (
         <div>
             <Paper style={{width:'100%', overflow:"auto"}}>
-                {isFetching && <CtgStaticCanvasViewer numCtgRowPerScreen = {numCtgRowPerScreen} heartRate={heartRate} ctgId={ctgId} ></CtgStaticCanvasViewer>}
+                {isFetching &&
+                <CtgStaticCanvasViewer
+                    numCtgRowPerScreen = {numCtgRowPerScreen}
+                    heartRate={heartRate} ctgId={ctgId} >
+                </CtgStaticCanvasViewer>}
             </Paper>
             <Paper className={classes.table}>
-                <CtgListDoctorFacing setCtgId={setCtgId} tableHeight={(tableHeight-64).toString()+'px'}></CtgListDoctorFacing>
+                <CtgListDoctorFacing
+                    setCtgId={setCtgId}
+                    tableHeight={(tableHeight-64).toString()+'px'}>
+                </CtgListDoctorFacing>
             </Paper>
         </div>
     )
