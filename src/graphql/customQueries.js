@@ -6,15 +6,24 @@ export const listCtgNumericalsByDoctorID = `
         ) {
           listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
             items {
-              id
-              comment
-              ctgJsonUrl
-              ctgUrl
-              doctorID
-              hospitalID
-              patientID
-              sessionTime
-              createdTime
+                id
+                name
+                ctgJsonUrl
+                ctgUrl
+                ecgUrl
+                comment
+                patientID
+                doctorID
+                hospitalID
+                lost
+                accepted
+                ga
+                bmi
+                pod
+                sessionTime
+                createdTime
+                createdAt
+                updatedAt
             }
             nextToken
           }

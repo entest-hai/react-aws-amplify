@@ -299,6 +299,7 @@ export const createCtgNumerical = /* GraphQL */ `
   ) {
     createCtgNumerical(input: $input, condition: $condition) {
       id
+      name
       ctgJsonUrl
       ctgUrl
       ecgUrl
@@ -306,6 +307,11 @@ export const createCtgNumerical = /* GraphQL */ `
       patientID
       doctorID
       hospitalID
+      lost
+      accepted
+      ga
+      bmi
+      pod
       sessionTime
       createdTime
       createdAt
@@ -320,6 +326,7 @@ export const updateCtgNumerical = /* GraphQL */ `
   ) {
     updateCtgNumerical(input: $input, condition: $condition) {
       id
+      name
       ctgJsonUrl
       ctgUrl
       ecgUrl
@@ -327,6 +334,11 @@ export const updateCtgNumerical = /* GraphQL */ `
       patientID
       doctorID
       hospitalID
+      lost
+      accepted
+      ga
+      bmi
+      pod
       sessionTime
       createdTime
       createdAt
@@ -341,6 +353,7 @@ export const deleteCtgNumerical = /* GraphQL */ `
   ) {
     deleteCtgNumerical(input: $input, condition: $condition) {
       id
+      name
       ctgJsonUrl
       ctgUrl
       ecgUrl
@@ -348,6 +361,11 @@ export const deleteCtgNumerical = /* GraphQL */ `
       patientID
       doctorID
       hospitalID
+      lost
+      accepted
+      ga
+      bmi
+      pod
       sessionTime
       createdTime
       createdAt

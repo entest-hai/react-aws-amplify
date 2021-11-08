@@ -205,6 +205,7 @@ export const getCtgNumerical = /* GraphQL */ `
   query GetCtgNumerical($id: ID!) {
     getCtgNumerical(id: $id) {
       id
+      name
       ctgJsonUrl
       ctgUrl
       ecgUrl
@@ -212,6 +213,11 @@ export const getCtgNumerical = /* GraphQL */ `
       patientID
       doctorID
       hospitalID
+      lost
+      accepted
+      ga
+      bmi
+      pod
       sessionTime
       createdTime
       createdAt
@@ -228,6 +234,7 @@ export const listCtgNumericals = /* GraphQL */ `
     listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        name
         ctgJsonUrl
         ctgUrl
         ecgUrl
@@ -235,6 +242,11 @@ export const listCtgNumericals = /* GraphQL */ `
         patientID
         doctorID
         hospitalID
+        lost
+        accepted
+        ga
+        bmi
+        pod
         sessionTime
         createdTime
         createdAt

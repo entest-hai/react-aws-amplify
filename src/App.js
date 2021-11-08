@@ -140,7 +140,7 @@ function CTGApp() {
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
                            <Route path={"/search"}>
                                <CtgListDoctorFacing
-                                    tableHeight={0.88*window.innerHeight.toString()+'px'}
+                                    tableHeight={'87vh'}
                                >
                                </CtgListDoctorFacing>
                            </Route>

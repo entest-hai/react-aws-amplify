@@ -1,3 +1,6 @@
+// 08 NOV 2021
+// use localStorage to cache data from api call
+
 import React, {useEffect, useState} from "react";
 import {Waypoint} from "react-waypoint";
 import {API} from "aws-amplify";
@@ -7,10 +10,14 @@ import {Button} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
+import {CtgNumericalService} from "../../services/UserSessionService";
 
 const CtgListDoctorFacing = (props) => {
     const history = useHistory()
-    const [nextToken, setNextToken] = useState(null)
+    // const [nextToken, setNextToken] = useState(null)
+    const [ctgRows, setCtgRows] = useState([])
+
+
     const columns = [
         {
             name: "Index",
@@ -44,7 +51,7 @@ const CtgListDoctorFacing = (props) => {
         {name: "Created Time"},
         {name: "Details"}
         ];
-    const [ctgRows, setCtgRows] = useState([])
+
     const dateTimeToString = (time) => {
         let obj = new Date(time)
         return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
@@ -55,8 +62,8 @@ const CtgListDoctorFacing = (props) => {
             return [index + ctgRows.length,
                 record.id ? record.id.substring(0,8): "UNKNOWN",
                 record.ctgJsonUrl ? record.ctgJsonUrl: "UNKNOWN",
-                record.accepted ? record.accepted : "UNKNOWN",
-                record.fHRLost ? record.fHRLost: "UNKNOWN",
+                record.accepted ? record.accepted.substring(0,8) : "UNKNOWN",
+                record.lost ? record.lost: "UNKNOWN",
                 record.comment ? record.comment.substring(0,50): "UNKNOWN",
                 dateTimeToString(record.createdTime),
                 <Button
@@ -77,32 +84,43 @@ const CtgListDoctorFacing = (props) => {
     }
 
     const fetchCtgRecords = async () => {
-        console.log("fetch records")
-        let filter = {
-            doctorID: {
-                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+        let ctgNumericals = CtgNumericalService.getCtgNumericals()
+        if (ctgNumericals){
+            console.log("fetch records from local storage")
+            buildCtgRows(ctgNumericals)
+        } else {
+            console.log("fetch records from graphql")
+            let filter = {
+                doctorID: {
+                    eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                }
             }
-        }
-        try {
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}})
-            buildCtgRows(apiData.data.listCtgNumericals.items)
-            setNextToken(apiData.data.listCtgNumericals.nextToken)
-        } catch (e) {
-            console.log(e)
+            try {
+                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}})
+                buildCtgRows(apiData.data.listCtgNumericals.items)
+                CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
+                // setNextToken(apiData.data.listCtgNumericals.nextToken)
+                CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 
     const fetchMoreCtgRecords = async () => {
+        let nextToken = CtgNumericalService.getNextToken()
         let filter = {
             doctorID: {
                 eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
-        if (nextToken ){
+        if (nextToken != "null"){
             console.log("fetch more ctg records")
             const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10, nextToken}})
             buildCtgRows(apiData.data.listCtgNumericals.items)
-            setNextToken(apiData.data.listCtgNumericals.nextToken)
+            CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
+            CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
+            // setNextToken(apiData.data.listCtgNumericals.nextToken)
         } else {
             console.log("null token no more to fetch ctg records")
         }
@@ -111,7 +129,7 @@ const CtgListDoctorFacing = (props) => {
     useEffect(async () => {
         let isMounted = true
         if(isMounted){
-            await  fetchCtgRecords()
+            await fetchCtgRecords()
         }
         return () => {isMounted = false}
     },[])

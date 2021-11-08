@@ -73,7 +73,7 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
                 {isFetching && <CtgStaticCanvasViewer numCtgRowPerScreen = {numCtgRowPerScreen} heartRate={heartRate} ctgId={ctgId} ></CtgStaticCanvasViewer>}
             </Paper>
             <Paper className={classes.table}>
-                <CtgListDoctorFacing setCtgId={setCtgId} tableHeight={tableHeight-64}></CtgListDoctorFacing>
+                <CtgListDoctorFacing setCtgId={setCtgId} tableHeight={(tableHeight-64).toString()+'px'}></CtgListDoctorFacing>
             </Paper>
         </div>
     )

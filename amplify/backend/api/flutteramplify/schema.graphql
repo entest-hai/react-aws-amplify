@@ -50,8 +50,10 @@ type Ctg @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "by
   createdTime: AWSTimestamp!
 }
 
+
 type CtgNumerical @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "byDoctor", fields: ["doctorID"]) @key(name: "byPatient", fields: ["patientID"]) {
   id: ID!
+  name: String
   ctgJsonUrl: String
   ctgUrl: String
   ecgUrl: String
@@ -59,9 +61,16 @@ type CtgNumerical @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(
   patientID: ID 
   doctorID: ID
   hospitalID: ID
+  lost: Float
+  accepted: String
+  ga: Float
+  bmi: Float
+  pod: String
   sessionTime: AWSTimestamp 
   createdTime: AWSTimestamp!
 }
+
+
 
 type Patient @model @auth(rules: [{allow: public}]) @key(name: "byDoctor", fields: ["doctorID"]) {
   id: ID!

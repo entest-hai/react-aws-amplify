@@ -66,4 +66,35 @@ class UserSessionService {
     }
 }
 
-export {UserSessionService, UserProfile}
+
+class CtgNumericalService {
+
+    static setNextToken(nextToken){
+        localStorage.setItem("nextToken", nextToken)
+    }
+
+    static getNextToken(){
+        return localStorage.getItem("nextToken")
+    }
+
+    static setCtgNumericals(ctgNumericals){
+
+        let currentCtgNumericals = JSON.parse(localStorage.getItem("listCtgNumericals"))
+
+        if (currentCtgNumericals != null){
+            localStorage.setItem("listCtgNumericals", JSON.stringify([...currentCtgNumericals, ...ctgNumericals]))
+            // localStorage.setItem("listCtgNumericals", JSON.stringify(ctgNumericals))
+        } else {
+            localStorage.setItem("listCtgNumericals", JSON.stringify(ctgNumericals))
+        }
+
+        // console.log("set ctgs to local storage", localStorage.getItem("listCtgNumericals"))
+
+    }
+
+    static getCtgNumericals(){
+        return JSON.parse(localStorage.getItem("listCtgNumericals"))
+    }
+}
+
+export {UserSessionService, UserProfile, CtgNumericalService}
