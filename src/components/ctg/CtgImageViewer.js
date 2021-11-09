@@ -39,20 +39,20 @@ const CtgImageViewer = (props) => {
     }
 
     return (
-        // <Grid container justifyContent={'center'} alignItems={'center'}>
-        //     <Paper style={{overflow:'auto', width:'90%'}} elevation={10}>
+        // <Grid container justifyContent={'center'} alignItems={'center'} style={{width:'85vw'}}>
+        //     <Paper style={{overflow:'auto', width:'85vw'}} elevation={10}>
         //         {props.ctgS3Url ?
         //             <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
-        //             <Skeleton variant="rectangular" width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
-        //         </Paper>
+        //             <Skeleton variant="rectangular" width={"90vw"} height={ctgImageHeight} animation={false}></Skeleton>}
+        //     </Paper>
         // </Grid>
 
-        <Grid container justifyContent={'center'} alignItems={'center'}>
-            <Card elevation={10} style={{width:'100%'}}>
+        <Grid container justifyContent={'center'} alignItems={'center'} style={{width:'85vw'}}>
+            <Card elevation={10} style={{width:'85vw'}}>
                <CardMedia>
-                   <Paper style={{overflow:'auto', width:'100%', height:ctgViewerHeight}} elevation={0}>
+                   <Paper style={{overflow:'auto', width:'85vw', height:ctgViewerHeight}} elevation={0}>
                        {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
-                       <Skeleton variant="rectangular" width={"100%"} height={ctgImageHeight} animation={false}></Skeleton>}
+                       <Skeleton variant="rectangular" width={"85vw"} height={ctgImageHeight} animation={false}></Skeleton>}
                    </Paper>
                </CardMedia>
                <CardActions>
@@ -69,8 +69,6 @@ const CtgImageViewer = (props) => {
                </CardActions>
             </Card>
         </Grid>
-
-
 
     );
 }
