@@ -1,3 +1,7 @@
+// 08 NOV 2021 TRAN MINH HAI
+// Admin depends on material-ui/core so need to use material-ui/core  here
+// instead of mui/core to view Ctg Image
+
 import {getCtgNumerical, getDoctor} from "../../graphql/queries";
 import {
   AutocompleteInput,
@@ -63,11 +67,12 @@ const CtgNumericalList = (props) => {
 
 const CtgNumericalShow = (props) => {
     // const scale = 1.1
-    // const ctgImageHeight = 500
+    const ctgImageHeight = 500
+    const [ctgS3Url, setCtgS3Url] = useState(null)
     // const [image, setImage] = useState(null)
     // const [width, setWidth] = useState(null)
     // const [height, setHeight] = useState(null)
-    // const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
+    const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
     // const classes = makeStyles((theme) => {
     //     return {
     //         container: {
@@ -116,26 +121,26 @@ const CtgNumericalShow = (props) => {
         console.log("id ", props.id)
     },[props.id])
 
-    // useEffect(async () => {
-    //     const apiData = await API.graphql({query: getCtgNumerical, variables:{id: String(props.id)}})
-    //     const record = apiData.data.getCtgNumerical
-    //     var image = new Image()
-    //     try {
-    //          // TODO add check exist file or not or using download
-    //          const signedURL = await Storage.get(record.ctgUrl, {expires: 60});
-    //          image.src = signedURL
-    //          image.onerror = () => {
-    //              console.log("error file does not exit")
-    //              setCtgS3Url(null)
-    //          }
-    //          image.onload = () => {
-    //              console.log(signedURL)
-    //              setCtgS3Url(signedURL)
-    //          }
-    //      } catch (e) {
-    //          setCtgS3Url(null)
-    //      }
-    // },[])
+    useEffect(async () => {
+        const apiData = await API.graphql({query: getCtgNumerical, variables:{id: String(props.id)}})
+        const record = apiData.data.getCtgNumerical
+        var image = new Image()
+        try {
+             // TODO add check exist file or not or using download
+             const signedURL = await Storage.get(record.ctgUrl, {expires: 60});
+             image.src = signedURL
+             image.onerror = () => {
+                 console.log("error file does not exit")
+                 setCtgS3Url(null)
+             }
+             image.onload = () => {
+                 console.log(signedURL)
+                 setCtgS3Url(signedURL)
+             }
+         } catch (e) {
+             setCtgS3Url(null)
+         }
+    },[])
 
     return (
             <Show {...props}>
@@ -159,7 +164,7 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                 {/*{ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}*/}
+                 {ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}
             </SimpleShowLayout>
         </Show>
     )
