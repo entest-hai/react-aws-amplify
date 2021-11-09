@@ -2,7 +2,7 @@
 // simple and test user session
 // should be singleton later
 import React from "react";
-import {API, Auth} from "aws-amplify";
+import {API, Auth, Storage} from "aws-amplify";
 import {getDoctor} from "../graphql/queries";
 
 class UserProfile {
@@ -97,4 +97,23 @@ class CtgNumericalService {
     }
 }
 
-export {UserSessionService, UserProfile, CtgNumericalService}
+
+class DownloadFileService {
+    static async downloadImageFromS3(filename) {
+        const signedURL = await Storage.get(filename, {expires: 60});
+        fetch(signedURL)
+            .then(res => res.blob())
+            .then(blob => {
+                var a = document.createElement("a")
+                a.href = window.URL.createObjectURL(blob)
+                a.download = filename
+                a.click()
+                a.remove()
+            })
+            .catch((e) => {
+                console.log("error download file", e)
+            })
+    }
+}
+
+export {UserSessionService, UserProfile, CtgNumericalService, DownloadFileService}

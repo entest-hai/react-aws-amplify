@@ -10,7 +10,7 @@ import {Button} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
-import {CtgNumericalService} from "../../services/UserSessionService";
+import {CtgNumericalService, DownloadFileService} from "../../services/UserSessionService";
 
 const CtgListDoctorFacing = (props) => {
     const history = useHistory()
@@ -47,9 +47,10 @@ const CtgListDoctorFacing = (props) => {
         {name: "Name"},
         {name: "Accepted"},
         {name: "FHR Lost"},
-        {name: "Comment"},
         {name: "Created Time"},
-        {name: "Details"}
+        {name: "Details"},
+        {name: "Download"},
+        {name: "Comment"}
         ];
 
     const dateTimeToString = (time) => {
@@ -64,7 +65,6 @@ const CtgListDoctorFacing = (props) => {
                 record.ctgJsonUrl ? record.ctgJsonUrl: "UNKNOWN",
                 record.accepted ? record.accepted.substring(0,8) : "UNKNOWN",
                 record.lost ? record.lost: "UNKNOWN",
-                record.comment ? record.comment.substring(0,50): "UNKNOWN",
                 dateTimeToString(record.createdTime),
                 <Button
                     color={"primary"}
@@ -77,7 +77,20 @@ const CtgListDoctorFacing = (props) => {
                             }
                         })
                     }}
-                >Details</Button>
+                >
+                    Details
+                </Button>,
+                <Button
+                    color={"primary"}
+                    variant={"contained"}
+                    disabled={record.ctgUrl ? false : true}
+                    onClick={() => {
+                        DownloadFileService.downloadImageFromS3(record.ctgUrl)
+                    }}
+                >
+                    Download
+                </Button>,
+                record.comment ? record.comment.substring(0,50): "UNKNOWN"
             ]
         })
         setCtgRows([...ctgRows, ...newCtgRows])

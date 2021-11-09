@@ -138,6 +138,22 @@ const CTGNoteView = ({match}) => {
         return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
     }
 
+    const downloadImageBlob = async (filename) => {
+        const signedURL = await Storage.get(filename, {expires: 60});
+        fetch(signedURL)
+            .then(res => res.blob())
+            .then(blob => {
+                var a = document.createElement("a")
+                a.href = window.URL.createObjectURL(blob)
+                a.download = filename
+                a.click()
+                a.remove()
+            })
+            .catch((e) => {
+                console.log("error download file", e)
+            })
+    }
+
     const CtgInformationDetails =  () => {
         return (
             <div style={{paddingBottom: 20}}>
@@ -186,9 +202,19 @@ const CTGNoteView = ({match}) => {
                 <Typography className={classes.ctgFormTitleText} color={"textSecondary"} gutterBottom>
                     Created At
                 </Typography>
-                <Typography className={classes.ctgFormTitleText}>
+                <Typography className={classes.ctgRecordText}>
                     {location.state.record.createdTime ? dateTimeToString(location.state.record.createdTime) : "UNKNOWN"}
                 </Typography>
+                <Button
+                    variant={"contained"}
+                    color={"primary"}
+                    disabled={ctgS3Url ? false : true}
+                    onClick={() => {
+                        downloadImageBlob(location.state.record.ctgUrl)
+                    }}
+                >
+                    Download
+                </Button>
             </div>
         )
     }

@@ -81,9 +81,7 @@ const CtgLiveWebWorker = () => {
             <Router>
                 <Switch>
                     <Route exact path={"/"}>
-                        <CtgImageViewer
-                            ctgS3Url={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}
-                        ></CtgImageViewer>
+                        <TestDownloadS3></TestDownloadS3>
                     </Route>
                     <Route exact path={"/sheep"}>
                         <CtgListAndCtgStaticViewerDoctorFacing>
