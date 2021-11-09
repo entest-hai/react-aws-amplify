@@ -41,10 +41,20 @@ const CtgImageViewerForAdmin = (props) => {
     }
 
     return (
-        <Grid container justifyContent={'center'} alignItems={'center'} style={{width:ctgViewerWidth}}>
-            <Card elevation={10} style={{width:ctgViewerWidth}}>
+        <Grid
+            container
+            justifyContent={'center'}
+            alignItems={'center'}
+            style={{width:ctgViewerWidth, margin:'auto'}}>
+            <Card
+                elevation={5}
+                style={{width:ctgViewerWidth, marginTop:5, marginBottom:5}}>
                <CardMedia>
-                   <Paper style={{overflow:'auto', width:ctgViewerWidth, height:ctgViewerHeight}} elevation={0}>
+                   <Paper
+                       style={{overflow:'auto',
+                       width:ctgViewerWidth,
+                       height:ctgViewerHeight}}
+                       elevation={0}>
                        {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
                        <Skeleton variant="rectangular" width={ctgViewerWidth} height={ctgImageHeight} animation={false}></Skeleton>}
                    </Paper>

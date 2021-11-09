@@ -52,8 +52,8 @@ const CtgImageViewer = (props) => {
             alignItems={'center'}
             style={{width:ctgViewerWidth, margin:'auto'}}>
             <Card
-                elevation={10}
-                style={{width:ctgViewerWidth, marginBottom:30}}>
+                elevation={5}
+                style={{width:ctgViewerWidth, marginBottom:10, marginTop:10}}>
                <CardMedia>
                    <Paper style={{overflow:'auto', width:ctgViewerWidth, height:ctgViewerHeight, margin:'auto'}} elevation={0}>
                        {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :

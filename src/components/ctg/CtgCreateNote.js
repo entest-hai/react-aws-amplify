@@ -111,7 +111,7 @@ const CtgCreateNote = () => {
 
     const CtgEditForm = () => {
         return (
-            <form noValidate autoComplete="off" onSubmit={handleSubmit} style={{marginTop:20}}>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit} style={{marginTop:0}}>
                 <TextField
                     className={classes.field}
                      label={"Patient Id & Click Search"}
@@ -141,7 +141,7 @@ const CtgCreateNote = () => {
                      }}>
                 </TextField>
                    <TextField
-                       style={{marginTop:20}}
+                       style={{marginTop:10}}
                        className={classes.field}
                          label="Doctor comments"
                          onChange={(event) => {
@@ -157,7 +157,7 @@ const CtgCreateNote = () => {
                    >
                    </TextField>
                     <Button
-                        style={{marginTop:20}}
+                        style={{marginTop:10}}
                         type="submit"
                         color="primary"
                         variant="contained"
