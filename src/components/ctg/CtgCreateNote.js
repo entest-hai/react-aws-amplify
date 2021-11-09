@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import {KeyboardArrowRight} from "@mui/icons-material";
 import {UserSessionService} from "../../services/UserSessionService";
 import {CtgImageViewer} from "./CtgImageViewer";
+import {margin} from "@mui/system";
 
 const CtgCreateNote = () => {
 
@@ -108,10 +109,9 @@ const CtgCreateNote = () => {
         }
     }
 
-    return (
-        <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
-             <CtgImageViewer ctgS3Url={showImage ? process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png" : null}></CtgImageViewer>
-            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+    const CtgEditForm = () => {
+        return (
+            <form noValidate autoComplete="off" onSubmit={handleSubmit} style={{marginTop:20}}>
                 <TextField
                     className={classes.field}
                      label={"Patient Id & Click Search"}
@@ -141,6 +141,7 @@ const CtgCreateNote = () => {
                      }}>
                 </TextField>
                    <TextField
+                       style={{marginTop:20}}
                        className={classes.field}
                          label="Doctor comments"
                          onChange={(event) => {
@@ -156,6 +157,7 @@ const CtgCreateNote = () => {
                    >
                    </TextField>
                     <Button
+                        style={{marginTop:20}}
                         type="submit"
                         color="primary"
                         variant="contained"
@@ -164,7 +166,77 @@ const CtgCreateNote = () => {
                     Submit
                  </Button>
             </form>
-        </Paper>
+        )
+    }
+
+
+
+    return (
+            <div style={{width:'95vw', margin:'auto'}}>
+                <CtgImageViewer
+                    ctgImageHeight={450}
+                    ctgViewerWidth={'95vw'}
+                    ctgViewerHeight={window.screen.height/2.5}
+                    ctgS3Url={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}>
+                </CtgImageViewer>
+                <CtgEditForm></CtgEditForm>
+            </div>
+
+        // <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
+        //     <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        //         <TextField
+        //             className={classes.field}
+        //              label={"Patient Id & Click Search"}
+        //              rows={1}
+        //              variant={"outlined"}
+        //              color={"secondary"}
+        //              fullWidth
+        //              placeholder={"Hai"}
+        //              required
+        //              error={patientIdError}
+        //              onChange={(event) => {
+        //                  setPatientId(event.target.value)
+        //
+        //              }}
+        //              InputProps={{
+        //                  endAdornment: (
+        //                      <InputAdornment position="end">
+        //                          <IconButton
+        //                              onClick={() =>{
+        //                                  setShowImage(true)
+        //                              }}
+        //                              size="large">
+        //                              <SearchIcon></SearchIcon>
+        //                          </IconButton>
+        //                      </InputAdornment>
+        //                      ),
+        //              }}>
+        //         </TextField>
+        //            <TextField
+        //                className={classes.field}
+        //                  label="Doctor comments"
+        //                  onChange={(event) => {
+        //                      setDetails(event.target.value)
+        //                  }}
+        //                  variant="outlined"
+        //                  color="secondary"
+        //                  multiline
+        //                  rows={13}
+        //                  fullWidth
+        //                  required
+        //                  error={detailsError}
+        //            >
+        //            </TextField>
+        //             <Button
+        //                 type="submit"
+        //                 color="primary"
+        //                 variant="contained"
+        //                 endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
+        //             >
+        //             Submit
+        //          </Button>
+        //     </form>
+        // </Paper>
     );
 }
 

@@ -194,60 +194,13 @@ const CTGNoteView = ({match}) => {
     }
 
     return (
-        <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
-            <CtgInformationDetails></CtgInformationDetails>
-            <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>
-
-            {/*Old code on 05 NOV 2021*/}
-            {/*<Container className={classes.searchForm}>*/}
-            {/* <TextField*/}
-            {/*        disabled*/}
-            {/*        rows={1}*/}
-            {/*        variant={"outlined"}*/}
-            {/*        color={"primary"}*/}
-            {/*        className={classes.textField}*/}
-            {/*        placeholder={record ?  record.username : "patient name"}*/}
-            {/*        onChange={(event) => {*/}
-            {/*            console.log(event.target.value)*/}
-            {/*        }}*/}
-            {/*        InputProps={{*/}
-            {/*            endAdornment: (*/}
-            {/*                <InputAdornment position="end">*/}
-            {/*                  <IconButton*/}
-            {/*                    onClick={() =>{*/}
-            {/*                        setShowImage(true)*/}
-            {/*                    }}>*/}
-            {/*                      <SearchIcon></SearchIcon>*/}
-            {/*                  </IconButton>*/}
-            {/*                </InputAdornment>*/}
-            {/*              ),*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*    </TextField>*/}
-            {/*</Container>*/}
-            {/*<Container className={classes.searchForm}>*/}
-            {/*    <TextField*/}
-            {/*        disabled*/}
-            {/*        multiline*/}
-            {/*        rows={7}*/}
-            {/*        variant={"outlined"}*/}
-            {/*        color={"primary"}*/}
-            {/*        className={classes.textField}*/}
-            {/*        placeholder={location.state.record.comment ? location.state.record.comment : "comments from doctor"}*/}
-            {/*    >*/}
-            {/*    </TextField>*/}
-            {/*</Container>*/}
-            {/*<Container className={classes.searchForm}>*/}
-            {/*    <Button*/}
-            {/*        disabled={true}*/}
-            {/*        className={classes.saveButton}*/}
-            {/*        type="submit"*/}
-            {/*        color="primary"*/}
-            {/*        variant="contained">*/}
-            {/*        Save*/}
-            {/*    </Button>*/}
-            {/*</Container>*/}
-        </Paper>
+            <div style={{width:'95vw', margin:'auto'}}>
+                <CtgInformationDetails></CtgInformationDetails>
+                <CtgImageViewer
+                    ctgViewerWidth={'95vw'}
+                    ctgS3Url={ctgS3Url}>
+                </CtgImageViewer>
+            </div>
     )
 }
 
