@@ -2,18 +2,19 @@
 // CtgImageViewer
 // TODO: handle image size > screen size when loading the image
 import React, {useState} from "react";
+import {Button, Paper, IconButton, Card, CardMedia, CardActions, Grid} from "@material-ui/core";
+import {Skeleton} from "@material-ui/lab";
+import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
 
-// material ui 4.0
-// import {Button, Paper, IconButton, Card, CardMedia, CardActions, Grid} from "@material-ui/core";
-// import {Skeleton} from "@material-ui/lab";
-// import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
+// import CardMedia from "@mui/material/CardMedia";
+// import {Button, IconButton, Paper} from "@mui/material";
+// import Skeleton from '@mui/material/Skeleton';
+// import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+// import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
+// import {Grid} from "@material-ui/core";
 
-// material ui 5.0
-import {Button, Card, CardActions, CardMedia, IconButton, Paper, Grid} from "@mui/material";
-import Skeleton from '@mui/material/Skeleton';
-import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
-
-const CtgImageViewer = (props) => {
+const CtgImageViewerForAdmin = (props) => {
 
     const scale = 1.1
     const ctgImageHeight = 700
@@ -40,13 +41,6 @@ const CtgImageViewer = (props) => {
     }
 
     return (
-        // <Grid container justifyContent={'center'} alignItems={'center'} style={{width:'85vw'}}>
-        //     <Paper style={{overflow:'auto', width:'85vw'}} elevation={10}>
-        //         {props.ctgS3Url ?
-        //             <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
-        //             <Skeleton variant="rectangular" width={"90vw"} height={ctgImageHeight} animation={false}></Skeleton>}
-        //     </Paper>
-        // </Grid>
         <Grid container justifyContent={'center'} alignItems={'center'} style={{width:ctgViewerWidth}}>
             <Card elevation={10} style={{width:ctgViewerWidth}}>
                <CardMedia>
@@ -73,4 +67,4 @@ const CtgImageViewer = (props) => {
     );
 }
 
-export  {CtgImageViewer};
+export  {CtgImageViewerForAdmin};

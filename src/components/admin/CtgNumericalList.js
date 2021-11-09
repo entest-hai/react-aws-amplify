@@ -25,18 +25,8 @@ import {
   TextInput,
 } from "react-admin";
 import React, {useEffect, useState} from "react";
-// import CardMedia from "@mui/material/CardMedia";
-// import {Box, Button, Container, IconButton, Paper} from "@mui/material";
-// import Skeleton from '@mui/material/Skeleton';
-// import Card from "@mui/material/Card";
-// import makeStyles from '@mui/styles/makeStyles';
-// import CardActions from "@mui/material/CardActions";
-// import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
-// import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {API, Storage} from "aws-amplify";
-import {CtgImageViewer} from "../ctg/CtgImageViewer";
-// import {Typography} from "@material-ui/core";
-// import { useHistory, useLocation } from 'react-router-dom';
+import {CtgImageViewerForAdmin} from "../ctg/CtgImagViewerForAdmin";
 
 const CtgNumericalList = (props) => {
     // console.log(props)
@@ -166,7 +156,7 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
                  {/*{ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}*/}
-                 {ctgS3Url && <CtgImageViewer ctgS3Url={ctgS3Url} ctgViewerWidth={'85vw'}></CtgImageViewer>}
+                 {ctgS3Url && <CtgImageViewerForAdmin ctgS3Url={ctgS3Url} ctgViewerWidth={'85vw'}></CtgImageViewerForAdmin>}
             </SimpleShowLayout>
         </Show>
     )
