@@ -15,9 +15,11 @@ import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
 // import {Grid} from "@material-ui/core";
 
 const CtgImageViewer = (props) => {
+
     const scale = 1.1
     const ctgImageHeight = 700
     const ctgViewerHeight = window.screen.height/2.5
+    const ctgViewerWidth = props.ctgViewerWidth ? props.ctgViewerWidth : '100vw'
     const [image, setImage] = useState(null)
     const [imageStyle, setImageStyle] = useState({height:ctgImageHeight,width:'auto'})
 
@@ -47,12 +49,12 @@ const CtgImageViewer = (props) => {
         //     </Paper>
         // </Grid>
 
-        <Grid container justifyContent={'center'} alignItems={'center'} style={{width:'85vw'}}>
-            <Card elevation={10} style={{width:'85vw'}}>
+        <Grid container justifyContent={'center'} alignItems={'center'} style={{width:ctgViewerWidth}}>
+            <Card elevation={10} style={{width:ctgViewerWidth}}>
                <CardMedia>
-                   <Paper style={{overflow:'auto', width:'85vw', height:ctgViewerHeight}} elevation={0}>
+                   <Paper style={{overflow:'auto', width:ctgViewerWidth, height:ctgViewerHeight}} elevation={0}>
                        {props.ctgS3Url ? <img onLoad={getImageSize} id={"image123"} src={props.ctgS3Url} style={imageStyle}/> :
-                       <Skeleton variant="rectangular" width={"85vw"} height={ctgImageHeight} animation={false}></Skeleton>}
+                       <Skeleton variant="rectangular" width={ctgViewerWidth} height={ctgImageHeight} animation={false}></Skeleton>}
                    </Paper>
                </CardMedia>
                <CardActions>

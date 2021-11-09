@@ -166,7 +166,7 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
                  {/*{ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}*/}
-                 {ctgS3Url && <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>}
+                 {ctgS3Url && <CtgImageViewer ctgS3Url={ctgS3Url} ctgViewerWidth={'85vw'}></CtgImageViewer>}
             </SimpleShowLayout>
         </Show>
     )
