@@ -34,6 +34,7 @@ import React, {useEffect, useState} from "react";
 // import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
 // import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {API, Storage} from "aws-amplify";
+import {CtgImageViewer} from "../ctg/CtgImageViewer";
 // import {Typography} from "@material-ui/core";
 // import { useHistory, useLocation } from 'react-router-dom';
 
@@ -164,7 +165,8 @@ const CtgNumericalShow = (props) => {
                 <TextField source={"comment"}></TextField>
                 <TextField source={"createdAt"}></TextField>
                 <TextField source={"updatedAt"}></TextField>
-                 {ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}
+                 {/*{ctgS3Url && <img id={"image123"} src={ctgS3Url} style={imageStyle}/>}*/}
+                 {ctgS3Url && <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>}
             </SimpleShowLayout>
         </Show>
     )
