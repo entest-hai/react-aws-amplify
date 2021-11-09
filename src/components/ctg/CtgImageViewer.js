@@ -1,36 +1,18 @@
 // 19 OCT 2021 TRAN MINH HAI
 // CtgImageViewer
 // TODO: handle image size > screen size when loading the image
-import {
-  AutocompleteInput,
-  Create,
-  Datagrid,
-  DateField,
-  DateInput,
-  Edit,
-  EditButton,
-  List,
-  NumberField,
-  NumberInput,
-  ReferenceField,
-  ReferenceInput,
-  required,
-  Show,
-  ShowButton,
-  SimpleForm,
-  SimpleShowLayout,
-  TextField,
-  TextInput,
-} from "react-admin";
 import React, {useState} from "react";
-import CardMedia from "@mui/material/CardMedia";
-import {Box, Button, Container, IconButton, Paper} from "@mui/material";
-import Skeleton from '@mui/material/Skeleton';
-import Card from "@mui/material/Card";
-import makeStyles from '@mui/styles/makeStyles';
-import CardActions from "@mui/material/CardActions";
-import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
-import {Grid} from "@material-ui/core";
+import {Button, Paper, IconButton, Card, CardMedia, CardActions, Grid} from "@material-ui/core";
+import {Skeleton} from "@material-ui/lab";
+import {ZoomIn, ZoomOutRounded} from "@material-ui/icons";
+
+// import CardMedia from "@mui/material/CardMedia";
+// import {Button, IconButton, Paper} from "@mui/material";
+// import Skeleton from '@mui/material/Skeleton';
+// import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+// import {ZoomIn, ZoomOutRounded} from "@mui/icons-material";
+// import {Grid} from "@material-ui/core";
 
 const CtgImageViewer = (props) => {
     const scale = 1.1
