@@ -54,7 +54,7 @@ const CtgListDoctorFacing = (props) => {
         ];
 
     const dateTimeToString = (time) => {
-        let obj = new Date(time)
+        let obj = new Date(time * 1000)
         return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
     }
 
@@ -65,7 +65,8 @@ const CtgListDoctorFacing = (props) => {
                 record.ctgJsonUrl ? record.ctgJsonUrl: "UNKNOWN",
                 record.accepted ? record.accepted.substring(0,8) : "UNKNOWN",
                 record.lost ? record.lost: "UNKNOWN",
-                dateTimeToString(record.createdTime),
+                // record.createdAt ? record.createdAt: "UNKNOWN",
+                record.createdTime ? dateTimeToString(record.createdTime ) : "UNKNOWN",
                 <Button
                     color={"primary"}
                     variant={"contained"}

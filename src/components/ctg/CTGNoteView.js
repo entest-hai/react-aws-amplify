@@ -134,7 +134,7 @@ const CTGNoteView = ({match}) => {
     }, [])
 
     const dateTimeToString = (time) => {
-        let obj = new Date(time)
+        let obj = new Date(time * 1000)
         return obj.toLocaleDateString() + "-" + obj.toLocaleTimeString()
     }
 
