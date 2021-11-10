@@ -111,7 +111,7 @@ const CtgListDoctorFacing = (props) => {
                 }
             }
             try {
-                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 50}})
+                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}})
                 buildCtgRows(apiData.data.listCtgNumericals.items)
                 CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
                 // setNextToken(apiData.data.listCtgNumericals.nextToken)
@@ -131,7 +131,7 @@ const CtgListDoctorFacing = (props) => {
         }
         if (nextToken != "null"){
             console.log("fetch more ctg records")
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
+            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10, nextToken}})
             buildCtgRows(apiData.data.listCtgNumericals.items)
             CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
             CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
