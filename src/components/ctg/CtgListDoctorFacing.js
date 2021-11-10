@@ -1,5 +1,6 @@
 // 08 NOV 2021
 // use localStorage to cache data from api call
+// default doctor ID: '0f150cec-842f-43a0-9f89-ab06625e832a'
 
 import React, {useEffect, useState} from "react";
 import {Waypoint} from "react-waypoint";
@@ -110,7 +111,7 @@ const CtgListDoctorFacing = (props) => {
                 }
             }
             try {
-                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}})
+                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 50}})
                 buildCtgRows(apiData.data.listCtgNumericals.items)
                 CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
                 // setNextToken(apiData.data.listCtgNumericals.nextToken)
@@ -130,7 +131,7 @@ const CtgListDoctorFacing = (props) => {
         }
         if (nextToken != "null"){
             console.log("fetch more ctg records")
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10, nextToken}})
+            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
             buildCtgRows(apiData.data.listCtgNumericals.items)
             CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
             CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)

@@ -38,7 +38,7 @@ const UserLoginPage = ({setAuthenticated}) => {
             } else {
                 try {
                 let apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
-                // console.log(apiData)
+                console.log(apiData)
                 sessionStorage.setItem('doctorID',apiData.data.getDoctor.id)
                 sessionStorage.setItem('hospitalID',apiData.data.getDoctor.hospitalID)
                 sessionStorage.setItem('doctorName',apiData.data.getDoctor.name)

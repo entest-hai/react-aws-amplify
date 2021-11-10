@@ -59,6 +59,15 @@ import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 import {TestMuiDataTable} from "./tests/TestMuiDataTable";
 
+
+const AuthApp = () => {
+    return (
+        <ThemeProvider theme={createTheme()}>
+            <AmplifySignOut></AmplifySignOut>
+        </ThemeProvider>
+    )
+}
+
 const CtgLiveWebWorker = () => {
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
     useEffect(async () => {
@@ -186,5 +195,6 @@ function CTGApp() {
              </ThemeProvider>
       )
 }
-  
-export {CTGApp, CtgLiveWebWorker};
+
+export default withAuthenticator(AuthApp)
+export {CTGApp, CtgLiveWebWorker, withAuthenticator};
