@@ -100,21 +100,20 @@ const CtgListDoctorFacing = (props) => {
 
     const fetchCtgRecords = async () => {
         let ctgNumericals = CtgNumericalService.getCtgNumericals()
-        if (1==2){
-            console.log("fetch records from local storage", sessionStorage.getItem('doctorID'))
+        if (ctgNumericals){
+            console.log("fetch records from local storage")
             buildCtgRows(ctgNumericals)
         } else {
-            console.log("fetch records from graphql", sessionStorage.getItem('doctorID'))
+            console.log("fetch records from graphql")
             let filter = {
                 doctorID: {
                     eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
                 }
             }
             try {
-                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 50}})
+                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 30}})
                 buildCtgRows(apiData.data.listCtgNumericals.items)
                 CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
-                // setNextToken(apiData.data.listCtgNumericals.nextToken)
                 CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
             } catch (e) {
                 console.log(e)
@@ -131,11 +130,10 @@ const CtgListDoctorFacing = (props) => {
         }
         if (nextToken != "null"){
             console.log("fetch more ctg records")
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10, nextToken}})
+            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
             buildCtgRows(apiData.data.listCtgNumericals.items)
             CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
             CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
-            // setNextToken(apiData.data.listCtgNumericals.nextToken)
         } else {
             console.log("null token no more to fetch ctg records")
         }
