@@ -315,6 +315,7 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
                         sessionStorage.clear()
                         localStorage.clear()
                         setAuthenticated(null)
+                        history.push("/")
                     }}
                 >
                     sign out

@@ -100,18 +100,18 @@ const CtgListDoctorFacing = (props) => {
 
     const fetchCtgRecords = async () => {
         let ctgNumericals = CtgNumericalService.getCtgNumericals()
-        if (ctgNumericals){
-            console.log("fetch records from local storage")
+        if (1==2){
+            console.log("fetch records from local storage", sessionStorage.getItem('doctorID'))
             buildCtgRows(ctgNumericals)
         } else {
-            console.log("fetch records from graphql")
+            console.log("fetch records from graphql", sessionStorage.getItem('doctorID'))
             let filter = {
                 doctorID: {
                     eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
                 }
             }
             try {
-                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 10}})
+                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 50}})
                 buildCtgRows(apiData.data.listCtgNumericals.items)
                 CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
                 // setNextToken(apiData.data.listCtgNumericals.nextToken)

@@ -72,7 +72,7 @@ const CtgLiveWebWorker = () => {
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
     useEffect(async () => {
         try {
-        let user = await  Auth.signIn("hai", "Hai@865525")
+        let user = await  Auth.signIn("biorithm-kkh", "Hai@865525")
         sessionStorage.setItem('username',user.username)
         sessionStorage.setItem('cognitoUserID',user.attributes.sub)
         setAuthenticated(user.attributes.sub)
