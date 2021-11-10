@@ -284,16 +284,16 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             icon: <CloudCircle color={"secondary"}></CloudCircle>,
             path: "/live"
         },
-        {
-            text: "Live Multiple FHR",
-            icon: <MultilineChartIcon color={"secondary"}></MultilineChartIcon>,
-            path: "/grid"
-        },
-        {
-            text: "Annotate",
-            icon: <Edit color={"secondary"}></Edit>,
-            path: "/edit"
-        },
+        // {
+        //     text: "Live Multiple FHR",
+        //     icon: <MultilineChartIcon color={"secondary"}></MultilineChartIcon>,
+        //     path: "/grid"
+        // },
+        // {
+        //     text: "Annotate",
+        //     icon: <Edit color={"secondary"}></Edit>,
+        //     path: "/edit"
+        // },
     ];
 
     const showLogoutMenu = (

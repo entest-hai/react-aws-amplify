@@ -22,6 +22,10 @@ const UserLoginPage = ({setAuthenticated}) => {
 
     const handleSubmit = async (event) => {
 
+        // clear old data might be from other user
+        localStorage.clear()
+        sessionStorage.clear()
+
         // console.log(userName, password)
 
         event.preventDefault();
