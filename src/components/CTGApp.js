@@ -237,8 +237,8 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
     const [hospitalName, setHospitalName] = useState(null)
 
     useEffect(async () => {
-        setUserName(sessionStorage.getItem('username'))
-        setDoctorName(sessionStorage.getItem('doctorName'))
+        setUserName(localStorage.getItem('username'))
+        setDoctorName(localStorage.getItem('doctorName'))
     })
 
     const handleDrawerOpen = () => {
@@ -312,7 +312,7 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
                     variant={"contained"}
                     style={{paddingLeft:40,paddingRight:40,paddingTop:10,paddingBottom:10}}
                     onClick={() => {
-                        sessionStorage.clear()
+                        localStorage.clear()
                         localStorage.clear()
                         setAuthenticated(null)
                         history.push("/")
@@ -415,7 +415,7 @@ const CTGRecords = ({match}) => {
         let filter = {
             doctorID: {
                 // eq: '0f150cec-842f-43a0-9f89-ab06625e832a'
-                eq: sessionStorage.getItem('doctorID')
+                eq: localStorage.getItem('doctorID')
             }
         }
         const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter}});

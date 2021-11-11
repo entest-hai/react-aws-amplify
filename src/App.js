@@ -69,12 +69,12 @@ const AuthApp = () => {
 }
 
 const CtgLiveWebWorker = () => {
-    const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
+    const [authenticated, setAuthenticated] = useState(localStorage.getItem('cognitoUserID'),[localStorage.getItem('cognitoUserID')])
     useEffect(async () => {
         try {
         let user = await  Auth.signIn("biorithm-kkh", "Hai@865525")
-        sessionStorage.setItem('username',user.username)
-        sessionStorage.setItem('cognitoUserID',user.attributes.sub)
+        localStorage.setItem('username',user.username)
+        localStorage.setItem('cognitoUserID',user.attributes.sub)
         setAuthenticated(user.attributes.sub)
         } catch (e) {
             console.log("error auth")
@@ -137,7 +137,8 @@ const CtgLiveWebWorker = () => {
 }
 
 function CTGApp() {
-    const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('cognitoUserID'),[sessionStorage.getItem('cognitoUserID')])
+
+    const [authenticated, setAuthenticated] = useState(localStorage.getItem('cognitoUserID'))
       if (!authenticated){
           return (
               <ThemeProvider theme={createTheme()}>
@@ -145,7 +146,7 @@ function CTGApp() {
               </ThemeProvider>
           )
       }
-      else if (sessionStorage.getItem('username')=='admin'){
+      else if (localStorage.getItem('username')=='admin'){
           return (
                   <AdminPage setAuthenticated={setAuthenticated}></AdminPage>
           )

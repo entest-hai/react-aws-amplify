@@ -28,9 +28,9 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
     }
 
     useEffect(async () => {
-        // get data from sessionStorage
+        // get data from localStorage
         try{
-            const heartRate = JSON.parse(sessionStorage.getItem(ctgId))
+            const heartRate = JSON.parse(localStorage.getItem(ctgId))
             updateHeartRate(heartRate)
         } catch(e) {
         try {
@@ -40,7 +40,7 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
                 updateHeartRate(heartRate)
                 // buffer it to local storage
                 try{
-                    sessionStorage.setItem(ctgId, text)
+                    localStorage.setItem(ctgId, text)
                 } catch (e) {
 
                 }

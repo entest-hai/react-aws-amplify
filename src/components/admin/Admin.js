@@ -77,6 +77,7 @@ const AdminPage = ({setAuthenticated}) => {
                 variant={"contained"}
                 style={{paddingLeft:40,paddingRight:40}}
                 onClick={() => {
+                    localStorage.clear()
                     sessionStorage.clear()
                     setAuthenticated(null)
                     // window.location.reload()

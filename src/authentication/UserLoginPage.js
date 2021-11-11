@@ -24,7 +24,7 @@ const UserLoginPage = ({setAuthenticated}) => {
 
         // clear old data might be from other user
         localStorage.clear()
-        sessionStorage.clear()
+        localStorage.clear()
 
         // console.log(userName, password)
 
@@ -33,19 +33,19 @@ const UserLoginPage = ({setAuthenticated}) => {
         try {
             let user = await  Auth.signIn(userName, password)
             // console.log(user)
-            sessionStorage.setItem('username',user.username)
-            sessionStorage.setItem('cognitoUserID',user.attributes.sub)
+            localStorage.setItem('username',user.username)
+            localStorage.setItem('cognitoUserID',user.attributes.sub)
             // if this is admin user and not doctor
             if (user.username=="admin"){
-                sessionStorage.setItem('doctorName','Admin')
+                localStorage.setItem('doctorName','Admin')
                 setAuthenticated(user.attributes.sub)
             } else {
                 try {
                 let apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
                 // console.log(apiData)
-                sessionStorage.setItem('doctorID',apiData.data.getDoctor.id)
-                sessionStorage.setItem('hospitalID',apiData.data.getDoctor.hospitalID)
-                sessionStorage.setItem('doctorName',apiData.data.getDoctor.name)
+                localStorage.setItem('doctorID',apiData.data.getDoctor.id)
+                localStorage.setItem('hospitalID',apiData.data.getDoctor.hospitalID)
+                localStorage.setItem('doctorName',apiData.data.getDoctor.name)
                 setAuthenticated(user.attributes.sub)
             } catch (e) {}
             }
@@ -127,7 +127,7 @@ const LoginHomePage = () => {
             <h1>Home Page</h1>
             <Button
                 onClick={() => {
-                    sessionStorage.clear('cognitoUserID')
+                    localStorage.clear('cognitoUserID')
                 }}
             >
                 Lout out

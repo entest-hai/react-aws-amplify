@@ -67,7 +67,7 @@ const TestDownloadS3 = () => {
         const result = await Storage.get("SHEEP001.json", {download: true})
         result.Body.text().then(string => {
             const ctg = JSON.parse(string)
-            sessionStorage.setItem("SHEEP001",string)
+            localStorage.setItem("SHEEP001",string)
             console.log(ctg.fHR)
         })
     }

@@ -13,11 +13,11 @@ import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 import {CtgNumericalService, DownloadFileService} from "../../services/UserSessionService";
 
-const CtgListDoctorFacing = (props) => {
-    const maxNumRecordForInitFetch = 200
+const CtgListDoctorFacingIncrementalFetch = (props) => {
     const history = useHistory()
+    // const [nextToken, setNextToken] = useState(null)
     const [ctgRows, setCtgRows] = useState([])
-    const [fetchMaxNow, setFetchMaxNow] = useState(false)
+
 
     const columns = [
         {
@@ -60,7 +60,6 @@ const CtgListDoctorFacing = (props) => {
     }
 
     const buildCtgRows = (ctgRecords) => {
-        // let ctgRecords = CtgNumericalService.getCtgNumericals()
         let newCtgRows = ctgRecords.map((record,index) => {
             return [index + ctgRows.length,
                 record.id ? record.id.substring(0,8): "UNKNOWN",
@@ -96,9 +95,7 @@ const CtgListDoctorFacing = (props) => {
                 record.comment ? record.comment.substring(0,50): "UNKNOWN"
             ]
         })
-
         setCtgRows([...ctgRows, ...newCtgRows])
-        console.log("build ctg rows ", [...ctgRows].length)
     }
 
     const fetchCtgRecords = async () => {
@@ -122,7 +119,6 @@ const CtgListDoctorFacing = (props) => {
                 console.log(e)
             }
         }
-        setFetchMaxNow(true)
     }
 
     const fetchMoreCtgRecords = async () => {
@@ -132,7 +128,7 @@ const CtgListDoctorFacing = (props) => {
                 eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
-        if (nextToken != "null" && localStorage.getItem('isFetchingMax')){
+        if (nextToken != "null"){
             console.log("fetch more ctg records")
             const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
             buildCtgRows(apiData.data.listCtgNumericals.items)
@@ -143,42 +139,6 @@ const CtgListDoctorFacing = (props) => {
         }
     }
 
-
-    const fetchMaxCtgRecords = async  () => {
-        var nextToken = CtgNumericalService.getNextToken()
-        var records = []
-        let filter = {
-                doctorID: {
-                    eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
-                }
-            }
-        //
-        if (nextToken == null || nextToken=="null"){
-            return null
-        }
-        // init fetch
-        const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
-        records = [...apiData.data.listCtgNumericals.items, ...records]
-        var nextToken = apiData.data.listCtgNumericals.nextToken
-        // fetch 20 times or untill null token returned
-        while (records.length < maxNumRecordForInitFetch){
-            if (nextToken == null || nextToken=='null'){
-                console.log("null token reach break now")
-                break
-            }
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
-            nextToken = apiData.data.listCtgNumericals.nextToken
-            records = [...apiData.data.listCtgNumericals.items, ...records]
-            console.log(records.length)
-        }
-        // update ui and nextoken it can be not null
-        buildCtgRows(records)
-        CtgNumericalService.setCtgNumericals(records)
-        CtgNumericalService.setNextToken(nextToken)
-        localStorage.setItem('isFetchingMax','finished')
-    }
-
-
     useEffect(async () => {
         let isMounted = true
         if(isMounted){
@@ -186,10 +146,6 @@ const CtgListDoctorFacing = (props) => {
         }
         return () => {isMounted = false}
     },[])
-
-    useEffect(async () => {
-         fetchMaxCtgRecords().catch(e => {console.log(e)})
-    }, [fetchMaxNow])
 
     useEffect(() => {
         console.log("length ", ctgRows.length)
@@ -227,4 +183,4 @@ const CtgListDoctorFacing = (props) => {
     )
 }
 
-export {CtgListDoctorFacing}
+export {CtgListDoctorFacingIncrementalFetch}

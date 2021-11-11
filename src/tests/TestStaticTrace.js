@@ -279,9 +279,9 @@ const TestFHRStaticTrace = () => {
     }
 
     useEffect(async () => {
-        // get data from sessionStorage
+        // get data from localStorage
         try{
-            const heartRate = JSON.parse(sessionStorage.getItem(ctgId))
+            const heartRate = JSON.parse(localStorage.getItem(ctgId))
             updateHeartRate(heartRate)
         } catch(e) {
         try {
@@ -291,7 +291,7 @@ const TestFHRStaticTrace = () => {
                 updateHeartRate(heartRate)
                 // buffer it to local storage
                 try{
-                    sessionStorage.setItem(ctgId, text)
+                    localStorage.setItem(ctgId, text)
                 } catch (e) {
 
                 }
@@ -369,7 +369,7 @@ const CtgTableTest = (props)  => {
         await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
-                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
         // catch error when calling graphql qpi
@@ -385,7 +385,7 @@ const CtgTableTest = (props)  => {
     const fetchMoreCtgs = async () => {
         let filter = {
             doctorID: {
-                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
         if (nextToken){
@@ -510,7 +510,7 @@ const CtgMuiTableTest = (props) => {
         console.log("fetch records")
         let filter = {
             doctorID: {
-                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
         try {
@@ -525,7 +525,7 @@ const CtgMuiTableTest = (props) => {
     const fetchMoreCtgRecords = async () => {
         let filter = {
             doctorID: {
-                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
         if (nextToken ){

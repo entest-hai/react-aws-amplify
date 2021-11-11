@@ -65,7 +65,7 @@ const CtgGridTableTest = ()  => {
         await UserSessionService.getUserSession()
         let filter = {
             doctorID: {
-                eq: sessionStorage.getItem('doctorID') ? sessionStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
             }
         }
         // catch error when calling graphql qpi
