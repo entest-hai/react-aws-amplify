@@ -28,28 +28,61 @@ const CtgListAndCtgStaticViewerDoctorFacing = () => {
     }
 
     useEffect(async () => {
-        // get data from localStorage
-        try{
-            const heartRate = JSON.parse(localStorage.getItem(ctgId))
-            updateHeartRate(heartRate)
-        } catch(e) {
-        try {
-            const result = await Storage.get(ctgId, {download: true})
-            result.Body.text().then(text => {
-                let heartRate = JSON.parse(text)
-                updateHeartRate(heartRate)
-                // buffer it to local storage
-                try{
-                    localStorage.setItem(ctgId, text)
-                } catch (e) {
 
-                }
-            })
-        } catch (e) {
-            setHeartRate({mHR: [0], fHR: [0]})
-            setIsFetching(true)
+        // get data from localStorage
+        let localStorateHeartRate = localStorage.getItem(ctgId)
+
+        if (localStorateHeartRate){
+            console.log("heart rate from local storage")
+            try {
+                const heartRate = JSON.parse(localStorateHeartRate)
+                updateHeartRate(heartRate)
+            } catch (e) {
+                console.log("error parse json local heart rate")
+            }
+        } else {
+            try {
+                console.log("download heart rate from s3")
+                const result = await Storage.get(ctgId, {download: true})
+                result.Body.text().then(text => {
+                    let heartRate = JSON.parse(text)
+                    updateHeartRate(heartRate)
+                    // buffer it to local storage
+                    try{
+                        localStorage.setItem(ctgId, text)
+                    } catch (e) {
+
+                    }
+                })
+            } catch (e) {
+                setHeartRate({mHR: [0], fHR: [0]})
+                setIsFetching(true)
+            }
         }
-        }
+
+        // try{
+        //     const heartRate = JSON.parse(localStorage.getItem(ctgId))
+        //     updateHeartRate(heartRate)
+        // } catch(e) {
+        // try {
+        //     const result = await Storage.get(ctgId, {download: true})
+        //     result.Body.text().then(text => {
+        //         let heartRate = JSON.parse(text)
+        //         updateHeartRate(heartRate)
+        //         // buffer it to local storage
+        //         try{
+        //             localStorage.setItem(ctgId, text)
+        //         } catch (e) {
+        //
+        //         }
+        //     })
+        // } catch (e) {
+        //     setHeartRate({mHR: [0], fHR: [0]})
+        //     setIsFetching(true)
+        //     }
+        // }
+
+
     }, [ctgId])
 
     const numCtgRowPerScreen = 2.7
