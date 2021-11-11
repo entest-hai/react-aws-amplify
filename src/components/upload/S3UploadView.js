@@ -61,10 +61,9 @@ const UploadView = () => {
     const classes = makeStyles(() => {
         return {
             container: {
-            maxWidth:window.screen.width-10,
-            // backgroundColor: "grey",
-            padding: 0,
-        },
+                maxWidth:window.screen.width-10,
+                padding: 0,
+            },
             button: {
                 
             },
@@ -180,30 +179,31 @@ const UploadView = () => {
     </div>
 
     return (
-       <div>
-            <CtgImageViewer ctgS3Url={ctgS3Url}></CtgImageViewer>
-            <Container className={classes.container}>
-                <TextField
-                    className={classes.field}
-                    label={fileName}
-                    rows={1}
-                    variant={"outlined"}
-                    color={"secondary"}
-                    fullWidth
-                    placeholder={"file name"}
-                    required
-                    onChange={(event) => {
+       <div style={{width:'98vw', margin:'auto'}}>
+            <CtgImageViewer
+                ctgViewerWidth={'98vw'}
+                ctgS3Url={ctgS3Url}>
+            </CtgImageViewer>
+            <TextField
+                className={classes.field}
+                label={fileName}
+                rows={1}
+                variant={"outlined"}
+                color={"secondary"}
+                fullWidth
+                placeholder={"file name"}
+                required
+                onChange={(event) => {
 
-                    }}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                {uploadFile}
-                            </InputAdornment>),
-                    }}>
-            </TextField>
+                }}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            {uploadFile}
+                        </InputAdornment>),
+                }}>
+        </TextField>
             <LinearProgressWithLabel value={progress}></LinearProgressWithLabel>
-        </Container>
        </div>
     )
 }
