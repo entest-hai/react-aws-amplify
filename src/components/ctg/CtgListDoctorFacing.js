@@ -6,12 +6,13 @@ import React, {useEffect, useState} from "react";
 import {Waypoint} from "react-waypoint";
 import {API} from "aws-amplify";
 import MUIDataTable from "mui-datatables";
-import {listCtgNumericalsByDoctorID} from "../../graphql/customQueries";
+// import {listCtgNumericalsByDoctorID} from "../../graphql/customQueries";
 import {Button} from "@mui/material";
 import {useHistory} from "react-router-dom";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 import {CtgNumericalService, DownloadFileService} from "../../services/UserSessionService";
+import {ctgNumericalsByDoctorID} from "../../graphql/queries";
 
 const CtgListDoctorFacing = (props) => {
     const maxNumRecordForInitFetch = 200
@@ -31,7 +32,7 @@ const CtgListDoctorFacing = (props) => {
                         <React.Fragment key={value}>
                             <Waypoint
                                 onEnter={() => {
-                                    console.log("waypoint reach", value)
+                                    // console.log("waypoint reach", value)
                                     fetchMoreCtgRecords()
                                 }
                                 }>
@@ -98,26 +99,28 @@ const CtgListDoctorFacing = (props) => {
         })
 
         setCtgRows([...ctgRows, ...newCtgRows])
-        console.log("build ctg rows ", [...ctgRows].length)
+        // console.log("build ctg rows ", [...ctgRows].length)
     }
 
     const fetchCtgRecords = async () => {
+        const doctorID = localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
         let ctgNumericals = CtgNumericalService.getCtgNumericals()
         if (ctgNumericals){
             console.log("fetch records from local storage")
             buildCtgRows(ctgNumericals)
         } else {
             console.log("fetch records from graphql")
-            let filter = {
-                doctorID: {
-                    eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
-                }
-            }
+            // let filter = {
+            //     doctorID: {
+            //         eq: doctorID
+            //     }
+            // }
             try {
-                const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 30}})
-                buildCtgRows(apiData.data.listCtgNumericals.items)
-                CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
-                CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
+                // const apiData = await API.graphql({query: ctgNumericalsByDoctorID, variables: {filter:filter, limit: 30}})
+                const apiData = await  API.graphql({query: ctgNumericalsByDoctorID, variables: {doctorID:doctorID, limit:30}})
+                buildCtgRows(apiData.data.CtgNumericalsByDoctorID.items)
+                CtgNumericalService.setCtgNumericals(apiData.data.CtgNumericalsByDoctorID.items)
+                CtgNumericalService.setNextToken(apiData.data.CtgNumericalsByDoctorID.nextToken)
             } catch (e) {
                 console.log(e)
             }
@@ -126,18 +129,20 @@ const CtgListDoctorFacing = (props) => {
     }
 
     const fetchMoreCtgRecords = async () => {
+        const doctorID = localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
         let nextToken = CtgNumericalService.getNextToken()
         let filter = {
             doctorID: {
-                eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                eq: doctorID
             }
         }
         if (nextToken != "null" && localStorage.getItem('isFetchingMax')){
             console.log("fetch more ctg records")
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
-            buildCtgRows(apiData.data.listCtgNumericals.items)
-            CtgNumericalService.setCtgNumericals(apiData.data.listCtgNumericals.items)
-            CtgNumericalService.setNextToken(apiData.data.listCtgNumericals.nextToken)
+            // const apiData = await API.graphql({query: CtgNumericalsByDoctorIDByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
+            const apiData = await API.graphql({query: ctgNumericalsByDoctorID, variables: {doctorID:doctorID, limit: 20, nextToken}})
+            buildCtgRows(apiData.data.CtgNumericalsByDoctorID.items)
+            CtgNumericalService.setCtgNumericals(apiData.data.CtgNumericalsByDoctorID.items)
+            CtgNumericalService.setNextToken(apiData.data.CtgNumericalsByDoctorID.nextToken)
         } else {
             console.log("null token no more to fetch ctg records")
         }
@@ -145,11 +150,12 @@ const CtgListDoctorFacing = (props) => {
 
 
     const fetchMaxCtgRecords = async  () => {
+        const doctorID = localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
         var nextToken = CtgNumericalService.getNextToken()
         var records = []
         let filter = {
                 doctorID: {
-                    eq: localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+                    eq: doctorID
                 }
             }
         //
@@ -157,19 +163,21 @@ const CtgListDoctorFacing = (props) => {
             return null
         }
         // init fetch
-        const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
-        records = [...apiData.data.listCtgNumericals.items, ...records]
-        var nextToken = apiData.data.listCtgNumericals.nextToken
+        // const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
+        const apiData = await API.graphql({query: ctgNumericalsByDoctorID, variables: {doctorID:doctorID, limit: 20, nextToken}})
+        records = [...apiData.data.CtgNumericalsByDoctorID.items, ...records]
+        var nextToken = apiData.data.CtgNumericalsByDoctorID.nextToken
         // fetch 20 times or untill null token returned
         while (records.length < maxNumRecordForInitFetch){
             if (nextToken == null || nextToken=='null'){
                 console.log("null token reach break now")
                 break
             }
-            const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
-            nextToken = apiData.data.listCtgNumericals.nextToken
-            records = [...apiData.data.listCtgNumericals.items, ...records]
-            console.log(records.length)
+            // const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
+            const apiData = await API.graphql({query: ctgNumericalsByDoctorID, variables: {doctorID:doctorID, limit: 20, nextToken}})
+            nextToken = apiData.data.CtgNumericalsByDoctorID.nextToken
+            records = [...apiData.data.CtgNumericalsByDoctorID.items, ...records]
+            // console.log(records.length)
         }
         // update ui and nextoken it can be not null
         buildCtgRows(records)
@@ -192,7 +200,7 @@ const CtgListDoctorFacing = (props) => {
     }, [fetchMaxNow])
 
     useEffect(() => {
-        console.log("length ", ctgRows.length)
+        // console.log("length ", ctgRows.length)
     }, [ctgRows])
 
     const options = {

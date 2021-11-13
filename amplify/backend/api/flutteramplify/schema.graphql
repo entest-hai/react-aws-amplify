@@ -39,7 +39,7 @@ type SliderValue @model
 }
 
 
-type Ctg @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "byDoctor", fields: ["doctorID"]) @key(name: "byPatient", fields: ["patientID"]) {
+type Ctg @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "byDoctor", fields: ["doctorID"], queryField:"CtgsByDoctorID") @key(name: "byPatient", fields: ["patientID"], queryField:"CtgsByPatientID") {
   id: ID! 
   ctgUrl: String
   ecgUrl: String
@@ -51,7 +51,7 @@ type Ctg @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "by
 }
 
 
-type CtgNumerical @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "byDoctor", fields: ["doctorID"]) @key(name: "byPatient", fields: ["patientID"]) {
+type CtgNumerical @model  @key(name: "byHospital", fields: ["hospitalID"], queryField:"CtgNumericalsByHospitalID") @key(name: "byDoctor", fields: ["doctorID"], queryField:"CtgNumericalsByDoctorID") @key(name: "byPatient", fields: ["patientID"],queryField:"CtgNumericalsByPatientD") {
   id: ID!
   name: String
   ctgJsonUrl: String
@@ -72,7 +72,7 @@ type CtgNumerical @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(
 
 
 
-type Patient @model @auth(rules: [{allow: public}]) @key(name: "byDoctor", fields: ["doctorID"]) {
+type Patient @model @auth(rules: [{allow: public}]) @key(name: "byDoctor", fields: ["doctorID"], queryField: "PatientsByDoctorID") {
   id: ID!
   name: String
   phone: String
@@ -80,7 +80,7 @@ type Patient @model @auth(rules: [{allow: public}]) @key(name: "byDoctor", field
   doctorID: ID
 }
 
-type Doctor @model @auth(rules: [{allow: public}]) @key(name: "byHospital", fields: ["hospitalID"]) {
+type Doctor @model @auth(rules: [{allow: public}]) @key(name: "byHospital", fields: ["hospitalID"], queryField:"DoctorsByHospitalID") {
   id: ID!
   name: String
   phone: String

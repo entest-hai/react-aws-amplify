@@ -58,6 +58,7 @@ import {CtgListAndCtgStaticViewerDoctorFacing} from "./components/ctg/CtgListAnd
 import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 import {TestMuiDataTable} from "./tests/TestMuiDataTable";
+import {TestFetchCtgNumericalsByDoctorID} from "./tests/TestFetchCtgNumericalsByDoctorID";
 
 
 const AuthApp = () => {
@@ -190,6 +191,9 @@ function CTGApp() {
                                <CtgListAndCtgStaticViewerDoctorFacing>
                                </CtgListAndCtgStaticViewerDoctorFacing>
                            </Route>
+                           {/*<Route exact path={"/"}>*/}
+                           {/*    <TestFetchCtgNumericalsByDoctorID></TestFetchCtgNumericalsByDoctorID>*/}
+                           {/*</Route>*/}
                        </CTGAppLayout>
                    </Switch>
                 </Router>

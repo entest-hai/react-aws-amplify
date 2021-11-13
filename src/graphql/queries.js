@@ -417,3 +417,239 @@ export const sliderValueByCreatedTime = /* GraphQL */ `
     }
   }
 `;
+export const ctgsByDoctorID = /* GraphQL */ `
+  query CtgsByDoctorID(
+    $doctorID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelCtgFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CtgsByDoctorID(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const ctgsByPatientID = /* GraphQL */ `
+  query CtgsByPatientID(
+    $patientID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelCtgFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CtgsByPatientID(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const ctgNumericalsByHospitalID = /* GraphQL */ `
+  query CtgNumericalsByHospitalID(
+    $hospitalID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelCtgNumericalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CtgNumericalsByHospitalID(
+      hospitalID: $hospitalID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        ctgJsonUrl
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        lost
+        accepted
+        ga
+        bmi
+        pod
+        sessionTime
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const ctgNumericalsByDoctorID = /* GraphQL */ `
+  query CtgNumericalsByDoctorID(
+    $doctorID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelCtgNumericalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CtgNumericalsByDoctorID(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        ctgJsonUrl
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        lost
+        accepted
+        ga
+        bmi
+        pod
+        sessionTime
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const ctgNumericalsByPatientD = /* GraphQL */ `
+  query CtgNumericalsByPatientD(
+    $patientID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelCtgNumericalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CtgNumericalsByPatientD(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        ctgJsonUrl
+        ctgUrl
+        ecgUrl
+        comment
+        patientID
+        doctorID
+        hospitalID
+        lost
+        accepted
+        ga
+        bmi
+        pod
+        sessionTime
+        createdTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const patientsByDoctorID = /* GraphQL */ `
+  query PatientsByDoctorID(
+    $doctorID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatientFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    PatientsByDoctorID(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        phone
+        address
+        doctorID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const doctorsByHospitalID = /* GraphQL */ `
+  query DoctorsByHospitalID(
+    $hospitalID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    DoctorsByHospitalID(
+      hospitalID: $hospitalID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        phone
+        address
+        department
+        hospitalID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

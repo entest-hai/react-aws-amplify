@@ -22,9 +22,16 @@ import {
 import React from "react";
 
 const HospitalList = (props) => {
+
+
+
+    const hospitalFilters = [
+        <TextInput label={"Search"} source={"name"} alwaysOn></TextInput>
+    ]
+
     // console.log(props)
     return (
-    <List {...props}>
+    <List {...props} filters={hospitalFilters}>
       <Datagrid>
         <TextField source={"id"}></TextField>
         <TextField source={"name"}></TextField>
