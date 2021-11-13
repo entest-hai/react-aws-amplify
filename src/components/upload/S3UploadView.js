@@ -179,7 +179,7 @@ const UploadView = () => {
     </div>
 
     return (
-       <div style={{width:'98vw', margin:'auto'}}>
+       <div style={{width:'95vw', margin:'auto'}}>
             <CtgImageViewer
                 ctgViewerWidth={'98vw'}
                 ctgS3Url={ctgS3Url}>
