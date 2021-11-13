@@ -181,7 +181,7 @@ const UploadView = () => {
     return (
        <div style={{width:'95vw', margin:'auto'}}>
             <CtgImageViewer
-                ctgViewerWidth={'98vw'}
+                ctgViewerWidth={'95vw'}
                 ctgS3Url={ctgS3Url}>
             </CtgImageViewer>
             <TextField
@@ -202,7 +202,7 @@ const UploadView = () => {
                             {uploadFile}
                         </InputAdornment>),
                 }}>
-        </TextField>
+            </TextField>
             <LinearProgressWithLabel value={progress}></LinearProgressWithLabel>
        </div>
     )

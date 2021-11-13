@@ -181,62 +181,6 @@ const CtgCreateNote = () => {
                 </CtgImageViewer>
                 <CtgEditForm></CtgEditForm>
             </div>
-
-        // <Paper style={{margin:5, overflow:'auto', padding:30, height:'100%'}} elevation={5}>
-        //     <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        //         <TextField
-        //             className={classes.field}
-        //              label={"Patient Id & Click Search"}
-        //              rows={1}
-        //              variant={"outlined"}
-        //              color={"secondary"}
-        //              fullWidth
-        //              placeholder={"Hai"}
-        //              required
-        //              error={patientIdError}
-        //              onChange={(event) => {
-        //                  setPatientId(event.target.value)
-        //
-        //              }}
-        //              InputProps={{
-        //                  endAdornment: (
-        //                      <InputAdornment position="end">
-        //                          <IconButton
-        //                              onClick={() =>{
-        //                                  setShowImage(true)
-        //                              }}
-        //                              size="large">
-        //                              <SearchIcon></SearchIcon>
-        //                          </IconButton>
-        //                      </InputAdornment>
-        //                      ),
-        //              }}>
-        //         </TextField>
-        //            <TextField
-        //                className={classes.field}
-        //                  label="Doctor comments"
-        //                  onChange={(event) => {
-        //                      setDetails(event.target.value)
-        //                  }}
-        //                  variant="outlined"
-        //                  color="secondary"
-        //                  multiline
-        //                  rows={13}
-        //                  fullWidth
-        //                  required
-        //                  error={detailsError}
-        //            >
-        //            </TextField>
-        //             <Button
-        //                 type="submit"
-        //                 color="primary"
-        //                 variant="contained"
-        //                 endIcon={<KeyboardArrowRight></KeyboardArrowRight>}
-        //             >
-        //             Submit
-        //          </Button>
-        //     </form>
-        // </Paper>
     );
 }
 
