@@ -2,21 +2,14 @@
 // Admin depends on material-ui/core so need to use material-ui/core  here
 // instead of mui/core to view Ctg Image
 
-import {getCtgNumerical, getDoctor} from "../../graphql/queries";
+import {getCtgNumerical} from "../../graphql/queries";
 import {
-  AutocompleteInput,
   Create,
   Datagrid,
-  DateField,
-  DateInput,
   Edit,
   EditButton,
   List,
-  NumberField,
-  NumberInput,
   ReferenceField,
-  ReferenceInput,
-  required,
   Show,
   ShowButton,
   SimpleForm,
@@ -27,61 +20,12 @@ import {
 import React, {useEffect, useState} from "react";
 import {API, Storage} from "aws-amplify";
 import {CtgImageViewerForAdmin} from "../ctg/CtgImagViewerForAdmin";
-import { AmplifyFilter } from "react-admin-amplify";
-
-
-const listCtgNumericalsByDoctorID = `
-        query ListCtgNumericalsByDoctorID(
-            $filter: ModelCtgNumericalFilterInput
-            $limit: Int
-            $nextToken: String
-        ) {
-          listCtgNumericals(filter: $filter, limit: $limit, nextToken: $nextToken) {
-            items {
-                id
-                name
-                ctgJsonUrl
-                ctgUrl
-                ecgUrl
-                comment
-                patientID
-                doctorID
-                hospitalID
-                lost
-                accepted
-                ga
-                bmi
-                pod
-                sessionTime
-                createdTime
-                createdAt
-                updatedAt
-            }
-            nextToken
-          }
-    }
-`;
 
 
 const CtgNumericalList = (props) => {
-    // console.log(props)
-    const defaultQuery = "listCtgNumericals"
-    // const ctgNumericalFilter = [
-    //      <AmplifyFilter {...props} defaultQuery={defaultQuery}>
-    //         <TextInput label={"Search"} source={"listCtgNumericalsByDoctorID.doctorID.eq"} alwaysOn></TextInput>
-    //     </AmplifyFilter>
-    // ]
-
-    const ctgNumericalFilter = (props) => {
-        return (
-            <AmplifyFilter {...props} defaultQuery={"listCtgNumericals"}>
-                <TextInput source={"listCtgNumericalsByDoctorID.doctorID.eq"} label={"Search"} alwaysOn></TextInput>
-            </AmplifyFilter>
-        )
-    }
 
     return (
-    <List {...props} filters={ctgNumericalFilter}>
+    <List {...props} >
       <Datagrid>
         <TextField source={"id"}></TextField>
         <TextField source={"ctgUrl"}></TextField>

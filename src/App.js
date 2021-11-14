@@ -110,27 +110,6 @@ const CtgLiveWebWorker = () => {
                     <Route path={"/ctg"}>
                        <CTGNoteView></CTGNoteView>
                    </Route>
-                    {/*<Route exact path={"/scroll"}>*/}
-                    {/*    <ScrollBarDragger></ScrollBarDragger>*/}
-                    {/*</Route>*/}
-                    {/*<Route exact path={"/s3"}>*/}
-                    {/*    <TestDownloadS3></TestDownloadS3>*/}
-                    {/*</Route>*/}
-                    {/*<Route exact path={"/upload"}>*/}
-                    {/*    <UploadView></UploadView>*/}
-                    {/*</Route>*/}
-                    {/*<Route exact path={"/view"}>*/}
-                    {/*    <CtgImageViewer ctgS3Url={process.env.PUBLIC_URL+"/images/STG049B_raw_ctg.png"}></CtgImageViewer>*/}
-                    {/*</Route>*/}
-                    {/*<Route exact path={"/ctg"}>*/}
-                    {/*    <CTGNoteView></CTGNoteView>*/}
-                    {/*</Route>*/}
-                    {/*<Route exact path={"/records"}>*/}
-                    {/*    <CTGRecords></CTGRecords>*/}
-                    {/*</Route>*/}
-                    {/*<Route exact path={"/inf"}>*/}
-                    {/*    <TestInfiniteScroll></TestInfiniteScroll>*/}
-                    {/*</Route>*/}
                 </Switch>
             </Router>
         </ThemeProvider>
@@ -191,9 +170,6 @@ function CTGApp() {
                                <CtgListAndCtgStaticViewerDoctorFacing>
                                </CtgListAndCtgStaticViewerDoctorFacing>
                            </Route>
-                           {/*<Route exact path={"/"}>*/}
-                           {/*    <TestFetchCtgNumericalsByDoctorID></TestFetchCtgNumericalsByDoctorID>*/}
-                           {/*</Route>*/}
                        </CTGAppLayout>
                    </Switch>
                 </Router>

@@ -1,17 +1,10 @@
 import {
-  AutocompleteInput,
   Create,
   Datagrid,
   DateField,
-  DateInput,
   Edit,
   EditButton,
   List,
-  NumberField,
-  NumberInput,
-  ReferenceField,
-  ReferenceInput,
-  required,
   Show,
   ShowButton,
   SimpleForm,
@@ -23,15 +16,8 @@ import React from "react";
 
 const HospitalList = (props) => {
 
-
-
-    const hospitalFilters = [
-        <TextInput label={"Search"} source={"name"} alwaysOn></TextInput>
-    ]
-
-    // console.log(props)
     return (
-    <List {...props} filters={hospitalFilters}>
+    <List {...props}>
       <Datagrid>
         <TextField source={"id"}></TextField>
         <TextField source={"name"}></TextField>
