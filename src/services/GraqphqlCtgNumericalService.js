@@ -1,5 +1,5 @@
 import {API} from "aws-amplify";
-import {ctgNumericalsByDoctorID} from "../graphql/queries";
+import {ctgNumericalsByDoctorID, getCtgNumerical} from "../graphql/queries";
 
 export const fetchCtgNumericalsByDoctorID = async () => {
     let resp = null
@@ -12,4 +12,16 @@ export const fetchCtgNumericalsByDoctorID = async () => {
         console.log(e)
     }
     return resp
+}
+
+
+export const getNumericalCtgsById = async  (id) => {
+    try {
+        const resp = await API.graphql({query: getCtgNumerical, variables:{id:id}})
+        // console.log(resp.data.getCtgNumerical)
+        return resp.data.getCtgNumerical
+    } catch (e) {
+        console.log("not able to get ", id)
+        return null
+    }
 }

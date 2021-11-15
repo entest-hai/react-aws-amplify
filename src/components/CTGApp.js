@@ -28,6 +28,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Divider from '@mui/material/Divider';
+import CreateIcon from '@mui/icons-material/Create';
 
 const drawerWidth = 240
 
@@ -201,6 +202,11 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             text: "Live Single FHR",
             icon: <CloudCircle color={"secondary"}></CloudCircle>,
             path: "/live"
+        },
+        {
+            text: "Upload CTG",
+            icon: <CreateIcon color={"secondary"}></CreateIcon>,
+            path: "/test"
         },
     ];
 

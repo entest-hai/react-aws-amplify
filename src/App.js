@@ -59,6 +59,7 @@ import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 import {TestMuiDataTable} from "./tests/TestMuiDataTable";
 import {TestFetchCtgNumericalsByDoctorID} from "./tests/TestFetchCtgNumericalsByDoctorID";
+import {CreateCtgNumericalRecord} from "./components/upload/CreateCtgRecord";
 
 
 const AuthApp = () => {
@@ -141,6 +142,10 @@ function CTGApp() {
                                     tableHeight={'87vh'}
                                >
                                </CtgListDoctorFacing>
+                           </Route>
+                           <Route path={"/test"}>
+                               <CreateCtgNumericalRecord>
+                               </CreateCtgNumericalRecord>
                            </Route>
                            <Route path={"/ctg"}>
                                <CTGNoteView></CTGNoteView>

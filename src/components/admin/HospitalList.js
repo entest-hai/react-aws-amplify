@@ -17,7 +17,7 @@ import React from "react";
 const HospitalList = (props) => {
 
     return (
-    <List {...props}>
+    <List {...props}> s3:
       <Datagrid>
         <TextField source={"id"}></TextField>
         <TextField source={"name"}></TextField>
