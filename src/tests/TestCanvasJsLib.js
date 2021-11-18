@@ -21,7 +21,7 @@ const TestCanvasJSLib = () => {
 
 
     const dataPoints = lostBuckets.map((value,index) => {
-        return {label: value["begin"].toString() + "-" + value["end"].toString(), y: lostByBucket[index]}
+        return {label: value["begin"].toString() + "-" + value["end"].toString(), y: lostByBucket[index], indexLabel:lostByBucket[index].toString()}
     })
 
     const dataPointsCum = lostBuckets.map((value,index) => {
@@ -29,7 +29,7 @@ const TestCanvasJSLib = () => {
     })
 
     const dataPointsCumPercentage = lostBuckets.map((value,index) => {
-        return {label: value["begin"].toString() + "-" + value["end"].toString(), y: lostCummulativePercentage[index], indexLabel:lostCummulativePercentage[index].toFixed(2).toString()}
+        return {label: value["begin"].toString() + "-" + value["end"].toString(), y: lostCummulativePercentage[index], indexLabel:lostCummulativePercentage[index].toFixed(2).toString()+"%"}
     })
 
 
@@ -38,7 +38,7 @@ const TestCanvasJSLib = () => {
         height:window.screen.height/3,
         title: {
           text: "Count By FHR Lost",
-          fontSize:24,
+          fontSize:18,
           fontColor:"black"
         },
         axisY:{
@@ -69,7 +69,7 @@ const TestCanvasJSLib = () => {
             titleFontColor:"black",
         },
         data: [
-            {				
+            {	indexLabelFontColor:"black",			
                 type: "column",
                 color: '#0C74CF',
                 dataPoints: dataPoints
