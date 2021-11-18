@@ -62,7 +62,7 @@ import {TestMuiDataTable} from "./tests/TestMuiDataTable";
 import {TestFetchCtgNumericalsByDoctorID} from "./tests/TestFetchCtgNumericalsByDoctorID";
 import {CreateCtgNumericalRecord} from "./components/upload/CreateCtgRecord";
 import { TestCanvasJSLib } from './tests/TestCanvasJsLib';
-
+import TestCombination from './tests/TestChartCombination';
 
 const AuthApp = () => {
     return (
