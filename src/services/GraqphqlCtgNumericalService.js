@@ -25,3 +25,32 @@ export const getNumericalCtgsById = async  (id) => {
         return null
     }
 }
+
+export const fetchAllNumericalCtgsByDoctorID = async  (maxNumRecord) => {
+    // get doctor ID from local storage 
+    const doctorID = localStorage.getItem('doctorID') ? localStorage.getItem("doctorID") : '0f150cec-842f-43a0-9f89-ab06625e832a'
+    // get next token from local storage or ini 
+    var nextToken = null 
+    // buffer records 
+    var records = []
+    // first fetch 
+    const apiData = await API.graphql({query: ctgNumericalsByDoctorID, variables: {doctorID:doctorID}})
+    // get next token 
+    nextToken = apiData.data.CtgNumericalsByDoctorID.nextToken
+    // parse data 
+    records = [...apiData.data.CtgNumericalsByDoctorID.items]
+    // continue fetch untill next token null 
+    while (records.length < maxNumRecord){
+        if (nextToken == null || nextToken=='null'){
+            console.log("null token reach break now")
+            break
+        }
+        // const apiData = await API.graphql({query: listCtgNumericalsByDoctorID, variables: {filter:filter, limit: 20, nextToken}})
+        const apiData = await API.graphql({query: ctgNumericalsByDoctorID, variables: {doctorID:doctorID, limit: 20, nextToken}})
+        // update next token
+        nextToken = apiData.data.CtgNumericalsByDoctorID.nextToken
+        // parse data 
+        records = [...apiData.data.CtgNumericalsByDoctorID.items, ...records]
+    }
+    return records
+}

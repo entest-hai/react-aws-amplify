@@ -60,6 +60,7 @@ import { createTheme } from "@mui/material/styles";
 import {TestMuiDataTable} from "./tests/TestMuiDataTable";
 import {TestFetchCtgNumericalsByDoctorID} from "./tests/TestFetchCtgNumericalsByDoctorID";
 import {CreateCtgNumericalRecord} from "./components/upload/CreateCtgRecord";
+import { TestCanvasJSLib } from './tests/TestCanvasJsLib';
 
 
 const AuthApp = () => {
@@ -137,6 +138,9 @@ function CTGApp() {
                <Router>
                    <Switch>
                        <CTGAppLayout setAuthenticated={setAuthenticated}>
+                           <Route path={"/chart"}>
+                                <TestCanvasJSLib></TestCanvasJSLib>
+                           </Route>
                            <Route path={"/search"}>
                                <CtgListDoctorFacing
                                     tableHeight={'87vh'}
