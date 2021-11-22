@@ -31,8 +31,7 @@ const UserLoginPage = ({setAuthenticated}) => {
         event.preventDefault();
 
         try {
-            let user = await  Auth.signIn(userName, password)
-            // console.log(user)
+            let user = await Auth.signIn(userName, password)
             localStorage.setItem('username',user.username)
             localStorage.setItem('cognitoUserID',user.attributes.sub)
             // if this is admin user and not doctor

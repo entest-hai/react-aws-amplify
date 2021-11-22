@@ -4,6 +4,8 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
 export default class TestCombination extends React.Component {
 
+    
+
     constructor(){
         super()
         console.log("constructor called")

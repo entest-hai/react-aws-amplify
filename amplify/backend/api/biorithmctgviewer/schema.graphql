@@ -1,0 +1,88 @@
+type User @model {
+  id: ID! 
+  username: String!
+  email: String
+  avatarKey: String
+  description: String
+}
+
+type CtgImage @model 
+  @key(name: "CtgImagesByDataset", fields: ["dataset"], queryField: "CtgImagesByDataset" ) {
+  id: ID! 
+  ctgUrl: String
+  ecgUrl: String
+  dataset: String!
+  userId: ID
+  username: String
+  createdTime: AWSTimestamp!
+}
+
+
+type SliderValue @model 
+  @key(name: "SliderValueByCreatedTime", fields: ["deviceId","createdTime"], queryField: "SliderValueByCreatedTime") {
+  deviceId: ID!
+  createdTime: AWSTimestamp! 
+  value: Float
+}
+
+
+type Ctg @model  @key(name: "byHospital", fields: ["hospitalID"]) @key(name: "byDoctor", fields: ["doctorID"], queryField:"CtgsByDoctorID") @key(name: "byPatient", fields: ["patientID"], queryField:"CtgsByPatientID") {
+  id: ID! 
+  ctgUrl: String
+  ecgUrl: String
+  comment: String 
+  patientID: ID 
+  doctorID: ID
+  hospitalID: ID 
+  createdTime: AWSTimestamp!
+}
+
+
+type CtgNumerical @model  @key(name: "byHospital", fields: ["hospitalID"], queryField:"CtgNumericalsByHospitalID") @key(name: "byDoctor", fields: ["doctorID"], queryField:"CtgNumericalsByDoctorID") @key(name: "byPatient", fields: ["patientID"],queryField:"CtgNumericalsByPatientD") {
+  id: ID!
+  name: String
+  ctgJsonUrl: String
+  ctgUrl: String
+  ecgUrl: String
+  comment: String 
+  patientID: ID 
+  doctorID: ID
+  hospitalID: ID
+  lost: Float
+  accepted: String
+  ga: Float
+  bmi: Float
+  pod: String
+  sessionTime: AWSTimestamp 
+  createdTime: AWSTimestamp!
+}
+
+
+
+type Patient @model @auth(rules: [{allow: public}]) @key(name: "byDoctor", fields: ["doctorID"], queryField: "PatientsByDoctorID") {
+  id: ID!
+  name: String
+  phone: String
+  address: String
+  doctorID: ID
+}
+
+type Doctor @model @auth(rules: [{allow: public}]) @key(name: "byHospital", fields: ["hospitalID"], queryField:"DoctorsByHospitalID") {
+  id: ID!
+  name: String
+  phone: String
+  address: String
+  department: String
+  hospitalID: ID
+  Patients: [Patient] @connection(keyName: "byDoctor", fields: ["id"])
+}
+
+type Hospital @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  phone: String
+  address: String
+}
+
+
+
