@@ -1,4 +1,17 @@
-import { Paper, TextField, Typography, Button, Box } from '@mui/material'
+import {
+  Paper,
+  FormControl,
+  TextField,
+  Typography,
+  Button,
+  Box
+} from '@mui/material';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import React, { useState } from "react";
 import { API, Auth } from 'aws-amplify'
 import { getDoctor } from "../graphql/queries";
@@ -7,6 +20,7 @@ const UserLoginPage = ({ setAuthenticated }) => {
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const getUserName = (e) => {
     setUserName(e.target.value)
@@ -90,17 +104,28 @@ const UserLoginPage = ({ setAuthenticated }) => {
               onInput={getUserName}
             >
             </TextField>
-            <TextField
-              id={"password"}
-              label={"Password"}
-              placeholder={"Enter password"}
-              fullWidth required
-              onChange={getPassword}
-              variant={"outlined"}
-              value={password}
-              onInput={getPassword}
-            >
-            </TextField>
+            <FormControl sx={{ width: '100%' }} variant="outlined" required >
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={getPassword}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => { setShowPassword(!showPassword) }}
+                      onMouseDown={null}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
             <Button
               type={"submit"}
               color={"primary"}
