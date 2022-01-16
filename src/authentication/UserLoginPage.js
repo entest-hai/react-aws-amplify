@@ -114,7 +114,7 @@ const UserLoginPage = ({ setAuthenticated }) => {
           <img src="femom.png" style={{ width: '100%' }} />
         </Box>
         <Paper className={classes.myPaper}>
-          <Typography variant={'h5'} className={classes.loginHeader}>
+          <Typography variant={'h4'} className={classes.loginHeader}>
             Sign in to your account
           </Typography>
           <form onSubmit={handleSubmit}>
