@@ -2,7 +2,18 @@ import {getNumericalCtgsById} from "../services/GraqphqlCtgNumericalService";
 import {createCtgNumerical, updateCtgNumerical} from "../graphql/mutations";
 import {API} from 'aws-amplify';
 
-export const createCtgNumericalDict = async (id, name, ctgUrl, ctgJsonUrl, comment, lost, accepted, patientID, doctorID, hospitalID, createdTime) => {
+export const createCtgNumericalDict = async (
+  id, 
+  name, 
+  ctgUrl, 
+  ctgJsonUrl, 
+  comment, 
+  lost, 
+  accepted, 
+  patientID, 
+  doctorID, 
+  hospitalID, 
+  createdTime) => {
         const ctgNumerical = {
             id: id,
             name: name,

@@ -32,6 +32,7 @@ const UserLoginPage = ({setAuthenticated}) => {
 
         try {
             let user = await Auth.signIn(userName, password)
+            console.log(user)
             localStorage.setItem('username',user.username)
             localStorage.setItem('cognitoUserID',user.attributes.sub)
             // if this is admin user and not doctor
@@ -41,7 +42,7 @@ const UserLoginPage = ({setAuthenticated}) => {
             } else {
                 try {
                 let apiData = await API.graphql({query: getDoctor, variables:{id: String(user.attributes.sub)}});
-                // console.log(apiData)
+                console.log(apiData)
                 localStorage.setItem('doctorID',apiData.data.getDoctor.id)
                 localStorage.setItem('hospitalID',apiData.data.getDoctor.hospitalID)
                 localStorage.setItem('doctorName',apiData.data.getDoctor.name)

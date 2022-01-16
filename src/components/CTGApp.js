@@ -18,7 +18,16 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {blue, green, pink, yellow} from '@mui/material/colors';
-import {AppBar, Button, Toolbar, List, ListItem, ListItemIcon, ListItemText, Drawer, Menu, MenuItem} from "@mui/material";
+import {AppBar, 
+ Button, 
+ Toolbar, 
+ List, 
+ ListItem, 
+ ListItemIcon, 
+ ListItemText, 
+ Drawer, 
+ Menu, 
+ MenuItem} from "@mui/material";
 import {AddCircleOutlineOutlined, CloudCircle, CloudUpload,} from "@mui/icons-material";
 import { format } from 'date-fns';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -128,13 +137,13 @@ const useStyles = makeStyles((theme) => {
         },
         cardAvartar: {
             backgroundColor: (note) => {
-                if (note.category == 'work') {
+                if (note.category === 'work') {
                     return yellow[700]
                 }
-                if (note.category == 'money') {
+                if (note.category === 'money') {
                     return green[500]
                 }
-                if (note.category == 'todos') {
+                if (note.category === 'todos') {
                     return pink[500]
                 }
                 return blue[500]
@@ -155,10 +164,21 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
     const [userName, setUserName] = useState("Biorithm")
     const [doctorName, setDoctorName] = useState("Biorithm")
 
-    useEffect(async () => {
+    const toggleDrawer = (updateOpenState) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setOpen(updateOpenState);
+  };
+
+    useEffect( () => {
+      const getUserName = async () => {
         setUserName(localStorage.getItem('username'))
         setDoctorName(localStorage.getItem('doctorName'))
-    })
+      }
+      getUserName()
+    },[])
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -266,14 +286,15 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
                     <Avatar
                      className={classes.avatar}
                      onClick={handleLogoutMenuOpen}
-                     >{ doctorName ? (doctorName[4].toUpperCase() == "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase()) :  (userName[4].toUpperCase() == "." ? userName[6].toUpperCase() : userName[4].toUpperCase())} </Avatar>
+                     >{ doctorName ? (doctorName[4].toUpperCase() === "." ? doctorName[6].toUpperCase() : doctorName[4].toUpperCase()) :  (userName[4].toUpperCase() === "." ? userName[6].toUpperCase() : userName[4].toUpperCase())} </Avatar>
                 </Toolbar>
             </AppBar>
             <Drawer
                className={classes.drawer}
-              variant={"temporary"}
+               variant={"temporary"}
                anchor={"left"}
                open={open}
+               onClose={toggleDrawer(false)}
                classes={{paper: classes.drawerPaper}}
                >
                    <div className={classes.drawerHeader}>
@@ -291,7 +312,7 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
                             button
                             key={item.text}
                             onClick={() => history.push(item.path)}
-                            className={location.pathname == item.path ? classes.active : null}
+                            className={location.pathname === item.path ? classes.active : null}
                            >
                                <ListItemIcon>
                                    {item.icon}

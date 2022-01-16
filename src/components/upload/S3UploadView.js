@@ -7,27 +7,23 @@
 //********************************************************************************************************************/
 // 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
 // 002.   |  31 AUG 2021.     | TRAN MINH HAI      | - Call FHR API and create a CTGRecord in DynamoDB comments 
+// 003.   |  15 JAN 2022.     | TRAN MINH HAI      | - CreatedTime in seconds as in UNIX
 //=====================================================================================================================
 
-import { Button, Container, Card, CardMedia, Paper } from '@mui/material';
+import { Button } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {React, useState} from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
-import { IconButton } from '@mui/material';
 import { TextField } from '@mui/material';
-import {API, Storage} from 'aws-amplify';
+import {Storage} from 'aws-amplify';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
-import Skeleton from '@mui/material/Skeleton';
-import awsmobile from '../../aws-exports';
 import { fhr_api_end_point } from '../../config/apiendpoint';
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {UserSessionService} from "../../services/UserSessionService";
-import {createCtgNumerical} from "../../graphql/mutations";
-
+import { createCtgNumericalDict, writeCtgRecordToDB } from '../../models/CtgNumericalModel';
 
 const ctgImageHeight = 400
 
@@ -95,7 +91,7 @@ const UploadView = () => {
                 let ctgUrl = result.s3Url.split("/").pop()
                 let ctgJsonUrl = result.ctgJsonUrl ? result.ctgJsonUrl : "STG015A.json"
                 getCTGSignedS3Url(ctgUrl)
-                writeCtgRecordToDB(ctgUrl, ctgJsonUrl)
+                writeCtgRecordToDBTest(ctgUrl, ctgJsonUrl)
             })
             .catch(error => {
                 console.log('error', error)
@@ -104,18 +100,35 @@ const UploadView = () => {
         // 
     }
 
-    async function writeCtgRecordToDB(ctgUrl, ctgJsonUrl) {
-        let createdTime = new Date()
+    async function writeCtgRecordToDBTest(ctgUrl, ctgJsonUrl) {
         await UserSessionService.getUserSession()
-        await API.graphql({ query: createCtgNumerical, variables: { input: {
-            ctgUrl: ctgUrl,
-            ecgUrl: "",
-            ctgJsonUrl:ctgJsonUrl,
-            doctorID: UserSessionService.user.doctorID,
-            patientID: 'e183c626-dd86-4834-9b4a-5e136a09cce7',
-            hospitalID: UserSessionService.user.hospitalID,
-            createdTime: createdTime.getTime()}}}
-            );
+        let now = new Date()
+        let createdTime = Math.floor(now.getTime() / 1000)
+        let id = ctgUrl
+        let name = ctgUrl 
+        let comment = "NONE"
+        let lost = 0.0
+        let accepted = "UNKNOWN"
+        let patientID = 'e183c626-dd86-4834-9b4a-5e136a09cce7'
+        let doctorID = UserSessionService.user.doctorID
+        let hospitalID = UserSessionService.user.hospitalID
+        
+      let ctgNumerical = await createCtgNumericalDict(
+        id, 
+        name, 
+        ctgUrl, 
+        ctgJsonUrl, 
+        comment, 
+        lost,
+        accepted,
+        patientID, 
+        doctorID, 
+        hospitalID, 
+        createdTime
+      )
+      // write to db 
+      await writeCtgRecordToDB(ctgNumerical)
+
     }
 
     const getCTGSignedS3Url = async(s3Url) => {
@@ -125,12 +138,13 @@ const UploadView = () => {
 
     const handleUpload = async () => {
         // split file and take max 30 minute 
-        const result = await Storage.put(selectedFile[0].name, selectedFile[0], {
+        await Storage.put(selectedFile[0].name, selectedFile[0], {
             progressCallback(value){
                 setProgress(100.0*value.loaded/value.total)
             }
         }).then(() => {
             setSelectedFile(null)
+            console.log("uploaded to s3")
             callFHRAPI(selectedFile[0].name)
             // TODO then write CTGRecord to DynamoDB 
             // or lambda write CTGRecord to DynamoDB 

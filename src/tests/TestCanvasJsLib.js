@@ -159,7 +159,7 @@ const TestCanvasJSLib = () => {
                 buckets[i] = count
                 cum[i] = buckets.reduce((a,b) => a+b,0)
                 cumPercentage[i] = cum[i]/lostArray.length*100.0
-                // console.log("bucket ", i, " length ", count, " cum ", cum[i])
+                console.log("bucket ", i, " length ", count, " cum ", cum[i])
                 // cummlative percentage 
             }
             setLostByBucket(buckets)

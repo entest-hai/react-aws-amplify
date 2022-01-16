@@ -8,21 +8,20 @@
 // 001.   |  23 AUG 2021.     | TRAN MINH HAI      | - Refactor and add header 
 // 002.   |  31 AUG 2021.     | TRAN MINH HAI      | - Call FHR API and create a CTGRecord in DynamoDB comments
 // 003    |  15 NOV 2021      | TRAN MINH HAI      | - Upload ctg image and write to ctgNumericalRecord table
+// 004    |  15 JAN 2022      | TRAN MINH HAI      | - Created time in seconds as in UNIX 
 //=====================================================================================================================
 import { Button} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {React, useState} from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import { TextField } from '@mui/material';
-import {API, Storage} from 'aws-amplify';
+import {Storage} from 'aws-amplify';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import {CtgImageViewer} from "../ctg/CtgImageViewer";
 import {UserSessionService} from "../../services/UserSessionService";
-import {createCtgNumerical, updateCtgNumerical} from "../../graphql/mutations";
-import {getNumericalCtgsById} from "../../services/GraqphqlCtgNumericalService";
 import {createCtgNumericalDict, writeCtgRecordToDB} from "../../models/CtgNumericalModel";
 
 const ctgImageHeight = 450
@@ -197,7 +196,7 @@ const CreateCtgNumericalRecord = () => {
         // write to DB
         await UserSessionService.getUserSession()
         let now = new Date()
-        let createdTime = now.getTime()
+        let createdTime =  Math.floor(now.getTime() / 1000)
         let doctorID = UserSessionService.user.doctorID
         let hospitalID = UserSessionService.user.hospitalID
         let patientID = 'e183c626-dd86-4834-9b4a-5e136a09cce7'
