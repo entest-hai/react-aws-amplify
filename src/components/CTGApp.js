@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.leavingScreen,
             }),
-            marginLeft: -drawerWidth,
+            marginLeft: 0,
             overflow:'auto'
           },
           contentShift: {
@@ -271,7 +271,7 @@ const CTGAppLayout = ({children, setAuthenticated}) => {
             </AppBar>
             <Drawer
                className={classes.drawer}
-               variant={"persistent"}
+              variant={"temporary"}
                anchor={"left"}
                open={open}
                classes={{paper: classes.drawerPaper}}
