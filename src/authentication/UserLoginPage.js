@@ -32,9 +32,18 @@ const UserLoginPage = ({ setAuthenticated }) => {
     myPaper: {
       elevation: 10,
       padding: 40,
+      width: 400,
       [theme.breakpoints.down('sm')]: {
-        padding: 20
+        padding: 20,
+        width: 350,
       }
+    },
+    loginHeader: {
+      paddingBottom: 40,
+      [theme.breakpoints.down('sm')]: {
+        paddingBottom: 20
+      }
+
     }
   }));
 
@@ -105,9 +114,7 @@ const UserLoginPage = ({ setAuthenticated }) => {
           <img src="femom.png" style={{ width: '100%' }} />
         </Box>
         <Paper className={classes.myPaper}>
-          <Typography
-            variant={'h5'}
-            style={{ paddingBottom: 20 }}>
+          <Typography variant={'h5'} className={classes.loginHeader}>
             Sign in to your account
           </Typography>
           <form onSubmit={handleSubmit}>
