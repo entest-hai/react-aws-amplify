@@ -79,15 +79,15 @@ const UserLoginPage = ({ setAuthenticated }) => {
       backgroundBlendMode: 'multiply'
     }}>
       <Box sx={{
-        width: 400
+        maxWidth: 350
       }}>
-        <Box sx={{ width: 400 }} >
-          <img src="femom.png" style={{ width: '100%', paddingLeft: 40, paddingRight: 40 }} />
+        <Box sx={{ maxWidth: 350 }} >
+          <img src="femom.png" style={{ width: '100%' }} />
         </Box>
-        <Paper elevation={10} style={{ width: 400, padding: 40 }}>
+        <Paper elevation={10} style={{ padding: 20 }}>
           <Typography
-            variant={'h4'}
-            style={{ paddingBottom: 40 }}>
+            variant={'h5'}
+            style={{ paddingBottom: 20 }}>
             Sign in to your account
           </Typography>
           <form onSubmit={handleSubmit}>
