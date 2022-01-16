@@ -6,6 +6,7 @@ import {
   Button,
   Box
 } from '@mui/material';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -15,8 +16,29 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import React, { useState } from "react";
 import { API, Auth } from 'aws-amplify'
 import { getDoctor } from "../graphql/queries";
+import { useTheme } from '@emotion/react';
 
 const UserLoginPage = ({ setAuthenticated }) => {
+
+  const theme = useTheme()
+
+  const useStyles = makeStyles((theme) => ({
+    myBox: {
+      width: 400,
+      [theme.breakpoints.down('sm')]: {
+        width: 350,
+      }
+    },
+    myPaper: {
+      elevation: 10,
+      padding: 40,
+      [theme.breakpoints.down('sm')]: {
+        padding: 20
+      }
+    }
+  }));
+
+  const classes = useStyles(theme);
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -78,13 +100,11 @@ const UserLoginPage = ({ setAuthenticated }) => {
       backgroundColor: 'darkgray',
       backgroundBlendMode: 'multiply'
     }}>
-      <Box sx={{
-        maxWidth: 350
-      }}>
-        <Box sx={{ maxWidth: 350 }} >
+      <Box className={classes.myBox}>
+        <Box className={classes.myBox}>
           <img src="femom.png" style={{ width: '100%' }} />
         </Box>
-        <Paper elevation={10} style={{ padding: 20 }}>
+        <Paper className={classes.myPaper}>
           <Typography
             variant={'h5'}
             style={{ paddingBottom: 20 }}>
