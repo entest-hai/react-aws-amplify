@@ -32,10 +32,10 @@ const UserLoginPage = ({ setAuthenticated }) => {
     myPaper: {
       elevation: 10,
       padding: 40,
-      width: 400,
+      maxWidth: 400,
       [theme.breakpoints.down('sm')]: {
         padding: 20,
-        width: 350,
+        maxWidth: 350,
       }
     },
     loginHeader: {
