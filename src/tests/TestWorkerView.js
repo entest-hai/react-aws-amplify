@@ -39,6 +39,10 @@ const FHRLiveCanvas = (props) => {
     // heart rate data state
     const [mHR, setmHR] = useState([]);
     const [fHR, setfHR] = useState([]);
+    // interval of counter 
+    let interval = useRef();
+    // counter
+    var counter = 0;
 
     // function to setup ctgCanvasConfiguration
     const setUpCtgCanvas = (canvas, ctx) => {
@@ -139,6 +143,21 @@ const FHRLiveCanvas = (props) => {
         ctx.stroke();
     }
 
+    // timer 
+    const updateHeartRate = () => {
+        interval = setInterval(() => {
+            if (counter < 200) {
+                console.log("update heart rate", counter);
+                setmHR([...heartRateData.mHR.slice(1, counter*20)]);
+                setfHR([...heartRateData.fHR.slice(1, counter*20)]);
+                counter += 1;
+            } else {
+                console.log("clear timer");
+                clearInterval(interval);
+            }
+        }, 1000)
+    }
+
     useEffect(() => {
         canvas = document.getElementById(canvasIdString);
         ctx = canvas.getContext("2d");
@@ -152,16 +171,24 @@ const FHRLiveCanvas = (props) => {
         plotHeartRate(ctx);
     }, [mHR, fHR])
 
-    useEffect( async () => {
-        const simpleWorker = new WebWorker(worker)
-        simpleWorker.addEventListener('message', event => {
-            // console.log(event.data.mHR)
-            // update heart rate
-            setmHR(mHR => [...mHR, ...event.data.mHR]);
-            setfHR(fHR => [...fHR, ...event.data.fHR])
-        })
-
+    useEffect(() => {
+        updateHeartRate();
+        return () => {
+            console.log("unmount the ctg live");
+            clearInterval(interval);
+        }
     },[])
+
+    // useEffect( async () => {
+    //     const simpleWorker = new WebWorker(worker)
+    //     simpleWorker.addEventListener('message', event => {
+    //         // console.log(event.data.mHR)
+    //         // update heart rate
+    //         setmHR(mHR => [...mHR, ...event.data.mHR]);
+    //         setfHR(fHR => [...fHR, ...event.data.fHR])
+    //     })
+
+    // },[])
 
     return (
         <canvas id={canvasIdString}>
